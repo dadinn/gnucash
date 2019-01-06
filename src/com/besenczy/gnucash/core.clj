@@ -22,9 +22,6 @@
     (re-find #"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")
     (jt/local-date-time (jt/formatter "yyyy-MM-dd HH:mm:ss"))))
 
-(defn parse-boolean [s]
-  (case s "y" true "n" false))
-
 (declare ->frame)
 
 (defn ->slotvalue
@@ -128,7 +125,6 @@
         (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/id zx/text)
         reconciled-state
         (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/reconciled-state zx/text)
-        reconciled-state (parse-boolean reconciled-state)
         value
         (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/value zx/text)
         value (edn/read-string value)
