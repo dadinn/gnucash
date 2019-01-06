@@ -126,7 +126,7 @@
 
 (defn countdata-pair [e]
   "Extract key-value pair from count-data XML element"
-  (let [k (-> e :attrs :cd/type)
+  (let [k (-> e :attrs :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcd/type)
         v (edn/read-string (first (:content e)))]
     [k v]))
 
