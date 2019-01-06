@@ -7,3 +7,6 @@
   (accounts [this])
   (transactions [this]))
 
+(defprotocol Document
+  (book [this]))
+

@@ -176,42 +176,41 @@
         v (edn/read-string (first content))]
     [k v]))
 
-(defrecord GnucashDocument [content]
+(defrecord GnucashBook [loc]
   proto/Book
   (slots [this]
-    (zx/xml1-> content
-      :gnc-v2
-      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book
+    (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/slots
       (->frame)))
   (counters [this]
     (into {}
       (map countdata-pair)
-      (zx/xml-> content :gnc-v2
-        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book
+      (zx/xml-> loc
         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/count-data
         z/node)))
   (prices [this]
-    (zx/xml-> content
-      :gnc-v2
-      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book
+    (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/pricedb
       :price
       ->price))
   (accounts [this]
-    (zx/xml-> content
-      :gnc-v2
-      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book
+    (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/account
       ->account))
   (transactions [this]
-    (zx/xml-> content
-      :gnc-v2
-      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book
+    (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/transaction
       ->transaction)))
 
-(defn load-book [path]
+(defrecord GnucashDocument [loc]
+  proto/Document
+  (book [this]
+    (zx/xml1-> loc
+      :gnc-v2
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book
+      ->GnucashBook)))
+
+(defn load-doc [path]
   (-> (slurp path)
     (x/parse-str)
     (z/xml-zip)
