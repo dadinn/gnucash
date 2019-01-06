@@ -81,8 +81,7 @@
         currency (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/currency ->commodity)
         date (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/time zx/text parse-date)
         source (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/source zx/text)
-        v (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/value zx/text)
-        v (edn/read-string v)]
+        v (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/value zx/text edn/read-string)]
     {:id id
      :commodity commodity
      :currency currency
