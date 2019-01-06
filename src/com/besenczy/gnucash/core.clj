@@ -71,6 +71,10 @@
     {:space space
      :id id}))
 
+(defn ->commodity [loc]
+  {:space (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/space zx/text)
+   :id (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/id zx/text)})
+
 (defn ->price [loc]
   (let [id (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/id zx/text)
         commodity (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/commodity ->commodity)
