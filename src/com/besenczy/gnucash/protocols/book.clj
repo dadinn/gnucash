@@ -1,4 +1,4 @@
-(ns com.besenczy.gnucash.protocols)
+(ns com.besenczy.gnucash.protocols.book)
 
 (defprotocol Book
   (slots [this])
@@ -6,7 +6,4 @@
   (prices [this])
   (accounts [this])
   (transactions [this]))
-
-(defprotocol Document
-  (book [this]))
 

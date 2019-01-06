@@ -1,6 +1,8 @@
 (ns com.besenczy.gnucash.core
   (:require
-   [com.besenczy.gnucash.protocols :as proto]
+   [com.besenczy.gnucash.protocols
+    [document :as doc]
+    [book :as book]]
    [clojure.edn :as edn]
    [clojure.spec.alpha :as spec]
    [clojure.java.io :as jio]
@@ -177,7 +179,7 @@
     [k v]))
 
 (defrecord GnucashBook [loc]
-  proto/Book
+  book/Book
   (slots [this]
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/slots
@@ -203,7 +205,7 @@
       ->transaction)))
 
 (defrecord GnucashDocument [loc]
-  proto/Document
+  doc/Document
   (book [this]
     (zx/xml1-> loc
       :gnc-v2
