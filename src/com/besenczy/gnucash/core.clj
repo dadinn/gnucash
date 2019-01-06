@@ -20,7 +20,7 @@
 (defn parse-time [time-str]
   (->> time-str
     (re-find #"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")
-    (jt/local-date-time (jt/formatter "yyyy-MM-dd hh:mm:ss"))))
+    (jt/local-date-time (jt/formatter "yyyy-MM-dd HH:mm:ss"))))
 
 (declare ->frame)
 
