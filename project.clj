@@ -8,6 +8,7 @@
    [org.clojure/data.xml "0.2.0-alpha6"]
    [org.clojure/data.zip "0.1.2"]
    [clj-time "0.15.1"]]
+  :main com.besenczy.gnucash.core
   :profiles
   {:dev
    {:dependencies
