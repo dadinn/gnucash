@@ -104,15 +104,15 @@
    "LIABILITY" :liability})
 
 (defn ->account [loc]
-  (let [id (zx/xml1-> loc :id zx/text)
-        name (zx/xml1-> loc :name zx/text)
-        code (zx/xml1-> loc :code zx/text)
-        desc (zx/xml1-> loc :description zx/text)
-        type (zx/xml1-> loc :type zx/text)
+  (let [id (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/id zx/text)
+        name (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/name zx/text)
+        code (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/code zx/text)
+        desc (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/description zx/text)
+        type (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/type zx/text)
         type (account-type type)
-        parent (zx/xml1-> loc :parent zx/text)
-        commodity (zx/xml1-> loc :commodity ->commodity)
-        unit (zx/xml1-> loc :commodity-scu zx/text)
+        parent (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/parent zx/text)
+        commodity (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/commodity ->commodity)
+        unit (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/commodity-scu zx/text)
         unit (edn/read-string unit)]
     {:id id
      :name name
