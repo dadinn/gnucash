@@ -29,17 +29,29 @@
    (case type
      "frame"
      ;; TODO effectively a hardcoded :slot, therefore breaks the recursion!
-     (zx/xml1-> loc :value (->frame slot-key))
+     (zx/xml1-> loc
+       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
+       (->frame slot-key))
      "string"
-     (zx/xml1-> loc :value zx/text)
+     (zx/xml1-> loc
+       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
+       zx/text)
      "integer"
-     (zx/xml1-> loc :value zx/text edn/read-string)
+     (zx/xml1-> loc
+       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
+       zx/text edn/read-string)
      "gdate"
-     (zx/xml1-> loc :value zx/text parse-date)
+     (zx/xml1-> loc
+       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
+       zx/text parse-date)
      "guid"
-     (zx/xml1-> loc :value zx/text)
+     (zx/xml1-> loc
+       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
+       zx/text)
      "timespec"
-     (zx/xml1-> loc :value zx/text parse-time))))
+     (zx/xml1-> loc
+       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
+       zx/text parse-time))))
 
 (defn ->slot [slot-key]
   (fn [loc]
