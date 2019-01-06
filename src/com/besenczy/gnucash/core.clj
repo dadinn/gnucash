@@ -22,6 +22,9 @@
     (re-find #"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")
     (jt/local-date-time (jt/formatter "yyyy-MM-dd HH:mm:ss"))))
 
+(defn parse-boolean [s]
+  (case s "y" true "n" false))
+
 (declare ->frame)
 
 (defn ->slotvalue
@@ -120,8 +123,56 @@
      :commodity commodity
      :unit unit}))
 
+(defn ->split [loc]
+  (let [id
+        (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/id zx/text)
+        reconciled-state
+        (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/reconciled-state zx/text)
+        reconciled-state (parse-boolean reconciled-state)
+        value
+        (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/value zx/text)
+        value (edn/read-string value)
+        quantity
+        (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/quantity zx/text)
+        quantity
+        (edn/read-string quantity)
+        account
+        (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/account zx/text)]
+    {:id id
+     :reconciled-state reconciled-state
+     :value value
+     :quantity quantity
+     :account account}))
+
 (defn ->transaction [loc]
-  (let [id (zx/xml1-> loc :id zx/text)]))
+  (let [id (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/id zx/text)
+        currency (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/currency ->commodity)
+        date-entered
+        (zx/xml1-> loc
+          :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/date-entered
+          :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
+          zx/text
+          parse-date)
+        date-posted
+        (zx/xml1-> loc
+          :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/date-posted
+          :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
+          zx/text
+          parse-date)
+        description (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/description zx/text)
+        slots (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/slots (->frame))
+        splits
+        (zx/xml-> loc
+          :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/splits
+          :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/split
+          ->split)]
+    {:id id
+     :currency currency
+     :date-entered date-entered
+     :date-posted date-posted
+     :description description
+     :slots slots
+     :splits splits}))
 
 (defn countdata-pair [e]
   "Extract key-value pair from count-data XML element"
