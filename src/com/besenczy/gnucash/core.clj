@@ -5,8 +5,7 @@
    [clojure.spec.alpha :as spec]
    [clojure.java.io :as jio]
    [clojure.string :as s]
-   [clj-time.core :as t]
-   [clj-time.format :as tf]
+   [java-time :as jt]
    [clojure.zip :as z]
    [clojure.data.zip.xml :as zx]
    [clojure.data.xml :as x])
@@ -16,12 +15,12 @@
 (defn parse-date [time-str]
   (->> time-str
     (re-find #"[0-9]{4}-[0-9]{2}-[0-9]{2}")
-    (tf/parse (tf/formatter "yyyy-MM-dd"))))
+    (jt/local-date (jt/formatter "yyyy-MM-dd"))))
 
 (defn parse-time [time-str]
   (->> time-str
     (re-find #"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")
-    (tf/parse (tf/formatter "yyyy-MM-dd HH:mm:ss"))))
+    (jt/local-date-time (jt/formatter "yyyy-MM-dd hh:mm:ss"))))
 
 (declare ->frame)
 
@@ -60,16 +59,11 @@
     {:space space
      :id id}))
 
-(defn ->date [time-str]
-  (->> time-str
-    (re-find #"[0-9]{4}-[0-9]{2}-[0-9]{2}")
-    (tf/parse (tf/formatter "yyyy-MM-dd"))))
-
 (defn ->price [loc]
   (let [id (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/id zx/text)
         commodity (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/commodity ->commodity)
         currency (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/currency ->commodity)
-        date (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/time zx/text ->date)
+        date (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/time zx/text parse-date)
         source (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/source zx/text)
         v (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/value zx/text)
         v (edn/read-string v)]
