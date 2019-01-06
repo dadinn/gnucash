@@ -170,10 +170,10 @@
      :slots slots
      :splits splits}))
 
-(defn countdata-pair [e]
+(defn countdata-pair [{:keys [tag attrs content] :as e}]
   "Extract key-value pair from count-data XML element"
-  (let [k (-> e :attrs :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcd/type)
-        v (edn/read-string (first (:content e)))]
+  (let [k (-> attrs :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcd/type)
+        v (edn/read-string (first content))]
     [k v]))
 
 (defrecord GnucashDocument [content]
