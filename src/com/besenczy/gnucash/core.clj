@@ -210,7 +210,13 @@
     (zx/xml1-> loc
       :gnc-v2
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book
-      ->GnucashBook)))
+      ->GnucashBook))
+  (counters [this]
+    (into {}
+      (map countdata-pair)
+      (zx/xml-> loc
+        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/count-data
+        z/node))))
 
 (defn load-doc [path]
   (-> (slurp path)
