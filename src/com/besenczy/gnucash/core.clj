@@ -1,8 +1,5 @@
 (ns com.besenczy.gnucash.core
   (:require
-   [com.besenczy.gnucash.protocols
-    [document :as doc]
-    [book :as book]]
    [clojure.edn :as edn]
    [clojure.spec.alpha :as spec]
    [clojure.java.io :as jio]
@@ -178,51 +175,56 @@
         v (edn/read-string (first content))]
     [k v]))
 
-(defrecord GnucashBook [loc]
-  book/Book
-  (slots [this]
-    (zx/xml1-> loc
-      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/slots
-      (->frame)))
-  (counters [this]
-    (into {}
-      (map countdata-pair)
-      (zx/xml-> loc
-        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/count-data
-        z/node)))
-  (prices [this]
-    (zx/xml-> loc
-      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/pricedb
-      :price
-      ->price))
-  (accounts [this]
-    (zx/xml-> loc
-      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/account
-      ->account))
-  (transactions [this]
-    (zx/xml-> loc
-      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/transaction
-      ->transaction)))
+(defn ->book [loc]
+  (let [slots
+        (zx/xml1-> loc
+          :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/slots
+          (->frame))
+        counters
+        (into {}
+          (map countdata-pair)
+          (zx/xml-> loc
+            :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/count-data
+            z/node))
+        prices
+        (zx/xml-> loc
+          :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/pricedb
+          :price
+          ->price)
+        accounts
+        (zx/xml-> loc
+          :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/account
+          ->account)
+        transactions
+        (zx/xml-> loc
+          :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/transaction
+          ->transaction)]
+    {:slots slots
+     :counters counters
+     :prices prices
+     :accounts accounts
+     :transactions transactions}))
 
-(defrecord GnucashDocument [loc]
-  doc/Document
-  (book [this]
-    (zx/xml1-> loc
-      :gnc-v2
-      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book
-      ->GnucashBook))
-  (counters [this]
-    (into {}
-      (map countdata-pair)
-      (zx/xml-> loc
-        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/count-data
-        z/node))))
+(defn ->document [loc]
+  (let [book
+        (zx/xml1-> loc
+          :gnc-v2
+          :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book)
+        book (->book book)
+        counters
+        (into {}
+          (map countdata-pair)
+          (zx/xml-> loc
+            :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/count-data
+            z/node))]
+    {:book book
+     :counters counters}))
 
 (defn load-doc [path]
   (-> (slurp path)
     (x/parse-str)
     (z/xml-zip)
-    (->GnucashDocument)))
+    (->document)))
 
 (defn emit-book [{:keys [content]}]
   (x/emit-str (z/root content)))
