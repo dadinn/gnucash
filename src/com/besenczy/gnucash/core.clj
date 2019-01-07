@@ -65,12 +65,6 @@
    (fn [loc] (into {} (zx/xml-> loc slot-key (->slot slot-key))))))
 
 (defn ->commodity [loc]
-  (let [space (zx/xml1-> loc :space zx/text)
-        id (zx/xml1-> loc :id zx/text)]
-    {:space space
-     :id id}))
-
-(defn ->commodity [loc]
   {:space (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/space zx/text)
    :id (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/id zx/text)})
 
