@@ -223,6 +223,10 @@
    (zx/xml1-> loc
      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/slots
      (->frame))
+   :commodities
+   (zx/xml-> loc
+     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/commodity
+     ->commodity)
    :counters
    (into {}
      (map countdata-pair)
