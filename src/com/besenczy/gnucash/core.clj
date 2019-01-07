@@ -65,8 +65,22 @@
    (fn [loc] (into {} (zx/xml-> loc slot-key (->slot slot-key))))))
 
 (defn ->commodity [loc]
-  {:space (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/space zx/text)
-   :id (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/id zx/text)})
+  {:id
+   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/id zx/text)
+   :space
+   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/space zx/text)
+   :name
+   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/name zx/text)
+   :get-quotes
+   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/get_quotes zx/text)
+   :quote-source
+   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/quote_source  zx/text)
+   :quote-timezone
+   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/quote_tz  zx/text)
+   :xcode
+   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/xcode zx/text)
+   :fraction
+   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/fraction zx/text)})
 
 (defn ->price [loc]
   {:id
