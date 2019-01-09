@@ -11,6 +11,26 @@
   (:import
    [java.util UUID]))
 
+(defn void?
+  "returns true if `x` is either nil, or an empty list, vector, map, or string"
+  [x]
+  (or (nil? x)
+    (and (or (list? x) (vector? x) (map? x) (string? x))
+      (not (seq x)))))
+
+(defn make-hashmap
+  "create a hashmap from key value pairs using pairs with non-void values"
+  [& kvs]
+  #_
+  (reduce
+    (fn [acc [k v]] (if (meh? v) acc (assoc acc k v)))
+    {} (partition 2 kvs))
+  (into {}
+    (comp
+      (map vec)
+      (remove (comp void? second)))
+    (partition 2 kvs)))
+
 (defn parse-date [time-str]
   (->> time-str
     (re-find #"[0-9]{4}-[0-9]{2}-[0-9]{2}")
@@ -65,48 +85,66 @@
    (fn [loc] (into {} (zx/xml-> loc slot-key (->slot slot-key))))))
 
 (defn ->commodity [loc]
-  {:id
-   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/id zx/text)
-   :space
-   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/space zx/text)
-   :name
-   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/name zx/text)
-   :get-quotes
-   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/get_quotes zx/text)
-   :quote-source
-   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/quote_source  zx/text)
-   :quote-timezone
-   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/quote_tz  zx/text)
-   :xcode
-   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/xcode zx/text)
-   :fraction
-   (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/fraction zx/text)})
+  (make-hashmap
+    :id
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/id
+      zx/text)
+    :space
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/space
+      zx/text)
+    :name
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/name
+      zx/text)
+    :get-quotes
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/get_quotes
+      zx/text)
+    :quote-source
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/quote_source
+      zx/text)
+    :quote-timezone
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/quote_tz
+      zx/text)
+    :xcode
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/xcode
+      zx/text)
+    :fraction
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/fraction
+      zx/text)))
 
 (defn ->price [loc]
-  {:id
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/id
-     zx/text)
-   :commodity
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/commodity
-     ->commodity)
-   :currency
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/currency
-     ->commodity)
-   :date
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/time
-     zx/text parse-date)
-   :source
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/source
-     zx/text)
-   :value
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/value
-     zx/text edn/read-string)})
+  (make-hashmap
+    :id
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/id
+      zx/text)
+    :commodity
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/commodity
+      ->commodity)
+    :currency
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/currency
+      ->commodity)
+    :date
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/time
+      zx/text parse-date)
+    :source
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/source
+      zx/text)
+    :value
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/value
+      zx/text edn/read-string)))
 
 (def account-type
   {"ROOT" :root
@@ -120,93 +158,96 @@
    "LIABILITY" :liability})
 
 (defn ->account [loc]
-  {:id
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/id
-     zx/text)
-   :name
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/name
-     zx/text)
-   :description
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/description
-     zx/text)
-   :code
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/code
-     zx/text)
-   :type
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/type
-     zx/text account-type)
-   :parent
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/parent
-     zx/text)
-   :commodity
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/commodity
-     ->commodity)
-   :unit
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/commodity-scu
-     zx/text edn/read-string)})
+  (make-hashmap
+    :id
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/id
+      zx/text)
+    :name
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/name
+      zx/text)
+    :description
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/description
+      zx/text)
+    :code
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/code
+      zx/text)
+    :type
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/type
+      zx/text account-type)
+    :parent
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/parent
+      zx/text)
+    :commodity
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/commodity
+      ->commodity)
+    :unit
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/commodity-scu
+      zx/text edn/read-string)))
 
 (defn ->split [loc]
-  {:id
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/id
-     zx/text)
-   :reconciled-state
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/reconciled-state
-     zx/text)
-   :value
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/value
-     zx/text edn/read-string)
-   :quantity
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/quantity
-     zx/text edn/read-string)
-   :account
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/account
-     zx/text)})
+  (make-hashmap
+    :id
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/id
+      zx/text)
+    :reconciled-state
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/reconciled-state
+      zx/text)
+    :value
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/value
+      zx/text edn/read-string)
+    :quantity
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/quantity
+      zx/text edn/read-string)
+    :account
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/account
+      zx/text)))
 
 (defn ->transaction [loc]
-  {:id
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/id
-     zx/text)
-   :currency
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/currency
-     ->commodity)
-   :date-entered
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/date-entered
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
-     zx/text parse-date)
-   :date-posted
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/date-posted
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
-     zx/text parse-date)
-   :description
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/description
-     zx/text)
-   :slots
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/slots
-     (->frame))
-   :splits
-   (zx/xml-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/splits
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/split
-     ->split)})
+  (make-hashmap
+    :id
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/id
+      zx/text)
+    :currency
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/currency
+      ->commodity)
+    :date-entered
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/date-entered
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
+      zx/text parse-date)
+    :date-posted
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/date-posted
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
+      zx/text parse-date)
+    :description
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/description
+      zx/text)
+    :slots
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/slots
+      (->frame))
+    :splits
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/splits
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/split
+      ->split)))
 
 (defn countdata-pair [{:keys [tag attrs content] :as e}]
   "Extract key-value pair from count-data XML element"
@@ -215,50 +256,52 @@
     [k v]))
 
 (defn ->book [loc]
-  {:id
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/id
-     zx/text)
-   :slots
-   (zx/xml1-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/slots
-     (->frame))
-   :commodities
-   (zx/xml-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/commodity
-     ->commodity)
-   :counters
-   (into {}
-     (map countdata-pair)
-     (zx/xml-> loc
-       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/count-data
-       z/node))
-   :prices
-   (zx/xml-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/pricedb
-     :price
-     ->price)
-   :accounts
-   (zx/xml-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/account
-     ->account)
-   :transactions
-   (zx/xml-> loc
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/transaction
-     ->transaction)})
+  (make-hashmap
+    :id
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/id
+      zx/text)
+    :slots
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/slots
+      (->frame))
+    :commodities
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/commodity
+      ->commodity)
+    :counters
+    (into {}
+      (map countdata-pair)
+      (zx/xml-> loc
+        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/count-data
+        z/node))
+    :prices
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/pricedb
+      :price
+      ->price)
+    :accounts
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/account
+      ->account)
+    :transactions
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/transaction
+      ->transaction)))
 
 (defn ->document [loc]
-  {:book
-   (zx/xml1-> loc
-     :gnc-v2
-     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book
-     ->book)
-   :counters
-   (into {}
-     (map countdata-pair)
-     (zx/xml-> loc
-       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/count-data
-       z/node))})
+  (make-hashmap
+    :book
+    (zx/xml1-> loc
+      :gnc-v2
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book
+      ->book)
+    :counters
+    (into {}
+      (map countdata-pair)
+      (zx/xml-> loc
+        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/count-data
+        z/node))))
 
 (defn load-doc [path]
   (-> (slurp path)
