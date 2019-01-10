@@ -7,8 +7,8 @@
 
 (spec/def ::id ::common/guid)
 (spec/def ::currency ::common/commodity)
-(spec/def ::date-entered ::common/date)
-(spec/def ::date-posted ::common/date)
+(spec/def ::date-entered ::common/datetime)
+(spec/def ::date-posted ::common/datetime)
 (spec/def ::description string?)
 (spec/def ::slots ::slot/frame)
 

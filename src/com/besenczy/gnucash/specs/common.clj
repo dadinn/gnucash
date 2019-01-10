@@ -35,23 +35,29 @@
 
 (spec/def ::date
   (spec/and string?
-    (partial re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}")
+    (comp
+      (partial re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}")
+      string/trim)
     (let [fmt (jt/formatter "yyyy-MM-dd")]
       (spec/conformer
         (fn [s]
-          (jt/local-date fmt s))
+          (jt/local-date fmt
+            (string/trim s)))
         (fn [dt]
           (jt/format fmt dt))))))
 
 (spec/def ::datetime
   (spec/and string?
-    (partial re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")
-    (let [fmt (jt/formatter "yyyy-MM-dd HH:mm:ss")]
+    (comp
+      (partial re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} \+[0-9]{4}")
+      string/trim)
+    (let [fmt (jt/formatter "yyyy-MM-dd")]
       (spec/conformer
         (fn [s]
-          (jt/local-date-time format s))
+          (jt/local-date fmt
+            (re-find #"[0-9]{4}-[0-9]{2}-[0-9]{2}" s)))
         (fn [dt]
-          (jt/format fmt dt))))))
+          (str (jt/format fmt dt) " 00:00:00 +0000"))))))
 
 (spec/def ::number
   (spec/and
