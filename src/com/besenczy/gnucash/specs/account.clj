@@ -23,4 +23,4 @@
 (spec/def ::commodity ::common/commodity)
 (spec/def ::unit ::common/number)
 
-(spec/def ::slots ::slot/frame)
+(spec/def ::slots ::slot/value)
