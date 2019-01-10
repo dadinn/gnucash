@@ -22,7 +22,8 @@
      ::act/name
      ::act/type
      ::act/commodity
-     ::act/unit]
+     ::act/unit
+     ::act/slots]
     :opt-un
     [::act/description
      ::act/code

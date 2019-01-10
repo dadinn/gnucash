@@ -1,6 +1,7 @@
 (ns com.besenczy.gnucash.specs.account
   (:require
    [com.besenczy.gnucash.specs.common :as common]
+   [com.besenczy.gnucash.specs.slot :as slot]
    [clojure.string :as string]
    [clojure.spec.alpha :as spec]))
 
@@ -21,3 +22,5 @@
 (spec/def ::parent ::common/guid)
 (spec/def ::commodity ::common/commodity)
 (spec/def ::unit ::common/number)
+
+(spec/def ::slots ::slot/frame)

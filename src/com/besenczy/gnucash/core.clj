@@ -180,7 +180,11 @@
     :unit
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/commodity-scu
-      zx/text)))
+      zx/text)
+    :slots
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/slots
+      (->frame :slot))))
 
 (defn ->split [loc]
   (make-hashmap
