@@ -59,15 +59,7 @@
         (fn [dt]
           (str (jt/format fmt dt) " 00:00:00 +0000"))))))
 
-(spec/def ::number
-  (spec/and
-    string?
-    (spec/or
-      :int (partial re-matches #"[0-9]+")
-      :ratio (partial re-matches #"-?[0-9]+/[0-9]+"))
-    (spec/conformer
-      (fn [[t s]] (edn/read-string s))
-      (fn [s] (println s)))))
+(spec/def ::number (spec/and string? (partial re-matches #"[0-9]+|-?[0-9]+/[0-9]+") (spec/conformer (fn [s] (edn/read-string s)) (fn [s] (pr-str s)))))
 
 (spec/def ::commodity
   (spec/keys
