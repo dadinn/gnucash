@@ -58,11 +58,11 @@
      "integer"
      (zx/xml1-> loc
        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
-       zx/text edn/read-string)
+       zx/text)
      "gdate"
      (zx/xml1-> loc
        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
-       zx/text parse-date)
+       zx/text)
      "guid"
      (zx/xml1-> loc
        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
@@ -70,7 +70,7 @@
      "timespec"
      (zx/xml1-> loc
        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
-       zx/text parse-time))))
+       zx/text))))
 
 (defn ->slot [slot-key]
   (fn [loc]
@@ -136,7 +136,7 @@
     :date
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/time
-      zx/text parse-date)
+      zx/text)
     :source
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/source
@@ -144,7 +144,7 @@
     :value
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/value
-      zx/text edn/read-string)))
+      zx/text)))
 
 (def account-type
   {"ROOT" :root
@@ -178,7 +178,7 @@
     :type
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/type
-      zx/text account-type)
+      zx/text)
     :parent
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/parent
@@ -190,7 +190,7 @@
     :unit
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/commodity-scu
-      zx/text edn/read-string)))
+      zx/text)))
 
 (defn ->split [loc]
   (make-hashmap
@@ -205,11 +205,11 @@
     :value
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/value
-      zx/text edn/read-string)
+      zx/text)
     :quantity
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/quantity
-      zx/text edn/read-string)
+      zx/text)
     :account
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/account
@@ -229,12 +229,12 @@
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/date-entered
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
-      zx/text parse-date)
+      zx/text)
     :date-posted
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/date-posted
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
-      zx/text parse-date)
+      zx/text)
     :description
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/description
@@ -252,7 +252,7 @@
 (defn countdata-pair [{:keys [tag attrs content] :as e}]
   "Extract key-value pair from count-data XML element"
   (let [k (-> attrs :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcd/type)
-        v (edn/read-string (first content))]
+        v (first content)]
     [k v]))
 
 (defn ->book [loc]
