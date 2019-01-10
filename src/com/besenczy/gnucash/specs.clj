@@ -13,7 +13,7 @@
     [::book/id
      ::book/slots
      ::book/commodities
-     ::book/counters
+     ::counters
      ::book/prices
      ::book/accounts
      ::book/transactions]))
