@@ -147,6 +147,17 @@
    "PAYABLE" :payable
    "LIABILITY" :liability})
 
+(defn ->lot [loc]
+  (make-hashmap
+    :id
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Flot/id
+      zx/text)
+    :slots
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Flot/slots
+      (->frame))))
+
 (defn ->account [loc]
   (make-hashmap
     :id
@@ -181,6 +192,11 @@
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/commodity-scu
       zx/text)
+    :lots
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/lots
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/lot
+     ->lot)
     :slots
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/slots
