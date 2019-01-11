@@ -13,7 +13,9 @@
      ::price/currency
      ::price/date
      ::price/value
-     ::price/source]))
+     ::price/source]
+    :opt-un
+    [::price/type]))
 
 (spec/def ::account
   (spec/keys

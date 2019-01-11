@@ -8,4 +8,5 @@
 (spec/def ::currenty ::common/commodity)
 (spec/def ::date ::common/datetime)
 (spec/def ::source string?)
+(spec/def ::type string?)
 (spec/def ::value ::common/number)
