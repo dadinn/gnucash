@@ -24,12 +24,13 @@
      ::act/name
      ::act/type
      ::act/commodity
-     ::act/unit
-     ::act/slots]
+     ::act/unit]
     :opt-un
     [::act/description
      ::act/code
-     ::act/parent]))
+     ::act/parent
+     ::act/slots
+     ::act/lots]))
 
 (spec/def ::transaction
   (spec/keys

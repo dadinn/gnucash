@@ -2,6 +2,7 @@
   (:require
    [com.besenczy.gnucash.specs.common :as common]
    [com.besenczy.gnucash.specs.slot :as slot]
+   [com.besenczy.gnucash.specs.lot :as lot]
    [clojure.string :as string]
    [clojure.spec.alpha :as spec]))
 
@@ -24,3 +25,11 @@
 (spec/def ::unit ::common/number)
 
 (spec/def ::slots ::slot/value)
+
+(spec/def ::lots
+  (spec/coll-of
+    (spec/keys
+      :req-un
+      [::lot/id]
+      :opt-un
+      [::lot/slots])))
