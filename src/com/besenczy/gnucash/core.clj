@@ -216,6 +216,11 @@
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/reconciled-state
       zx/text)
+    :reconciled-date
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/reconcile-date
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
+      zx/text)
     :value
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/value
@@ -227,6 +232,18 @@
     :account
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/account
+      zx/text)
+    :memo
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/memo
+      zx/text)
+    :action
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/action
+      zx/text)
+    :lot
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/lot
       zx/text)))
 
 (defn ->transaction [loc]

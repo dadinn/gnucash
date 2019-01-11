@@ -20,7 +20,12 @@
      ::split/reconciled-state
      ::split/value
      ::split/quantity
-     ::split/account]))
+     ::split/account]
+    :opt-un
+    [::split/reconciled-date
+     ::split/memo
+     ::split/action
+     ::split/lot]))
 
 (spec/def ::splits
   (spec/coll-of ::split))
