@@ -49,15 +49,12 @@
 (spec/def ::datetime
   (spec/and string?
     (comp
-      (partial re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} \+[0-9]{4}")
+      (partial re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} [+-][0-9]{4}")
       string/trim)
-    (let [fmt (jt/formatter "yyyy-MM-dd")]
+    (let [fmt (jt/formatter "yyyy-MM-dd HH:mm:ss ZZZ")]
       (spec/conformer
-        (fn [s]
-          (jt/local-date fmt
-            (re-find #"[0-9]{4}-[0-9]{2}-[0-9]{2}" s)))
-        (fn [dt]
-          (str (jt/format fmt dt) " 00:00:00 +0000"))))))
+        (fn [s] (jt/zoned-date-time fmt (string/trim s)))
+        (fn [t] (jt/format fmt t))))))
 
 (spec/def ::number (spec/and string? (partial re-matches #"[0-9]+|-?[0-9]+/[0-9]+") (spec/conformer (fn [s] (edn/read-string s)) (fn [s] (pr-str s)))))
 
