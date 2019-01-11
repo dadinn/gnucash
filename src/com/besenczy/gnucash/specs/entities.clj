@@ -40,5 +40,7 @@
      ::trn/date-posted
      ::trn/description
      ::trn/slots
-     ::trn/splits]))
+     ::trn/splits]
+    :opt-un
+    [::trn/num]))
 

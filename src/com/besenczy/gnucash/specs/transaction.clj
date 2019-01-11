@@ -11,6 +11,7 @@
 (spec/def ::date-posted ::common/datetime)
 (spec/def ::description string?)
 (spec/def ::slots ::slot/value)
+(spec/def ::num #{"Invoice" "Payment" "Bill" "Expense"})
 
 (spec/def ::split
   (spec/keys
