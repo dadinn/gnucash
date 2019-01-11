@@ -290,6 +290,18 @@
         v (first content)]
     [k v]))
 
+(defn ->customer [loc])
+(defn ->vendor [loc])
+(defn ->employee [loc])
+(defn ->job [loc])
+(defn ->invoice [loc])
+(defn ->billterm [loc])
+(defn ->taxtable [loc])
+(defn ->entry [loc])
+(defn ->schedxaction [loc])
+(defn ->tempxaction [loc])
+(defn ->budget [loc])
+
 (defn ->book [loc]
   (make-hashmap
     :id
@@ -304,6 +316,52 @@
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/commodity
       ->commodity)
+
+    :customers
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncCustomer
+      z/node)
+    :vendors
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncVendor
+      z/node)
+    :employees
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncEmployee
+      z/node)
+    :jobs
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncJob
+      z/node)
+    :invoices
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncInvoice
+      z/node)
+    :billterms
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncBillTerm
+      z/node)
+    :taxtables
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncTaxTable
+      z/node)
+    :schedxactions
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/schedxaction
+      z/node)
+    :tempxactions
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/template-transactions
+      z/node)
+    :budgets
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/budget
+      z/node)
+    :entries
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncEntry
+      z/node)
+
     :counters
     (into {}
       (map countdata-pair)
