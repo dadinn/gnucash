@@ -3,6 +3,7 @@
    [com.besenczy.gnucash.specs.price :as price]
    [com.besenczy.gnucash.specs.account :as act]
    [com.besenczy.gnucash.specs.transaction :as trn]
+   [com.besenczy.gnucash.specs.customer :as cust]
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::price
@@ -45,3 +46,21 @@
     :opt-un
     [::trn/num]))
 
+(spec/def ::customer
+  (spec/keys
+    :req-un
+    [::cust/guid
+     ::cust/id
+     ::cust/name
+     ::cust/active?
+     ::cust/terms
+     ::cust/tax-table
+     ::cust/use-tax-table?
+     ::cust/currency
+     ::cust/credit-limit
+     ::cust/discount
+     ::cust/tax-included
+     ::cust/billing-address]
+    :opt-un
+    [::cust/shipping-address
+     ::cust/notes]))

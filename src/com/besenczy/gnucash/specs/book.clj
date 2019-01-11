@@ -23,7 +23,7 @@
 (spec/def ::shedxactions
   (spec/coll-of any?))
 (spec/def ::customers
-  (spec/coll-of any?))
+  (spec/coll-of ::entities/customer))
 (spec/def ::vendors
   (spec/coll-of any?))
 (spec/def ::employees
