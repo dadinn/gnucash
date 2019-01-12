@@ -27,7 +27,7 @@
 (spec/def ::vendors
   (spec/coll-of ::entities/vendor))
 (spec/def ::employees
-  (spec/coll-of any?))
+  (spec/coll-of ::entities/employee))
 (spec/def ::jobs
   (spec/coll-of any?))
 (spec/def ::invoices

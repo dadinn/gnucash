@@ -4,6 +4,7 @@
    [com.besenczy.gnucash.specs.account :as act]
    [com.besenczy.gnucash.specs.transaction :as trn]
    [com.besenczy.gnucash.specs.counterparty :as ctpy]
+   [com.besenczy.gnucash.specs.employee :as empl]
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::price
@@ -80,3 +81,19 @@
      ::ctpy/billing-address]
     :opt-un
     [::ctpy/notes]))
+
+(spec/def ::employee
+  (spec/keys
+    :req-un
+    [::ctpy/guid
+     ::ctpy/id
+     ::empl/username
+     ::ctpy/active?
+     ::ctpy/billing-address
+     ::empl/workday
+     ::empl/rate
+     ::ctpy/currency
+     ::ctpy/slots]
+    :opt-un
+    [::empl/language]
+))

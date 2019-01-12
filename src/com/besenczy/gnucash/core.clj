@@ -418,7 +418,49 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/slots
       (->frame))))
 
-(defn ->employee [loc])
+(defn ->employee [loc]
+  (make-hashmap
+    :guid
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/guid
+      zx/text)
+    :id
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/id
+      zx/text)
+    :username
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/username
+      zx/text)
+    :active?
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/active
+      zx/text)
+    :currency
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/currency
+      ->commodity)
+    :workday
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/workday
+      zx/text)
+    :rate
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/rate
+      zx/text)
+    :billing-address
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/addr
+      ->address)
+    :language
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/language
+      zx/text)
+    :slots
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/slots
+      (->frame))))
+
 (defn ->job [loc])
 (defn ->invoice [loc])
 (defn ->billterm [loc])
@@ -450,11 +492,10 @@
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncVendor
       ->vendor)
-
     :employees
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncEmployee
-      z/node)
+      ->employee)
     :jobs
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncJob
