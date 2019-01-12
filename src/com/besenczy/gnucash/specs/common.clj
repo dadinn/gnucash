@@ -58,6 +58,13 @@
 
 (spec/def ::number (spec/and string? (partial re-matches #"[0-9]+|-?[0-9]+/[0-9]+") (spec/conformer (fn [s] (edn/read-string s)) (fn [s] (pr-str s)))))
 
+(spec/def ::boolean-num
+  (spec/and
+    #{"0" "1"}
+    (spec/conformer
+      {"0" false "1" true}
+      {true "1" false "0"})))
+
 (spec/def ::commodity
   (spec/keys
     :req-un

@@ -6,11 +6,7 @@
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::guid ::common/guid)
-(spec/def ::active?
-  (spec/and #{"0" "1"}
-    (spec/conformer
-      {"0" false "1" true}
-      {true "1" false "0"})))
+(spec/def ::active? ::common/boolean-num)
 (spec/def ::id string?)
 (spec/def ::name string?)
 (spec/def ::currency ::common/commodity)
