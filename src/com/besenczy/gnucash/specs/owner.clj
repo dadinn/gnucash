@@ -7,9 +7,13 @@
 (spec/def ::id ::common/guid)
 (spec/def ::type
   (spec/and
-    #{"gncCustomer" "gncVendor"}
+    #{"gncCustomer" "gncVendor" "gncEmployee" "gncJob"}
     (spec/conformer
       {"gncCustomer" :customer
-       "gncVendor" :vendor}
+       "gncVendor" :vendor
+       "gncEmployee" :employee
+       "gncJob" :job}
       {:customer "gncCustomer"
-       :vendor "gncVendor"})))
+       :vendor "gncVendor"
+       :employee "gncEmployee"
+       :job "gncJob"})))
