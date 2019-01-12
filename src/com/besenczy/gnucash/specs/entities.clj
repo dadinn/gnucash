@@ -5,6 +5,7 @@
    [com.besenczy.gnucash.specs.transaction :as trn]
    [com.besenczy.gnucash.specs.counterparty :as ctpy]
    [com.besenczy.gnucash.specs.employee :as empl]
+   [com.besenczy.gnucash.specs.job :as job]
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::price
@@ -98,3 +99,14 @@
      ::ctpy/slots]
     :opt-un
     [::empl/language]))
+
+(spec/def ::job
+  (spec/keys
+    :req-un
+    [::job/guid
+     ::job/id
+     ::job/name
+     ::job/owner
+     ::job/active?]
+    :opt-un
+    [::job/reference]))

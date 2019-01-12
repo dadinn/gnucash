@@ -29,7 +29,7 @@
 (spec/def ::employees
   (spec/coll-of ::entities/employee))
 (spec/def ::jobs
-  (spec/coll-of any?))
+  (spec/coll-of ::entities/job))
 (spec/def ::invoices
   (spec/coll-of any?))
 (spec/def ::tax-table
