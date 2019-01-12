@@ -289,8 +289,6 @@
   (make-hashmap
     :name
     (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/name zx/text)
-    :email
-    (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/email zx/text)
     :line1
     (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/addr1 zx/text)
     :line2
@@ -298,7 +296,13 @@
     :line3
     (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/addr3 zx/text)
     :line4
-    (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/addr4 zx/text)))
+    (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/addr4 zx/text)
+    :phone
+    (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/phone zx/text)
+    :fax
+    (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/fax zx/text)
+    :email
+    (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/email zx/text)))
 
 (defn ->customer [loc]
   (make-hashmap
