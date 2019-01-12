@@ -97,5 +97,4 @@
      ::ctpy/currency
      ::ctpy/slots]
     :opt-un
-    [::empl/language]
-))
+    [::empl/language]))
