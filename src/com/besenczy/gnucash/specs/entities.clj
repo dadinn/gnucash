@@ -3,7 +3,7 @@
    [com.besenczy.gnucash.specs.price :as price]
    [com.besenczy.gnucash.specs.account :as act]
    [com.besenczy.gnucash.specs.transaction :as trn]
-   [com.besenczy.gnucash.specs.customer :as cust]
+   [com.besenczy.gnucash.specs.counterparty :as ctpy]
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::price
@@ -49,18 +49,18 @@
 (spec/def ::customer
   (spec/keys
     :req-un
-    [::cust/guid
-     ::cust/id
-     ::cust/name
-     ::cust/active?
-     ::cust/terms
-     ::cust/tax-table
-     ::cust/use-tax-table?
-     ::cust/currency
-     ::cust/credit-limit
-     ::cust/discount
-     ::cust/tax-included
-     ::cust/billing-address]
+    [::ctpy/guid
+     ::ctpy/id
+     ::ctpy/name
+     ::ctpy/active?
+     ::ctpy/terms
+     ::ctpy/tax-table
+     ::ctpy/use-tax-table?
+     ::ctpy/currency
+     ::ctpy/credit-limit
+     ::ctpy/discount
+     ::ctpy/tax-included
+     ::ctpy/billing-address]
     :opt-un
-    [::cust/shipping-address
-     ::cust/notes]))
+    [::ctpy/shipping-address
+     ::ctpy/notes]))

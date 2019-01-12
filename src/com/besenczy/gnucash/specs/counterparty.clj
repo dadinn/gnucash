@@ -1,4 +1,4 @@
-(ns com.besenczy.gnucash.specs.customer
+(ns com.besenczy.gnucash.specs.counterparty
   (:require
    [com.besenczy.gnucash.specs.common :as common]
    [com.besenczy.gnucash.specs.address :as addr]
