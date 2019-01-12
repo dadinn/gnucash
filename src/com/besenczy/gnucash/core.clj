@@ -11,12 +11,7 @@
   (:import
    [java.util UUID]))
 
-(defn void?
-  "returns true if `x` is either nil, or an empty list, vector, map, or string"
-  [x]
-  (or (nil? x)
-    (and (or (list? x) (vector? x) (map? x) (string? x))
-      (not (seq x)))))
+(defn empty-seq? [x] (and (seqable? x) (not (seq x))))
 
 (defn make-hashmap
   "create a hashmap from key value pairs using pairs with non-void values"
@@ -28,7 +23,7 @@
   (into {}
     (comp
       (map vec)
-      (remove (comp void? second)))
+      (remove (comp empty-seq? second)))
     (partition 2 kvs)))
 
 (declare ->frame)
