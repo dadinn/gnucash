@@ -25,7 +25,7 @@
 (spec/def ::customers
   (spec/coll-of ::entities/customer))
 (spec/def ::vendors
-  (spec/coll-of any?))
+  (spec/coll-of ::entities/vendor))
 (spec/def ::employees
   (spec/coll-of any?))
 (spec/def ::jobs

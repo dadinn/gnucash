@@ -17,7 +17,8 @@
      ::book/prices
      ::book/accounts
      ::book/transactions
-     ::book/customers]))
+     ::book/customers
+     ::book/vendors]))
 
 (spec/def ::document
   (spec/keys :req-un [::book ::counters]))

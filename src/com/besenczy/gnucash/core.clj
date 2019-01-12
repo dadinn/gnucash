@@ -363,7 +363,57 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/slots
       (->frame))))
 
-(defn ->vendor [loc])
+(defn ->vendor [loc]
+  (make-hashmap
+    :guid
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/guid
+      zx/text)
+    :id
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/id
+      zx/text)
+    :name
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/name
+      zx/text)
+    :active?
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/active
+      zx/text)
+    :currency
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/currency
+      ->commodity)
+    :terms
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/terms
+      zx/text)
+    :tax-table
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/taxtable
+      zx/text)
+    :billing-address
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/addr
+      ->address)
+    :tax-included
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/taxincluded
+      zx/text)
+    :use-tax-table?
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/use-tt
+      zx/text)
+    :notes
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/notes
+      zx/text)
+    :slots
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/slots
+      (->frame))))
+
 (defn ->employee [loc])
 (defn ->job [loc])
 (defn ->invoice [loc])
@@ -392,11 +442,11 @@
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncCustomer
       ->customer)
-
     :vendors
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncVendor
-      z/node)
+      ->vendor)
+
     :employees
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncEmployee

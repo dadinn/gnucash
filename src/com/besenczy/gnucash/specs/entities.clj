@@ -64,3 +64,19 @@
     :opt-un
     [::ctpy/shipping-address
      ::ctpy/notes]))
+
+(spec/def ::vendor
+  (spec/keys
+    :req-un
+    [::ctpy/guid
+     ::ctpy/id
+     ::ctpy/name
+     ::ctpy/active?
+     ::ctpy/terms
+     ::ctpy/tax-table
+     ::ctpy/use-tax-table?
+     ::ctpy/currency
+     ::ctpy/tax-included
+     ::ctpy/billing-address]
+    :opt-un
+    [::ctpy/notes]))
