@@ -499,7 +499,71 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fjob/active
       zx/text)))
 
-(defn ->invoice [loc])
+(defn ->invoice [loc]
+  (make-hashmap
+    :guid
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/guid
+      zx/text)
+    :id
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/id
+      zx/text)
+    :owner
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/owner
+      ->owner)
+    :billto
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/billto
+      ->owner)
+    :reference
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/billing_id
+      zx/text)
+    :active
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/active
+      zx/text)
+    :currency
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/currency
+      ->commodity)
+    :opened
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/opened
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
+      zx/text)
+    :posted
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/posted
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
+      zx/text)
+    :postlot
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/postlot
+      zx/text)
+    :posttxn
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/posttxn
+      zx/text)
+    :postacc
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/postacc
+      zx/text)
+    :terms
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/terms
+      zx/text)
+    :notes
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/notes
+      zx/text)
+    :slots
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/slots
+      (->frame))))
+
 (defn ->billterm [loc])
 (defn ->taxtable [loc])
 (defn ->entry [loc])
@@ -540,7 +604,7 @@
     :invoices
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncInvoice
-      z/node)
+      ->invoice)
     :billterms
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncBillTerm

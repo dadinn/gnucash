@@ -6,6 +6,7 @@
    [com.besenczy.gnucash.specs.counterparty :as ctpy]
    [com.besenczy.gnucash.specs.employee :as empl]
    [com.besenczy.gnucash.specs.job :as job]
+   [com.besenczy.gnucash.specs.invoice :as invc]
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::price
@@ -110,3 +111,23 @@
      ::job/active?]
     :opt-un
     [::job/reference]))
+
+(spec/def ::invoice
+  (spec/keys
+    :req-un
+    [::invc/guid
+     ::invc/id
+     ::invc/owner
+     ::invc/currency
+     ::invc/opened
+     ::invc/active
+     ::invc/slots]
+    :opt-un
+    [::invc/billto
+     ::invc/reference
+     ::invc/terms
+     ::invc/posted
+     ::invc/postacc
+     ::invc/postlot
+     ::invc/posttxn
+     ::invc/notes]))

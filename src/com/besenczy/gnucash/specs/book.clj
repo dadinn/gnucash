@@ -31,7 +31,7 @@
 (spec/def ::jobs
   (spec/coll-of ::entities/job))
 (spec/def ::invoices
-  (spec/coll-of any?))
+  (spec/coll-of ::entities/invoice))
 (spec/def ::tax-table
   (spec/coll-of any?))
 (spec/def ::entries

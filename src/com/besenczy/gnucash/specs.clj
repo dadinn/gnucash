@@ -20,7 +20,8 @@
      ::book/customers
      ::book/vendors
      ::book/employees
-     ::book/jobs]))
+     ::book/jobs
+     ::book/invoices]))
 
 (spec/def ::document
   (spec/keys :req-un [::book ::counters]))
