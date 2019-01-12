@@ -61,7 +61,8 @@
      ::ctpy/credit-limit
      ::ctpy/discount
      ::ctpy/tax-included
-     ::ctpy/billing-address]
+     ::ctpy/billing-address
+     ::ctpy/slots]
     :opt-un
     [::ctpy/shipping-address
      ::ctpy/notes]))
@@ -78,7 +79,8 @@
      ::ctpy/use-tax-table?
      ::ctpy/currency
      ::ctpy/tax-included
-     ::ctpy/billing-address]
+     ::ctpy/billing-address
+     ::ctpy/slots]
     :opt-un
     [::ctpy/notes]))
 
