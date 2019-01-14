@@ -564,7 +564,42 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/slots
       (->frame))))
 
-(defn ->billterm [loc])
+(defn ->billterm [loc]
+  (make-hashmap
+    :guid
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbillterm/guid
+      zx/text)
+    :name
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbillterm/name
+      zx/text)
+    :description
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbillterm/desc
+      zx/text)
+    :refcount
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbillterm/refcount
+      zx/text)
+    :invisible?
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbillterm/invisible
+      zx/text)
+    :parent
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbillterm/parent
+      zx/text)
+    :due-days
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbillterm/days
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbt-days/due-days
+      zx/text)
+    :child
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbillterm/child
+      zx/text)))
+
 (defn ->taxtable [loc])
 (defn ->entry [loc])
 (defn ->schedxaction [loc])
@@ -605,10 +640,11 @@
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncInvoice
       ->invoice)
-    :billterms
+    :billing-terms
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncBillTerm
-      z/node)
+      ->billterm)
+
     :taxtables
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncTaxTable
@@ -670,5 +706,3 @@
     (z/xml-zip)
     (->document)))
 
-(defn emit-book [{:keys [content]}]
-  (x/emit-str (z/root content)))

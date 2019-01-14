@@ -32,13 +32,13 @@
   (spec/coll-of ::entities/job))
 (spec/def ::invoices
   (spec/coll-of ::entities/invoice))
+(spec/def ::billing-terms
+  (spec/coll-of ::entities/billterm))
 (spec/def ::tax-table
   (spec/coll-of any?))
 (spec/def ::entries
   (spec/coll-of any?))
 (spec/def ::budgets
-  (spec/coll-of any?))
-(spec/def ::billing-term
   (spec/coll-of any?))
 
 

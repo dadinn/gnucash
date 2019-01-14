@@ -7,6 +7,7 @@
    [com.besenczy.gnucash.specs.employee :as empl]
    [com.besenczy.gnucash.specs.job :as job]
    [com.besenczy.gnucash.specs.invoice :as invc]
+   [com.besenczy.gnucash.specs.billterm :as bt]
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::price
@@ -48,6 +49,19 @@
      ::trn/splits]
     :opt-un
     [::trn/num]))
+
+(spec/def ::billterm
+  (spec/keys
+    :req-un
+    [::bt/guid
+     ::bt/name
+     ::bt/refcount]
+    :opt-un
+    [::bt/description
+     ::bt/invisible?
+     ::bt/due-days
+     ::bt/parent
+     ::bt/child]))
 
 (spec/def ::customer
   (spec/keys
