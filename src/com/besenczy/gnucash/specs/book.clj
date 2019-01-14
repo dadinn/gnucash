@@ -34,8 +34,8 @@
   (spec/coll-of ::entities/invoice))
 (spec/def ::billing-terms
   (spec/coll-of ::entities/billterm))
-(spec/def ::tax-table
-  (spec/coll-of any?))
+(spec/def ::tax-tables
+  (spec/coll-of ::entities/taxtable))
 (spec/def ::entries
   (spec/coll-of any?))
 (spec/def ::budgets

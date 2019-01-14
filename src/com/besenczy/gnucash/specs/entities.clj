@@ -8,6 +8,7 @@
    [com.besenczy.gnucash.specs.job :as job]
    [com.besenczy.gnucash.specs.invoice :as invc]
    [com.besenczy.gnucash.specs.billterm :as bt]
+   [com.besenczy.gnucash.specs.taxtable :as tt]
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::price
@@ -62,6 +63,18 @@
      ::bt/due-days
      ::bt/parent
      ::bt/child]))
+
+(spec/def ::taxtable
+  (spec/keys
+    :req-un
+    [::tt/guid
+     ::tt/name
+     ::tt/refcount
+     ::tt/invisible?
+     ::tt/entries]
+    :opt-un
+    [::tt/parent
+     ::tt/child]))
 
 (spec/def ::customer
   (spec/keys

@@ -18,6 +18,7 @@
      ::book/accounts
      ::book/transactions
      ::book/billing-terms
+     ::book/tax-tables
      ::book/customers
      ::book/vendors
      ::book/employees

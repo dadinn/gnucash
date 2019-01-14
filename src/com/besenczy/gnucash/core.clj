@@ -600,7 +600,53 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbillterm/child
       zx/text)))
 
-(defn ->taxtable [loc])
+(defn ->tt-entry [loc]
+  (make-hashmap
+    :account
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftte/acct
+      zx/text)
+    :amount
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftte/amount
+      zx/text)
+    :type
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftte/type
+      zx/text)))
+
+(defn ->taxtable [loc]
+  (make-hashmap
+    :guid
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/guid
+      zx/text)
+    :name
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/name
+      zx/text)
+    :refcount
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/refcount
+      zx/text)
+    :invisible?
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/invisible
+      zx/text)
+    :parent
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/parent
+      zx/text)
+    :entries
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/entries
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncTaxTableEntry
+      ->tt-entry)
+    :child
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/child
+      zx/text)))
+
 (defn ->entry [loc])
 (defn ->schedxaction [loc])
 (defn ->tempxaction [loc])
@@ -644,11 +690,11 @@
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncBillTerm
       ->billterm)
-
-    :taxtables
+    :tax-tables
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncTaxTable
-      z/node)
+     ->taxtable)
+
     :schedxactions
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/schedxaction
