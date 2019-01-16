@@ -37,7 +37,8 @@
 (spec/def ::tax-tables
   (spec/coll-of ::entities/taxtable))
 (spec/def ::entries
-  (spec/coll-of any?))
+  (spec/coll-of ::entities/entry))
+
 (spec/def ::budgets
   (spec/coll-of any?))
 

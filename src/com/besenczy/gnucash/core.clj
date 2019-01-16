@@ -647,7 +647,103 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/child
       zx/text)))
 
-(defn ->entry [loc])
+(defn ->entry [loc]
+  (make-hashmap
+    :guid
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/guid
+      zx/text)
+    :billable?
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/billable
+      zx/text)
+    :invoice
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/invoice
+      zx/text)
+    :bill
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/bill
+      zx/text)
+    :date-recorded
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/date
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
+      zx/text)
+    :date-entered
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/entered
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
+      zx/text)
+    :description
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/description
+      zx/text)
+    :action
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/action
+      zx/text)
+    :quantity
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/qty
+      zx/text)
+    :account
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-acct
+      zx/text)
+    :account
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-acct
+      zx/text)
+    :price
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-price
+      zx/text)
+    :price
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-price
+      zx/text)
+    :taxable?
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-taxable
+      zx/text)
+    :taxable?
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-taxable
+      zx/text)
+    :tax-table
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-taxtable
+      zx/text)
+    :tax-table
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-taxtable
+      zx/text)
+    :tax-included?
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-taxincluded
+      zx/text)
+    :tax-included?
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-taxincluded
+      zx/text)
+    :discount-type
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-disc-type
+      zx/text)
+    :discount-how
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-disc-how
+      zx/text)
+    :discount
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-discount
+      zx/text)
+    :payment
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-pay
+      zx/text)))
+
 (defn ->schedxaction [loc])
 (defn ->tempxaction [loc])
 (defn ->budget [loc])
@@ -694,6 +790,10 @@
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncTaxTable
      ->taxtable)
+    :entries
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncEntry
+      ->entry)
 
     :schedxactions
     (zx/xml-> loc
@@ -706,10 +806,6 @@
     :budgets
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/budget
-      z/node)
-    :entries
-    (zx/xml-> loc
-      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncEntry
       z/node)
 
     :counters

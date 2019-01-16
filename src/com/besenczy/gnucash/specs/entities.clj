@@ -9,6 +9,7 @@
    [com.besenczy.gnucash.specs.invoice :as invc]
    [com.besenczy.gnucash.specs.billterm :as bt]
    [com.besenczy.gnucash.specs.taxtable :as tt]
+   [com.besenczy.gnucash.specs.entry :as entry]
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::price
@@ -158,3 +159,44 @@
      ::invc/postlot
      ::invc/posttxn
      ::invc/notes]))
+
+(spec/def ::entry
+  (spec/or
+    :invoice-entry
+    (spec/keys
+      :req-un
+      [::entry/guid
+       ::entry/invoice
+       ::entry/date-recorded
+       ::entry/date-entered
+       ::entry/quantity
+       ::entry/price
+       ::entry/account
+       ::entry/taxable?
+       ::entry/tax-included?]
+      :opt-un
+      [::entry/description
+       ::entry/action
+       ::entry/discount-type
+       ::entry/discount-how
+       ::entry/discount
+       ::entry/tax-table])
+    :bill-entry
+    (spec/keys
+      :req-un
+      [::entry/guid
+       ::entry/bill
+       ::entry/date-recorded
+       ::entry/date-entered
+       ::entry/quantity
+       ::entry/price
+       ::entry/account
+       ::entry/taxable?
+       ::entry/tax-included?
+       ::entry/payment]
+      :opt-un
+      [::entry/description
+       ::entry/action
+       ::entry/tax-table
+       ::entry/billable?])))
+
