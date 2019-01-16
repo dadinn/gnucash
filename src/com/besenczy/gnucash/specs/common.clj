@@ -65,6 +65,12 @@
       {"0" false "1" true}
       {true "1" false "0"})))
 
+(spec/def ::boolean-char
+  (spec/and #{"y" "n"}
+    (spec/conformer
+      {"y" true "n" false}
+      {true "y" false "n"})))
+
 (spec/def ::commodity
   (spec/keys
     :req-un

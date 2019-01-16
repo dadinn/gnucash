@@ -10,6 +10,7 @@
    [com.besenczy.gnucash.specs.billterm :as bt]
    [com.besenczy.gnucash.specs.taxtable :as tt]
    [com.besenczy.gnucash.specs.entry :as entry]
+   [com.besenczy.gnucash.specs.schedxaction :as sx]
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::price
@@ -200,3 +201,20 @@
        ::entry/tax-table
        ::entry/billable?])))
 
+(spec/def ::schedxaction
+  (spec/keys
+    :req-un
+    [::sx/id
+     ::sx/name
+     ::sx/account
+     ::sx/enabled?
+     ::sx/start
+     ::sx/schedule
+     ::sx/auto-create?
+     ::sx/auto-create-notify?
+     ::sx/advance-create-days
+     ::sx/advance-remind-days]
+    :opt-un
+    [::sx/end
+     ::sx/last
+     ::sx/instance-count]))

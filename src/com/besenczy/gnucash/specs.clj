@@ -24,7 +24,8 @@
      ::book/employees
      ::book/jobs
      ::book/invoices
-     ::book/entries]))
+     ::book/entries
+     ::book/schedxactions]))
 
 (spec/def ::document
   (spec/keys :req-un [::book ::counters]))

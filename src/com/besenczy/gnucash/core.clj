@@ -744,7 +744,81 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-pay
       zx/text)))
 
-(defn ->schedxaction [loc])
+(defn ->recurrance [loc]
+  (make-hashmap
+    :start
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/start
+      :gdate zx/text)
+    :period-type
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/period_type
+      zx/text)
+    :multiplier
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/mult
+      zx/text)
+    :weekend-adjustment
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/weekend_adj
+      zx/text)))
+
+(defn ->schedxaction [loc]
+  (make-hashmap
+    :id
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/id
+      zx/text)
+    :name
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/name
+      zx/text)
+    :account
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/templ-acct
+      zx/text)
+    :enabled?
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/enabled
+      zx/text)
+    :start
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/start
+      :gdate zx/text)
+    :end
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/end
+      :gdate zx/text)
+    :last
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/last
+      :gdate zx/text)
+    :schedule
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/schedule
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/recurrence
+      ->recurrance)
+    :auto-create?
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/autoCreate
+      zx/text)
+    :auto-create-notify?
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/autoCreateNotify
+      zx/text)
+    :advance-create-days
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/advanceCreateDays
+      zx/text)
+    :advance-remind-days
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/advanceRemindDays
+      zx/text)
+    :instance-count
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/instanceCount
+      zx/text)))
+
 (defn ->tempxaction [loc])
 (defn ->budget [loc])
 
@@ -794,11 +868,11 @@
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncEntry
       ->entry)
-
     :schedxactions
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/schedxaction
-      z/node)
+      ->schedxaction)
+
     :tempxactions
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/template-transactions

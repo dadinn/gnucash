@@ -20,8 +20,9 @@
 (spec/def ::transactions
   (spec/coll-of ::entities/transaction))
 
-(spec/def ::shedxactions
-  (spec/coll-of any?))
+(spec/def ::schedxactions
+  (spec/coll-of ::entities/schedxaction))
+
 (spec/def ::customers
   (spec/coll-of ::entities/customer))
 (spec/def ::vendors
