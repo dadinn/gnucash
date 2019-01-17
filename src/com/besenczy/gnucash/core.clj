@@ -44,6 +44,10 @@
      (zx/xml1-> loc
        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
        zx/text)
+     "numeric"
+     (zx/xml1-> loc
+       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
+       zx/text)
      "gdate"
      (zx/xml1-> loc
        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
