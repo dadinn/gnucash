@@ -113,6 +113,7 @@
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/id
+      (zx/attr= :type "guid")
       zx/text)
     :commodity
     (zx/xml1-> loc
@@ -313,6 +314,7 @@
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/guid
+      (zx/attr= :type "guid")
       zx/text)
     :id
     (zx/xml1-> loc
@@ -341,18 +343,22 @@
     :terms
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/terms
+      (zx/attr= :type "guid")
       zx/text)
     :tax-table
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/taxtable
+      (zx/attr= :type "guid")
       zx/text)
     :billing-address
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/addr
+      (zx/attr= :version "2.0.0")
       ->address)
     :shipping-address
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/shipaddr
+      (zx/attr= :version "2.0.0")
       ->address)
     :tax-included
     (zx/xml1-> loc
@@ -376,6 +382,7 @@
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/guid
+      (zx/attr= :type "guid")
       zx/text)
     :id
     (zx/xml1-> loc
@@ -396,14 +403,17 @@
     :terms
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/terms
+      (zx/attr= :type "guid")
       zx/text)
     :tax-table
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/taxtable
+      (zx/attr= :type "guid")
       zx/text)
     :billing-address
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/addr
+      (zx/attr= :version "2.0.0")
       ->address)
     :tax-included
     (zx/xml1-> loc
@@ -427,6 +437,7 @@
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/guid
+      (zx/attr= :type "guid")
       zx/text)
     :id
     (zx/xml1-> loc
@@ -455,6 +466,7 @@
     :billing-address
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/addr
+      (zx/attr= :version "2.0.0")
       ->address)
     :language
     (zx/xml1-> loc
@@ -474,6 +486,7 @@
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fowner/id
+      (zx/attr= :type "guid")
       zx/text)))
 
 (defn ->job [loc]
@@ -481,6 +494,7 @@
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fjob/guid
+      (zx/attr= :type "guid")
       zx/text)
     :id
     (zx/xml1-> loc
@@ -497,6 +511,7 @@
     :owner
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fjob/owner
+      (zx/attr= :version "2.0.0")
       ->owner)
     :active?
     (zx/xml1-> loc
@@ -508,6 +523,7 @@
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/guid
+      (zx/attr= :type "guid")
       zx/text)
     :id
     (zx/xml1-> loc
@@ -516,6 +532,7 @@
     :owner
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/owner
+      (zx/attr= :version "2.0.0")
       ->owner)
     :billto
     (zx/xml1-> loc
@@ -546,18 +563,22 @@
     :postlot
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/postlot
+      (zx/attr= :type "guid")
       zx/text)
     :posttxn
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/posttxn
+      (zx/attr= :type "guid")
       zx/text)
     :postacc
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/postacc
+      (zx/attr= :type "guid")
       zx/text)
     :terms
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/terms
+      (zx/attr= :type "guid")
       zx/text)
     :notes
     (zx/xml1-> loc
@@ -876,22 +897,27 @@
     :commodities
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/commodity
+      (zx/attr= :version "2.0.0")
       ->commodity)
     :customers
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncCustomer
+      (zx/attr= :version "2.0.0")
       ->customer)
     :vendors
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncVendor
+      (zx/attr= :version "2.0.0")
       ->vendor)
     :employees
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncEmployee
+      (zx/attr= :version "2.0.0")
       ->employee)
     :jobs
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncJob
+      (zx/attr= :version "2.0.0")
       ->job)
     :invoices
     (zx/xml-> loc
@@ -931,6 +957,7 @@
     :prices
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/pricedb
+      (zx/attr= :version "1")
       :price
       ->price)
     :accounts
