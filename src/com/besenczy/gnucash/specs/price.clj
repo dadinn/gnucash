@@ -5,7 +5,7 @@
 
 (spec/def ::id ::common/guid)
 (spec/def ::commodity ::common/commodity)
-(spec/def ::currenty ::common/commodity)
+(spec/def ::currency ::common/commodity)
 (spec/def ::date ::common/datetime)
 (spec/def ::source string?)
 (spec/def ::type string?)
