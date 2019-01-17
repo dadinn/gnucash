@@ -56,7 +56,12 @@
         (fn [s] (jt/zoned-date-time fmt (string/trim s)))
         (fn [t] (jt/format fmt t))))))
 
-(spec/def ::number (spec/and string? (partial re-matches #"[0-9]+|-?[0-9]+/[0-9]+") (spec/conformer (fn [s] (edn/read-string s)) (fn [s] (pr-str s)))))
+(spec/def ::numeric
+  (spec/and string?
+    (partial re-matches #"[0-9]+|-?[0-9]+/[0-9]+")
+    (spec/conformer
+      (fn [s] (edn/read-string s))
+      (fn [s] (pr-str s)))))
 
 (spec/def ::boolean-num
   (spec/and

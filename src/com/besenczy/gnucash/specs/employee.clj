@@ -5,6 +5,6 @@
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::username string?)
-(spec/def ::rate ::common/number)
-(spec/def ::workday ::common/number)
+(spec/def ::rate ::common/numeric)
+(spec/def ::workday ::common/numeric)
 (spec/def ::language string?)

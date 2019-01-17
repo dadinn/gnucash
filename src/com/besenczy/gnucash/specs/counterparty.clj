@@ -14,8 +14,8 @@
 (spec/def ::tax-table ::common/guid)
 (spec/def ::tax-included #{"NO" "YES" "USEGLOBAL"})
 (spec/def ::use-tax-table? ::active?)
-(spec/def ::discount ::common/number)
-(spec/def ::credit-limit ::common/number)
+(spec/def ::discount ::common/numeric)
+(spec/def ::credit-limit ::common/numeric)
 
 (spec/def ::billing-address
   (spec/keys

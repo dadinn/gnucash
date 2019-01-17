@@ -4,7 +4,7 @@
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::start ::common/date)
-(spec/def ::multiplier ::common/number)
+(spec/def ::multiplier ::common/numeric)
 
 (spec/def ::period-type
   (spec/and #{"day" "week" "month"}

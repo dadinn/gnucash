@@ -25,8 +25,8 @@
        :material "Material"
        :hours "Hours"})))
 
-(spec/def ::price ::common/number)
-(spec/def ::quantity ::common/number)
+(spec/def ::price ::common/numeric)
+(spec/def ::quantity ::common/numeric)
 
 (spec/def ::account ::common/guid)
 
@@ -54,7 +54,7 @@
        :posttax "POSTTAX"
        :sametime "SAMETIME"})))
 
-(spec/def ::discount ::common/number)
+(spec/def ::discount ::common/numeric)
 
 (spec/def ::payment
   (spec/and

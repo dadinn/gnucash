@@ -4,7 +4,7 @@
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::account ::common/guid)
-(spec/def ::amount ::common/number)
+(spec/def ::amount ::common/numeric)
 (spec/def ::type
   (spec/and #{"PERCENT" "VALUE"}
     (spec/conformer

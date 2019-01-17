@@ -5,7 +5,7 @@
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::counters
-  (spec/map-of string? ::common/number))
+  (spec/map-of string? ::common/numeric))
 
 (spec/def ::book
   (spec/keys

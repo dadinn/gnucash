@@ -7,7 +7,7 @@
   (spec/and
     (spec/or
       :frame ::frame
-      :integer ::common/number
+      :integer ::common/numeric
       :gdate ::common/date
       :timespec ::common/datetime
       ;; string case must be the last!

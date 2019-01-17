@@ -6,9 +6,9 @@
 (spec/def ::guid ::common/guid)
 (spec/def ::name string?)
 (spec/def ::description string?)
-(spec/def ::refcount ::common/number)
+(spec/def ::refcount ::common/numeric)
 (spec/def ::invisible? ::common/boolean-num)
-(spec/def ::due-days ::common/number)
+(spec/def ::due-days ::common/numeric)
 (spec/def ::parent ::common/guid)
 (spec/def ::child ::common/guid)
 

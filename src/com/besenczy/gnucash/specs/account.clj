@@ -22,7 +22,7 @@
 
 (spec/def ::parent ::common/guid)
 (spec/def ::commodity ::common/commodity)
-(spec/def ::unit ::common/number)
+(spec/def ::unit ::common/numeric)
 
 (spec/def ::slots ::slot/value)
 
