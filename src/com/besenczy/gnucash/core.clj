@@ -819,7 +819,17 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/instanceCount
       zx/text)))
 
-(defn ->tempxaction [loc])
+(defn ->tempxaction [loc]
+  (make-hashmap
+    :accounts
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/account
+      ->account)
+    :transactions
+    (zx/xml-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/transaction
+      ->transaction)))
+
 (defn ->budget [loc])
 
 (defn ->book [loc]
@@ -872,11 +882,11 @@
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/schedxaction
       ->schedxaction)
-
     :tempxactions
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/template-transactions
-      z/node)
+      ->tempxaction)
+
     :budgets
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/budget

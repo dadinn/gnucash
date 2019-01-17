@@ -20,6 +20,13 @@
 (spec/def ::transactions
   (spec/coll-of ::entities/transaction))
 
+(spec/def ::tempxactions
+  (spec/coll-of
+    (spec/keys
+      :req-un
+      [::accounts
+       ::transactions])))
+
 (spec/def ::schedxactions
   (spec/coll-of ::entities/schedxaction))
 
