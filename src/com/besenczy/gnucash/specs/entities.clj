@@ -11,6 +11,7 @@
    [com.besenczy.gnucash.specs.taxtable :as tt]
    [com.besenczy.gnucash.specs.entry :as entry]
    [com.besenczy.gnucash.specs.schedxaction :as sx]
+   [com.besenczy.gnucash.specs.budget :as bgt]
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::price
@@ -218,3 +219,12 @@
     [::sx/end
      ::sx/last
      ::sx/instance-count]))
+
+(spec/def ::budget
+  (spec/keys
+    :req-un
+    [::bgt/id
+     ::bgt/name
+     ::bgt/recurrence
+     ::bgt/num-periods
+     ::bgt/slots]))

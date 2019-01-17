@@ -1,4 +1,4 @@
-(ns com.besenczy.gnucash.specs.recurrance
+(ns com.besenczy.gnucash.specs.recurrence
   (:require
    [com.besenczy.gnucash.specs.common :as common]
    [clojure.spec.alpha :as spec]))

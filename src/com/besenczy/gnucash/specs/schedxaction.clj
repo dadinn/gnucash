@@ -1,6 +1,6 @@
 (ns com.besenczy.gnucash.specs.schedxaction
   (:require
-   [com.besenczy.gnucash.specs.recurrance :as recur]
+   [com.besenczy.gnucash.specs.budget :as budget]
    [com.besenczy.gnucash.specs.common :as common]
    [clojure.spec.alpha :as spec]))
 
@@ -17,13 +17,5 @@
 (spec/def ::advance-remind-days ::common/numeric)
 (spec/def ::instance-count ::common/numeric)
 
-
 (spec/def ::schedule
-  (spec/coll-of
-    (spec/keys
-      :req-un
-      [::recur/start
-       ::recur/period-type
-       ::recur/multiplier]
-      :opt-un
-      [::recur/weekend-adjustment])))
+  (spec/coll-of ::budget/recurrence))

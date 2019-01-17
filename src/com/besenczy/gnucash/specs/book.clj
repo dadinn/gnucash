@@ -48,7 +48,7 @@
   (spec/coll-of ::entities/entry))
 
 (spec/def ::budgets
-  (spec/coll-of any?))
+  (spec/coll-of ::entities/budget))
 
 
 

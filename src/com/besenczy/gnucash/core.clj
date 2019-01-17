@@ -830,7 +830,34 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/transaction
       ->transaction)))
 
-(defn ->budget [loc])
+(defn ->budget [loc]
+  (make-hashmap
+    :id
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbgt/id
+      (zx/attr= :type "guid")
+      zx/text)
+    :name
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbgt/name
+      zx/text)
+    :description
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbgt/description
+      zx/text)
+    :num-periods
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbgt/num-periods
+      zx/text)
+    :recurrence
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbgt/recurrence
+      (zx/attr= :version "1.0.0")
+      ->recurrance)
+    :slots
+    (zx/xml1-> loc
+      :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbgt/slots
+      (->frame))))
 
 (defn ->book [loc]
   (make-hashmap
@@ -886,11 +913,10 @@
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/template-transactions
       ->tempxaction)
-
     :budgets
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/budget
-      z/node)
+      ->budget)
 
     :counters
     (into {}
