@@ -58,7 +58,7 @@
 
 (spec/def ::numeric
   (spec/and string?
-    (partial re-matches #"[0-9]+|-?[0-9]+/[0-9]+")
+    (partial re-matches #"-?[0-9]+|-?[0-9]+/[0-9]+")
     (spec/conformer
       (fn [s] (edn/read-string s))
       (fn [s] (pr-str s)))))
