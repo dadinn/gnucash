@@ -1,4 +1,4 @@
-(ns com.besenczy.gnucash.core-test
+(ns com.besenczy.gnucash.test.core
   (:require
    [com.besenczy.gnucash.core :as core]
    [clojure.java.io :as jio]
