@@ -24,7 +24,7 @@
 (spec/def ::commodity ::common/commodity)
 (spec/def ::unit ::common/numeric)
 
-(spec/def ::slots ::slot/value)
+(spec/def ::slots ::slot/frame)
 
 (spec/def ::lots
   (spec/coll-of

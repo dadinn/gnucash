@@ -10,7 +10,7 @@
 (spec/def ::date-entered ::common/datetime)
 (spec/def ::date-posted ::common/datetime)
 (spec/def ::description string?)
-(spec/def ::slots ::slot/value)
+(spec/def ::slots ::slot/frame)
 (spec/def ::num #{"Invoice" "Bill" "Credit Note" "Expense" "Payment"})
 
 (spec/def ::split
