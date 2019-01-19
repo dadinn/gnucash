@@ -58,9 +58,11 @@
 
 (spec/def ::numeric
   (spec/and string?
-    (partial re-matches #"-?[0-9]+|-?[0-9]+/[0-9]+")
+    (partial re-matches #"-?[0-9]+/?-?[0-9]*")
     (spec/conformer
-      (fn [s] (edn/read-string s))
+      (fn [s]
+        (let [[x & xs] (map edn/read-string (string/split s #"/"))]
+          (if (seq xs) (apply / (cons x xs)) x)))
       (fn [s] (pr-str s)))))
 
 (spec/def ::boolean-num

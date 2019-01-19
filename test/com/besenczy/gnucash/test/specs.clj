@@ -22,7 +22,8 @@
     (is= -1 (spec/conform ::common/numeric "-111111/111111"))
     (is= 11/10000 (spec/conform ::common/numeric "11/10000"))
     (is= -11/10000 (spec/conform ::common/numeric "-11/10000"))
-    (is= ::spec/invalid (spec/conform ::common/numeric "-11/-10000"))))
+    (is= -11/111111 (spec/conform ::common/numeric "11/-111111"))
+    (is= 11/111111 (spec/conform ::common/numeric "-11/-111111"))))
 
 (deftest price
   (testing "price entity should conform to spec"
