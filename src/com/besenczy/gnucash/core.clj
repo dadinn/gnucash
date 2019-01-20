@@ -1,7 +1,7 @@
 (ns com.besenczy.gnucash.core
   (:require
+   [com.besenczy.gnucash.utils :as utils]
    [clojure.edn :as edn]
-   [clojure.spec.alpha :as spec]
    [clojure.java.io :as jio]
    [clojure.string :as s]
    [java-time :as jt]
@@ -10,21 +10,6 @@
    [clojure.data.xml :as x])
   (:import
    [java.util UUID]))
-
-(defn empty-seq? [x] (and (seqable? x) (not (seq x))))
-
-(defn make-hashmap
-  "create a hashmap from key value pairs using pairs with non-void values"
-  [& kvs]
-  #_
-  (reduce
-    (fn [acc [k v]] (if (meh? v) acc (assoc acc k v)))
-    {} (partition 2 kvs))
-  (into {}
-    (comp
-      (map vec)
-      (remove (comp empty-seq? second)))
-    (partition 2 kvs)))
 
 (declare ->frame)
 
@@ -81,7 +66,7 @@
    (fn [loc] (into {} (zx/xml-> loc slot-key (->slot slot-key))))))
 
 (defn ->commodity [loc]
-  (make-hashmap
+  (utils/into-map
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/id
@@ -116,7 +101,7 @@
       zx/text)))
 
 (defn ->price [loc]
-  (make-hashmap
+  (utils/into-map
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/id
@@ -159,7 +144,7 @@
    "LIABILITY" :liability})
 
 (defn ->lot [loc]
-  (make-hashmap
+  (utils/into-map
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Flot/id
@@ -170,7 +155,7 @@
       (->frame))))
 
 (defn ->account [loc]
-  (make-hashmap
+  (utils/into-map
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/id
@@ -214,7 +199,7 @@
       (->frame :slot))))
 
 (defn ->split [loc]
-  (make-hashmap
+  (utils/into-map
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/id
@@ -254,7 +239,7 @@
       zx/text)))
 
 (defn ->transaction [loc]
-  (make-hashmap
+  (utils/into-map
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/id
@@ -298,7 +283,7 @@
     [k v]))
 
 (defn ->address [loc]
-  (make-hashmap
+  (utils/into-map
     :name
     (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/name zx/text)
     :line1
@@ -317,7 +302,7 @@
     (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/email zx/text)))
 
 (defn ->customer [loc]
-  (make-hashmap
+  (utils/into-map
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/guid
@@ -385,7 +370,7 @@
       (->frame))))
 
 (defn ->vendor [loc]
-  (make-hashmap
+  (utils/into-map
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/guid
@@ -440,7 +425,7 @@
       (->frame))))
 
 (defn ->employee [loc]
-  (make-hashmap
+  (utils/into-map
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/guid
@@ -485,7 +470,7 @@
       (->frame))))
 
 (defn ->owner [loc]
-  (make-hashmap
+  (utils/into-map
     :type
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fowner/type
@@ -497,7 +482,7 @@
       zx/text)))
 
 (defn ->job [loc]
-  (make-hashmap
+  (utils/into-map
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fjob/guid
@@ -526,7 +511,7 @@
       zx/text)))
 
 (defn ->invoice [loc]
-  (make-hashmap
+  (utils/into-map
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/guid
@@ -597,7 +582,7 @@
       (->frame))))
 
 (defn ->billterm [loc]
-  (make-hashmap
+  (utils/into-map
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbillterm/guid
@@ -633,7 +618,7 @@
       zx/text)))
 
 (defn ->tt-entry [loc]
-  (make-hashmap
+  (utils/into-map
     :account
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftte/acct
@@ -648,7 +633,7 @@
       zx/text)))
 
 (defn ->taxtable [loc]
-  (make-hashmap
+  (utils/into-map
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/guid
@@ -680,7 +665,7 @@
       zx/text)))
 
 (defn ->entry [loc]
-  (make-hashmap
+  (utils/into-map
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/guid
@@ -777,7 +762,7 @@
       zx/text)))
 
 (defn ->recurrance [loc]
-  (make-hashmap
+  (utils/into-map
     :start
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/start
@@ -796,7 +781,7 @@
       zx/text)))
 
 (defn ->schedxaction [loc]
-  (make-hashmap
+  (utils/into-map
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/id
@@ -852,7 +837,7 @@
       zx/text)))
 
 (defn ->tempxaction [loc]
-  (make-hashmap
+  (utils/into-map
     :accounts
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/account
@@ -863,7 +848,7 @@
       ->transaction)))
 
 (defn ->budget [loc]
-  (make-hashmap
+  (utils/into-map
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbgt/id
@@ -892,7 +877,7 @@
       (->frame))))
 
 (defn ->book [loc]
-  (make-hashmap
+  (utils/into-map
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/id
@@ -977,7 +962,7 @@
       ->transaction)))
 
 (defn ->document [loc]
-  (make-hashmap
+  (utils/into-map
     :book
     (zx/xml1-> loc
       :gnc-v2
