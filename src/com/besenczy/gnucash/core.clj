@@ -265,11 +265,12 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/split
       ->split)))
 
-(defn countdata-pair [{:keys [tag attrs content] :as e}]
+(defn countdata-pair [loc]
   "Extract key-value pair from count-data XML element"
-  (let [k (-> attrs :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcd/type)
+  (let [{:keys [tag attrs content] :as e} (z/node loc)
+        k (-> attrs :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcd/type)
         v (first content)]
-    [k v]))
+    (list [k v])))
 
 (defn ->address [loc]
   (utils/into-map
@@ -928,13 +929,11 @@
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/budget
       ->budget)
-
     :counters
     (into {}
-      (map countdata-pair)
       (zx/xml-> loc
         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/count-data
-        z/node))
+        countdata-pair))
     :prices
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/pricedb
@@ -959,10 +958,9 @@
       ->book)
     :counters
     (into {}
-      (map countdata-pair)
       (zx/xml-> loc
         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/count-data
-        z/node))))
+        countdata-pair))))
 
 (defn load-doc [path]
   (-> (slurp path)
