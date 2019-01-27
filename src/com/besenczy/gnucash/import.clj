@@ -146,6 +146,7 @@
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/id
+      (zx/attr= :type "guid")
       zx/text)
     :name
     (zx/xml1-> loc
@@ -166,6 +167,7 @@
     :parent
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/parent
+      (zx/attr= :type "guid")
       zx/text)
     :commodity
     (zx/xml1-> loc
@@ -190,6 +192,7 @@
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/id
+      (zx/attr= :type "guid")
       zx/text)
     :reconciled-state
     (zx/xml1-> loc
@@ -211,6 +214,7 @@
     :account
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/account
+      (zx/attr= :type "guid")
       zx/text)
     :memo
     (zx/xml1-> loc
@@ -223,6 +227,7 @@
     :lot
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/lot
+      (zx/attr= type "guid")
       zx/text)))
 
 (defn ->transaction [loc]
@@ -230,6 +235,7 @@
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/id
+      (zx/attr= :type "guid")
       zx/text)
     :currency
     (zx/xml1-> loc
@@ -517,6 +523,7 @@
     :billto
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/billto
+      (zx/attr= :version "2.0.0")
       ->owner)
     :reference
     (zx/xml1-> loc
@@ -574,6 +581,7 @@
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbillterm/guid
+      (zx/attr= :type "guid")
       zx/text)
     :name
     (zx/xml1-> loc
@@ -594,6 +602,7 @@
     :parent
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbillterm/parent
+      (zx/attr= :type "guid")
       zx/text)
     :due-days
     (zx/xml1-> loc
@@ -603,6 +612,7 @@
     :child
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbillterm/child
+      (zx/attr= :type "guid")
       zx/text)))
 
 (defn ->tt-entry [loc]
@@ -610,6 +620,7 @@
     :account
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftte/acct
+      (zx/attr= :type "guid")
       zx/text)
     :amount
     (zx/xml1-> loc
@@ -625,6 +636,7 @@
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/guid
+      (zx/attr= :type "guid")
       zx/text)
     :name
     (zx/xml1-> loc
@@ -641,6 +653,7 @@
     :parent
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/parent
+      (zx/attr= :type "guid")
       zx/text)
     :entries
     (zx/xml-> loc
@@ -650,6 +663,7 @@
     :child
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/child
+      (zx/attr= :type "guid")
       zx/text)))
 
 (defn ->entry [loc]
@@ -665,10 +679,12 @@
     :invoice
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/invoice
+      (zx/attr= :type "guid")
       zx/text)
     :bill
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/bill
+      (zx/attr= :type "guid")
       zx/text)
     :date-recorded
     (zx/xml1-> loc
@@ -869,6 +885,7 @@
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/id
+      (zx/attr= :type "guid")
       zx/text)
     :slots
     (zx/xml1-> loc
@@ -902,18 +919,22 @@
     :invoices
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncInvoice
+      (zx/attr= :version "2.0.0")
       ->invoice)
     :billing-terms
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncBillTerm
+      (zx/attr= :version "2.0.0")
       ->billterm)
     :tax-tables
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncTaxTable
+      (zx/attr= :version "2.0.0")
      ->taxtable)
     :entries
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncEntry
+      (zx/attr= :version "2.0.0")
       ->entry)
     :schedxactions
     (zx/xml-> loc
@@ -941,10 +962,12 @@
     :accounts
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/account
+      (zx/attr= :version "2.0.0")
       ->account)
     :transactions
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/transaction
+      (zx/attr= :version "2.0.0")
       ->transaction)))
 
 (defn ->document [loc]
@@ -953,6 +976,7 @@
     (zx/xml1-> loc
       :gnc-v2
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book
+      (zx/attr= :version "2.0.0")
       ->book)
     :counters
     (into {}
