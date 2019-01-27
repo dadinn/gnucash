@@ -12,14 +12,14 @@
 (declare ->frame)
 
 (defn ->slotvalue
-  ([loc type slot-key]
+  ([loc type kw]
    (case type
      "frame"
      ;; TODO effectively a hardcoded :slot, therefore breaks the recursion!
      [:frame
       (zx/xml1-> loc
         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
-        (->frame slot-key))]
+        (->frame kw))]
      "string"
      [:string
       (zx/xml1-> loc
@@ -51,17 +51,17 @@
         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
         zx/text)])))
 
-(defn ->slot [slot-key]
+(defn ->slot [kw]
   (fn [loc]
     (let [k (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/key zx/text)
           t (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value (zx/attr :type))]
-      (list [k (->slotvalue loc t slot-key)]))))
+      (list [k (->slotvalue loc t kw)]))))
 
 (defn ->frame
   ([] (->frame :slot))
-  ([slot-key]
-   {:pre [(keyword? slot-key)]}
-   (fn [loc] (into {} (zx/xml-> loc slot-key (->slot slot-key))))))
+  ([kw]
+   {:pre [(keyword? kw)]}
+   (fn [loc] (into {} (zx/xml-> loc kw (->slot kw))))))
 
 (defn ->commodity [loc]
   (utils/into-map
