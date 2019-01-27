@@ -150,7 +150,7 @@
      ::invc/owner
      ::invc/currency
      ::invc/opened
-     ::invc/active
+     ::invc/active?
      ::invc/slots]
     :opt-un
     [::invc/billto

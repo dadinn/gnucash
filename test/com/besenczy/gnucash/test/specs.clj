@@ -351,7 +351,7 @@
          :reference "00000666"
          :postacc "ed0a209cc78f680c45a87851ed232236"
          :postlot "5c2704146ce7d16f96998b7f10732762"
-         :active "1"
+         :active? "1"
          :id "000046"
          :owner {:type "gncJob", :id "7ed7f4f40882668a1d78f6efee5ecce9"}
          :guid "006176a8640a67805948b7181d73c240"})
@@ -364,7 +364,7 @@
        :reference "00000666"
        :postacc #uuid "ed0a209c-c78f-680c-45a8-7851ed232236"
        :postlot #uuid "5c270414-6ce7-d16f-9699-8b7f10732762"
-       :active true
+       :active? true
        :id "000046"
        :owner
        {:type :job, :id #uuid "7ed7f4f4-0882-668a-1d78-f6efee5ecce9"}

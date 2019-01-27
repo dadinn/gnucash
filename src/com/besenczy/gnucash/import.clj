@@ -522,7 +522,7 @@
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/billing_id
       zx/text)
-    :active
+    :active?
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/active
       zx/text)

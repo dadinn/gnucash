@@ -18,5 +18,5 @@
 (spec/def ::posttxn ::common/guid)
 (spec/def ::terms ::common/guid)
 (spec/def ::notes string?)
-(spec/def ::active ::common/boolean-num)
+(spec/def ::active? ::common/boolean-num)
 (spec/def ::slots ::slot/frame)
