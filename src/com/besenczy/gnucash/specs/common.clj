@@ -37,31 +37,55 @@
 (def datetime-fmt (jt/formatter "yyyy-MM-dd HH:mm:ss ZZZ"))
 
 (spec/def ::date
-  (spec/and string?
-    (comp
-      (partial re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}")
-      string/trim)
-    (spec/conformer
-      (fn [s] (jt/local-date date-fmt (string/trim s)))
-      (fn [dt] (jt/format date-fmt dt)))))
+  (spec/with-gen
+    (spec/and string?
+      (comp
+        (partial re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}")
+        string/trim)
+      (spec/conformer
+        (fn [s] (jt/local-date date-fmt (string/trim s)))
+        (fn [dt] (jt/format date-fmt dt))))
+    #(gen/fmap
+       (fn [ds]
+         (jt/format date-fmt
+           (jt/adjust (jt/local-date)
+             jt/plus (jt/days (.intValue ^Long ds)))))
+       (spec/gen int?))))
 
 (spec/def ::datetime
-  (spec/and string?
-    (comp
-      (partial re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} [+-][0-9]{4}")
-      string/trim)
-    (spec/conformer
-      (fn [s] (jt/zoned-date-time datetime-fmt (string/trim s)))
-      (fn [t] (jt/format datetime-fmt t)))))
+  (spec/with-gen
+    (spec/and string?
+      (comp
+        (partial re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} [+-][0-9]{4}")
+        string/trim)
+      (spec/conformer
+        (fn [s] (jt/zoned-date-time datetime-fmt (string/trim s)))
+        (fn [t] (jt/format datetime-fmt t))))
+    #(gen/fmap
+       (fn [[secs sig oh om]]
+         (jt/format datetime-fmt
+           (jt/adjust
+             (jt/zoned-date-time
+               (let [n (if sig -1 1)]
+                 (jt/zone-offset
+                   (* n (mod oh 18))
+                   (* n (mod om 60)))))
+             jt/plus (jt/seconds (.intValue ^Long secs)))))
+       (spec/gen (spec/tuple int? boolean? int? int?)))))
+
 
 (spec/def ::numeric
-  (spec/and string?
-    (partial re-matches #"-?[0-9]+/?-?[0-9]*")
-    (spec/conformer
-      (fn [s]
-        (let [[x & xs] (map edn/read-string (string/split s #"/"))]
-          (if (seq xs) (apply / (cons x xs)) x)))
-      (fn [s] (pr-str s)))))
+  (spec/with-gen
+    (spec/and string?
+      (partial re-matches #"-?[0-9]+/?-?[0-9]*")
+      (spec/conformer
+        (fn [s]
+          (let [[x & xs] (map edn/read-string (string/split s #"/"))]
+            (if (seq xs) (apply / (cons x xs)) x)))
+        (fn [s] (pr-str s))))
+    #(gen/fmap
+       (fn [[x y]] (if (zero? y) (pr-str x) (pr-str (/ x y))))
+       (spec/gen (spec/tuple int? int?)))))
 
 (spec/def ::boolean-num
   (spec/and
