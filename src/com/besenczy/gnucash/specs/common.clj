@@ -33,28 +33,26 @@
        (fn [uuid] (-> uuid str (.replace "-" "")))
        (gen/uuid))))
 
+(def date-fmt (jt/formatter "yyyy-MM-dd"))
+(def datetime-fmt (jt/formatter "yyyy-MM-dd HH:mm:ss ZZZ"))
+
 (spec/def ::date
   (spec/and string?
     (comp
       (partial re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}")
       string/trim)
-    (let [fmt (jt/formatter "yyyy-MM-dd")]
-      (spec/conformer
-        (fn [s]
-          (jt/local-date fmt
-            (string/trim s)))
-        (fn [dt]
-          (jt/format fmt dt))))))
+    (spec/conformer
+      (fn [s] (jt/local-date date-fmt (string/trim s)))
+      (fn [dt] (jt/format date-fmt dt)))))
 
 (spec/def ::datetime
   (spec/and string?
     (comp
       (partial re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} [+-][0-9]{4}")
       string/trim)
-    (let [fmt (jt/formatter "yyyy-MM-dd HH:mm:ss ZZZ")]
-      (spec/conformer
-        (fn [s] (jt/zoned-date-time fmt (string/trim s)))
-        (fn [t] (jt/format fmt t))))))
+    (spec/conformer
+      (fn [s] (jt/zoned-date-time datetime-fmt (string/trim s)))
+      (fn [t] (jt/format datetime-fmt t)))))
 
 (spec/def ::numeric
   (spec/and string?
