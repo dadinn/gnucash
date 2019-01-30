@@ -89,4 +89,4 @@
      ::cmdty/fraction
      ::cmdty/get-quotes
      ::cmdty/quote-source
-     ::cmdty/quote-tz]))
+     ::cmdty/quote-timezone]))
