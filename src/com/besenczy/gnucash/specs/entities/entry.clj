@@ -1,6 +1,7 @@
 (ns com.besenczy.gnucash.specs.entities.entry
   (:require
    [com.besenczy.gnucash.specs.numeric :as numeric]
+   [com.besenczy.gnucash.specs.strings :as strings]
    [com.besenczy.gnucash.specs.common :as common]
    [clojure.spec.alpha :as spec]))
 
@@ -13,7 +14,7 @@
 (spec/def ::date-recorded ::common/datetime)
 (spec/def ::date-entered ::common/datetime)
 
-(spec/def ::description string?)
+(spec/def ::description ::strings/non-empty)
 
 (spec/def ::action
   (spec/and

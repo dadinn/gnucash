@@ -1,5 +1,6 @@
 (ns com.besenczy.gnucash.specs.entities.transaction
   (:require
+   [com.besenczy.gnucash.specs.strings :as strings]
    [com.besenczy.gnucash.specs.common :as common]
    [com.besenczy.gnucash.specs.slot :as slot]
    [com.besenczy.gnucash.specs.split :as split]
@@ -9,7 +10,7 @@
 (spec/def ::currency ::common/commodity)
 (spec/def ::date-entered ::common/datetime)
 (spec/def ::date-posted ::common/datetime)
-(spec/def ::description string?)
+(spec/def ::description ::strings/non-empty)
 (spec/def ::slots ::slot/frame)
 (spec/def ::num #{"Invoice" "Bill" "Credit Note" "Expense" "Payment"})
 

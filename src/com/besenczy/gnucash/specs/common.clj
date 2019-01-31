@@ -2,6 +2,7 @@
   (:require
    [com.besenczy.gnucash.specs.commodity :as cmdty]
    [com.besenczy.gnucash.specs.numeric :as numeric]
+   [com.besenczy.gnucash.specs.strings :as strings]
    [clojure.edn :as edn]
    [clojure.string :as string]
    [java-time :as jt]
@@ -88,7 +89,7 @@
       {true "y" false "n"})))
 
 (spec/def ::counters
-  (spec/map-of string? ::numeric/natural))
+  (spec/map-of ::strings/non-empty ::numeric/natural))
 
 (spec/def ::commodity
   (spec/keys

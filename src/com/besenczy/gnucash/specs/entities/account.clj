@@ -1,6 +1,7 @@
 (ns com.besenczy.gnucash.specs.entities.account
   (:require
    [com.besenczy.gnucash.specs.numeric :as numeric]
+   [com.besenczy.gnucash.specs.strings :as strings]
    [com.besenczy.gnucash.specs.common :as common]
    [com.besenczy.gnucash.specs.slot :as slot]
    [com.besenczy.gnucash.specs.lot :as lot]
@@ -8,9 +9,9 @@
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::id ::common/guid)
-(spec/def ::name string?)
-(spec/def ::description string?)
-(spec/def ::code string?)
+(spec/def ::name ::strings/non-empty)
+(spec/def ::description ::strings/non-empty)
+(spec/def ::code ::strings/non-empty)
 
 (spec/def ::type
   (spec/and #{"ASSET" "LIABILITY" "EQUITY" "INCOME" "EXPENSE" "RECEIVABLE" "PAYABLE" "BANK" "ROOT"}

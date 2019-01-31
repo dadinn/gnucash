@@ -1,6 +1,7 @@
 (ns com.besenczy.gnucash.specs.slot
   (:require
    [com.besenczy.gnucash.specs.numeric :as numeric]
+   [com.besenczy.gnucash.specs.strings :as strings]
    [com.besenczy.gnucash.specs.common :as common]
    [clojure.spec.alpha :as spec]))
 
@@ -18,4 +19,4 @@
     (spec/conformer second str)))
 
 (spec/def ::frame
-  (spec/map-of string? ::value))
+  (spec/map-of ::strings/non-empty ::value))
