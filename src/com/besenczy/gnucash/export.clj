@@ -79,17 +79,20 @@
     (filter-nonempty-contents
       (map price-element prices))))
 
-(defn address-element [tag attr {:keys [name line1 line2 line3 line4 phone fax email]}]
-  (xml-element tag attr
-    (filter-nonempty-contents
-      [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/name nil name)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/addr1 nil line1)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/addr2 nil line2)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/addr3 nil line3)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/addr4 nil line4)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/phone nil phone)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/fax nil fax)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/email nil email)])))
+(defn address-element
+  ([tag content]
+   (address-element {:version "2.0.0"} content))
+  ([tag attr {:keys [name line1 line2 line3 line4 phone fax email]}]
+   (xml-element tag attr
+     (filter-nonempty-contents
+       [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/name nil name)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/addr1 nil line1)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/addr2 nil line2)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/addr3 nil line3)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/addr4 nil line4)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/phone nil phone)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/fax nil fax)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/email nil email)]))))
 
 (defn customer-element [{:keys [guid id name active? discount credit-limit currency terms tax-table   billing-address shipping-address tax-included use-tax-table? notes slots]}]
   (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncCustomer
@@ -105,10 +108,8 @@
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/currency nil currency)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/terms
          {:type "guid"} terms)
-       (address-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/addr
-         {:version "2.0.0"} billing-address)
-       (address-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/shipaddr
-         {:version "2.0.0"} shipping-address)
+       (address-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/addr billing-address)
+       (address-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/shipaddr shipping-address)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/taxincluded nil tax-included)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/use-tt nil use-tax-table?)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/notes nil notes)
@@ -127,8 +128,7 @@
          {:type "guid"} guid)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/taxtable
          {:type "guid"} tax-table)
-       (address-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/addr
-         {:version "2.0.0"} billing-address)
+       (address-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/addr billing-address)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/taxincluded nil tax-included)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/use-tt nil use-tax-table?)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/notes nil notes)
@@ -146,8 +146,7 @@
        (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/currency nil currency)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/workday nil workday)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/rate nil rate)
-       (address-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/addr
-         {:version "2.0.0"} billing-address)
+       (address-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/addr billing-address)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/language language)
        (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/slots
          nil (frame-contents slots))])))
