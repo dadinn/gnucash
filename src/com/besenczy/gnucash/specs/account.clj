@@ -11,14 +11,11 @@
 (spec/def ::description string?)
 (spec/def ::code string?)
 
-(def account-types
-  #{"ASSET" "LIABILITY" "EQUITY" "INCOME" "EXPENSE" "RECEIVABLE" "PAYABLE" "BANK" "ROOT"})
-
 (spec/def ::type
-  (spec/and string? account-types
+  (spec/and #{"ASSET" "LIABILITY" "EQUITY" "INCOME" "EXPENSE" "RECEIVABLE" "PAYABLE" "BANK" "ROOT"}
     (spec/conformer
-      (fn [s] (-> s string/lower-case keyword))
-      (fn [k] (-> k name string/upper-case)))))
+      (comp keyword string/lower-case)
+      (comp string/upper-case name))))
 
 (spec/def ::parent ::common/guid)
 (spec/def ::commodity ::common/commodity)
