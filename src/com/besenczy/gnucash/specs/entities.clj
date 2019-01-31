@@ -1,17 +1,17 @@
 (ns com.besenczy.gnucash.specs.entities
   (:require
-   [com.besenczy.gnucash.specs.price :as price]
-   [com.besenczy.gnucash.specs.account :as act]
-   [com.besenczy.gnucash.specs.transaction :as trn]
-   [com.besenczy.gnucash.specs.counterparty :as ctpy]
-   [com.besenczy.gnucash.specs.employee :as empl]
-   [com.besenczy.gnucash.specs.job :as job]
-   [com.besenczy.gnucash.specs.invoice :as invc]
-   [com.besenczy.gnucash.specs.billterm :as bt]
-   [com.besenczy.gnucash.specs.taxtable :as tt]
-   [com.besenczy.gnucash.specs.entry :as entry]
-   [com.besenczy.gnucash.specs.schedxaction :as sx]
-   [com.besenczy.gnucash.specs.budget :as bgt]
+   [com.besenczy.gnucash.specs.entities.price :as price]
+   [com.besenczy.gnucash.specs.entities.account :as act]
+   [com.besenczy.gnucash.specs.entities.transaction :as trn]
+   [com.besenczy.gnucash.specs.entities.counterparty :as ctpy]
+   [com.besenczy.gnucash.specs.entities.employee :as empl]
+   [com.besenczy.gnucash.specs.entities.job :as job]
+   [com.besenczy.gnucash.specs.entities.invoice :as invc]
+   [com.besenczy.gnucash.specs.entities.billterm :as bt]
+   [com.besenczy.gnucash.specs.entities.taxtable :as tt]
+   [com.besenczy.gnucash.specs.entities.entry :as entry]
+   [com.besenczy.gnucash.specs.entities.schedxaction :as sx]
+   [com.besenczy.gnucash.specs.entities.budget :as bgt]
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::price

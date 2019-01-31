@@ -1,8 +1,8 @@
-(ns com.besenczy.gnucash.specs.invoice
+(ns com.besenczy.gnucash.specs.entities.invoice
   (:require
+   [com.besenczy.gnucash.specs.entities.job :as job]
    [com.besenczy.gnucash.specs.common :as common]
    [com.besenczy.gnucash.specs.slot :as slot]
-   [com.besenczy.gnucash.specs.job :as job]
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::guid ::common/guid)

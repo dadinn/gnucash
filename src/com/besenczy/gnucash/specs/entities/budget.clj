@@ -1,4 +1,4 @@
-(ns com.besenczy.gnucash.specs.budget
+(ns com.besenczy.gnucash.specs.entities.budget
   (:require
    [com.besenczy.gnucash.specs.recurrence :as recur]
    [com.besenczy.gnucash.specs.common :as common]

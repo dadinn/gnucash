@@ -1,4 +1,4 @@
-(ns com.besenczy.gnucash.specs.price
+(ns com.besenczy.gnucash.specs.entities.price
   (:require
    [com.besenczy.gnucash.specs.common :as common]
    [clojure.spec.alpha :as spec]))

@@ -1,4 +1,4 @@
-(ns com.besenczy.gnucash.specs.billterm
+(ns com.besenczy.gnucash.specs.entities.billterm
   (:require
    [com.besenczy.gnucash.specs.common :as common]
    [clojure.spec.alpha :as spec]))

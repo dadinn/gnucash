@@ -1,4 +1,4 @@
-(ns com.besenczy.gnucash.specs.account
+(ns com.besenczy.gnucash.specs.entities.account
   (:require
    [com.besenczy.gnucash.specs.common :as common]
    [com.besenczy.gnucash.specs.slot :as slot]

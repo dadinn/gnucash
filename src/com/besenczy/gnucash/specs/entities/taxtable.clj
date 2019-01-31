@@ -1,6 +1,6 @@
-(ns com.besenczy.gnucash.specs.taxtable
+(ns com.besenczy.gnucash.specs.entities.taxtable
   (:require
-   [com.besenczy.gnucash.specs.taxtable-entry :as entry]
+   [com.besenczy.gnucash.specs.entities.taxtable-entry :as entry]
    [com.besenczy.gnucash.specs.common :as common]
    [clojure.spec.alpha :as spec]))
 

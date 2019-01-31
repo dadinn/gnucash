@@ -1,4 +1,4 @@
-(ns com.besenczy.gnucash.specs.entry
+(ns com.besenczy.gnucash.specs.entities.entry
   (:require
    [com.besenczy.gnucash.specs.common :as common]
    [clojure.spec.alpha :as spec]))

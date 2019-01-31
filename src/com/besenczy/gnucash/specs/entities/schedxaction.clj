@@ -1,6 +1,6 @@
-(ns com.besenczy.gnucash.specs.schedxaction
+(ns com.besenczy.gnucash.specs.entities.schedxaction
   (:require
-   [com.besenczy.gnucash.specs.budget :as budget]
+   [com.besenczy.gnucash.specs.entities.budget :as budget]
    [com.besenczy.gnucash.specs.common :as common]
    [clojure.spec.alpha :as spec]))
 

@@ -1,4 +1,4 @@
-(ns com.besenczy.gnucash.specs.job
+(ns com.besenczy.gnucash.specs.entities.job
   (:require
    [com.besenczy.gnucash.specs.owner :as owner]
    [com.besenczy.gnucash.specs.common :as common]
