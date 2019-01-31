@@ -3,12 +3,11 @@
    [com.besenczy.gnucash.specs.common :as common]
    [com.besenczy.gnucash.specs.slot :as slot]
    [com.besenczy.gnucash.specs.entities :as entities]
+   [com.besenczy.gnucash.test.common :refer [is=]]
    [java-time :as jt]
    [clojure.spec.gen.alpha :as gen]
    [clojure.spec.alpha :as spec]
    [clojure.test :refer :all]))
-
-(defmacro is= [x y] `(is (= ~x ~y)))
 
 (deftest guid
   (testing "guid entry should conform to spec"
