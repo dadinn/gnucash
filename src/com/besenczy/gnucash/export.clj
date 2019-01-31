@@ -48,24 +48,26 @@
      (seq m))))
 
 (defn commodity-element
-  [tag attr {:keys [id space name get-quotes quote-source quote-timezone xcode fraction]}]
-  (xml-element tag attr
-    (filter-nonempty-contents
-      [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/id nil id)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/space nil space)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/name nil name)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/get_quotes nil get-quotes)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/quote_source nil quote-source)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/quote_tz nil quote-timezone)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/xcode nil xcode)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/fraction nil fraction)])))
+  ([tag content]
+   (commodity-element tag nil content))
+  ([tag attr {:keys [id space name get-quotes quote-source quote-timezone xcode fraction]}]
+   (xml-element tag attr
+     (filter-nonempty-contents
+       [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/id nil id)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/space nil space)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/name nil name)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/get_quotes nil get-quotes)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/quote_source nil quote-source)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/quote_tz nil quote-timezone)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/xcode nil xcode)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/fraction nil fraction)]))))
 
 (defn price-element [{:keys [id commodity currency date source type value]}]
   (xml-element :price nil
     (filter-nonempty-contents
       [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/id {:type "guid"} id)
-       (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/commodity nil commodity)
-       (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/currency nil currency)
+       (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/commodity commodity)
+       (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/currency currency)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/time nil date)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/source nil source)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/type nil type)
