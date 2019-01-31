@@ -1,5 +1,6 @@
 (ns com.besenczy.gnucash.specs.entities.entry
   (:require
+   [com.besenczy.gnucash.specs.numeric :as numeric]
    [com.besenczy.gnucash.specs.common :as common]
    [clojure.spec.alpha :as spec]))
 
@@ -25,8 +26,8 @@
        :material "Material"
        :hours "Hours"})))
 
-(spec/def ::price ::common/numeric)
-(spec/def ::quantity ::common/numeric)
+(spec/def ::price ::numeric/fraction)
+(spec/def ::quantity ::numeric/fraction)
 
 (spec/def ::account ::common/guid)
 
@@ -54,7 +55,7 @@
        :posttax "POSTTAX"
        :sametime "SAMETIME"})))
 
-(spec/def ::discount ::common/numeric)
+(spec/def ::discount ::numeric/fraction)
 
 (spec/def ::payment
   (spec/and

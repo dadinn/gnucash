@@ -1,6 +1,7 @@
 (ns com.besenczy.gnucash.specs.entities.counterparty
   (:require
    [com.besenczy.gnucash.specs.common :as common]
+   [com.besenczy.gnucash.specs.numeric :as numeric]
    [com.besenczy.gnucash.specs.address :as addr]
    [com.besenczy.gnucash.specs.slot :as slot]
    [clojure.spec.alpha :as spec]))
@@ -14,8 +15,8 @@
 (spec/def ::tax-table ::common/guid)
 (spec/def ::tax-included #{"NO" "YES" "USEGLOBAL"})
 (spec/def ::use-tax-table? ::active?)
-(spec/def ::discount ::common/numeric)
-(spec/def ::credit-limit ::common/numeric)
+(spec/def ::discount ::numeric/fraction)
+(spec/def ::credit-limit ::numeric/fraction)
 
 (spec/def ::billing-address
   (spec/keys

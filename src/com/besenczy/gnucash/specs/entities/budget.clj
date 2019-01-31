@@ -1,6 +1,7 @@
 (ns com.besenczy.gnucash.specs.entities.budget
   (:require
    [com.besenczy.gnucash.specs.recurrence :as recur]
+   [com.besenczy.gnucash.specs.numeric :as numeric]
    [com.besenczy.gnucash.specs.common :as common]
    [com.besenczy.gnucash.specs.slot :as slot]
    [clojure.spec.alpha :as spec]))
@@ -8,7 +9,7 @@
 (spec/def ::id ::common/guid)
 (spec/def ::name string?)
 (spec/def ::description string?)
-(spec/def ::num-periods ::common/numeric)
+(spec/def ::num-periods ::numeric/fraction)
 
 (spec/def ::recurrence
   (spec/keys

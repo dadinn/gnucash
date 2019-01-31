@@ -1,6 +1,7 @@
 (ns com.besenczy.gnucash.specs.common
   (:require
    [com.besenczy.gnucash.specs.commodity :as cmdty]
+   [com.besenczy.gnucash.specs.numeric :as numeric]
    [clojure.edn :as edn]
    [clojure.string :as string]
    [java-time :as jt]
@@ -73,30 +74,6 @@
              jt/plus (jt/seconds (.intValue ^Long secs)))))
        (spec/gen (spec/tuple int? boolean? int? int?)))))
 
-(spec/def ::integer
-  (spec/with-gen
-    (spec/and string?
-      (partial re-matches #"[0-9]+")
-      (spec/conformer
-        (fn [s] (edn/read-string s))
-        (fn [x] (pr-str x))))
-    #(gen/fmap
-       (fn [x] (pr-str x))
-       (spec/gen pos-int?))))
-
-(spec/def ::numeric
-  (spec/with-gen
-    (spec/and string?
-      (partial re-matches #"-?[0-9]+/?-?[0-9]*")
-      (spec/conformer
-        (fn [s]
-          (let [[x & xs] (map edn/read-string (string/split s #"/"))]
-            (if (seq xs) (apply / (cons x xs)) x)))
-        (fn [s] (pr-str s))))
-    #(gen/fmap
-       (fn [[x y]] (if (zero? y) (pr-str x) (pr-str (/ x y))))
-       (spec/gen (spec/tuple int? int?)))))
-
 (spec/def ::boolean-num
   (spec/and
     #{"0" "1"}
@@ -111,7 +88,7 @@
       {true "y" false "n"})))
 
 (spec/def ::counters
-  (spec/map-of string? ::integer))
+  (spec/map-of string? ::numeric/natural))
 
 (spec/def ::commodity
   (spec/keys

@@ -1,12 +1,13 @@
 (ns com.besenczy.gnucash.specs.entities.taxtable
   (:require
    [com.besenczy.gnucash.specs.entities.taxtable.entry :as entry]
+   [com.besenczy.gnucash.specs.numeric :as numeric]
    [com.besenczy.gnucash.specs.common :as common]
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::guid ::common/guid)
 (spec/def ::name string?)
-(spec/def ::refcount ::common/numeric)
+(spec/def ::refcount ::numeric/fraction)
 (spec/def ::invisible? ::common/boolean-num)
 (spec/def ::entries
   (spec/coll-of

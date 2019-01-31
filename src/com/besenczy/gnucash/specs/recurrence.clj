@@ -1,10 +1,11 @@
 (ns com.besenczy.gnucash.specs.recurrence
   (:require
+   [com.besenczy.gnucash.specs.numeric :as numeric]
    [com.besenczy.gnucash.specs.common :as common]
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::start ::common/date)
-(spec/def ::multiplier ::common/numeric)
+(spec/def ::multiplier ::numeric/fraction)
 
 (spec/def ::period-type
   (spec/and #{"day" "week" "month"}

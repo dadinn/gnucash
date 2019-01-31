@@ -1,5 +1,6 @@
 (ns com.besenczy.gnucash.specs.slot
   (:require
+   [com.besenczy.gnucash.specs.numeric :as numeric]
    [com.besenczy.gnucash.specs.common :as common]
    [clojure.spec.alpha :as spec]))
 
@@ -7,8 +8,8 @@
   (spec/and
     (spec/or
       :frame (spec/tuple #{:frame} ::frame)
-      :integer (spec/tuple #{:integer} ::common/numeric)
-      :numeric (spec/tuple #{:numeric} ::common/numeric)
+      :integer (spec/tuple #{:integer} ::numeric/fraction)
+      :numeric (spec/tuple #{:numeric} ::numeric/fraction)
       :guid (spec/tuple #{:guid} ::common/guid)
       :gdate (spec/tuple #{:gdate} ::common/date)
       :timespec (spec/tuple #{:timespec} ::common/datetime)

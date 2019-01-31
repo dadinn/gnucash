@@ -1,5 +1,6 @@
 (ns com.besenczy.gnucash.test.specs
   (:require
+   [com.besenczy.gnucash.specs.numeric :as numeric]
    [com.besenczy.gnucash.specs.common :as common]
    [com.besenczy.gnucash.specs.slot :as slot]
    [com.besenczy.gnucash.specs.entities :as entities]
@@ -16,14 +17,14 @@
 
 (deftest numeric
   (testing "numeric entry should conform to spec"
-    (is= 42 (spec/conform ::common/numeric "42"))
-    (is= -42 (spec/conform ::common/numeric "-42"))
-    (is= 1 (spec/conform ::common/numeric "111111/111111"))
-    (is= -1 (spec/conform ::common/numeric "-111111/111111"))
-    (is= 11/10000 (spec/conform ::common/numeric "11/10000"))
-    (is= -11/10000 (spec/conform ::common/numeric "-11/10000"))
-    (is= -11/111111 (spec/conform ::common/numeric "11/-111111"))
-    (is= 11/111111 (spec/conform ::common/numeric "-11/-111111"))))
+    (is= 42 (spec/conform ::numeric/fraction "42"))
+    (is= -42 (spec/conform ::numeric/fraction "-42"))
+    (is= 1 (spec/conform ::numeric/fraction "111111/111111"))
+    (is= -1 (spec/conform ::numeric/fraction "-111111/111111"))
+    (is= 11/10000 (spec/conform ::numeric/fraction "11/10000"))
+    (is= -11/10000 (spec/conform ::numeric/fraction "-11/10000"))
+    (is= -11/111111 (spec/conform ::numeric/fraction "11/-111111"))
+    (is= 11/111111 (spec/conform ::numeric/fraction "-11/-111111"))))
 
 (deftest slots
   (testing "slot entry should conform to spec"

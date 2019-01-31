@@ -1,5 +1,6 @@
 (ns com.besenczy.gnucash.specs.entities.account
   (:require
+   [com.besenczy.gnucash.specs.numeric :as numeric]
    [com.besenczy.gnucash.specs.common :as common]
    [com.besenczy.gnucash.specs.slot :as slot]
    [com.besenczy.gnucash.specs.lot :as lot]
@@ -19,7 +20,7 @@
 
 (spec/def ::parent ::common/guid)
 (spec/def ::commodity ::common/commodity)
-(spec/def ::unit ::common/numeric)
+(spec/def ::unit ::numeric/fraction)
 
 (spec/def ::slots ::slot/frame)
 
