@@ -9,7 +9,7 @@
 (spec/def ::id ::common/guid)
 (spec/def ::name string?)
 (spec/def ::description string?)
-(spec/def ::num-periods ::numeric/fraction)
+(spec/def ::num-periods ::numeric/natural)
 
 (spec/def ::recurrence
   (spec/keys

@@ -14,9 +14,9 @@
 (spec/def ::account ::common/guid)
 (spec/def ::auto-create? ::common/boolean-char)
 (spec/def ::auto-create-notify? ::common/boolean-char)
-(spec/def ::advance-create-days ::numeric/fraction)
-(spec/def ::advance-remind-days ::numeric/fraction)
-(spec/def ::instance-count ::numeric/fraction)
+(spec/def ::advance-create-days ::numeric/natural)
+(spec/def ::advance-remind-days ::numeric/natural)
+(spec/def ::instance-count ::numeric/natural)
 
 (spec/def ::schedule
   (spec/coll-of ::budget/recurrence))

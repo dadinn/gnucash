@@ -19,7 +19,7 @@
 (spec/def ::fraction
   (spec/with-gen
     (spec/and string?
-      (partial re-matches #"-?[0-9]+/?-?[0-9]*")
+      (partial re-matches #"-?[0-9]+/-?[0-9]+")
       (spec/conformer
         (fn [s]
           (let [[x & xs] (map edn/read-string (string/split s #"/"))]

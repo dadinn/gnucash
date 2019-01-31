@@ -8,7 +8,7 @@
   (spec/and
     (spec/or
       :frame (spec/tuple #{:frame} ::frame)
-      :integer (spec/tuple #{:integer} ::numeric/fraction)
+      :integer (spec/tuple #{:integer} ::numeric/natural)
       :numeric (spec/tuple #{:numeric} ::numeric/fraction)
       :guid (spec/tuple #{:guid} ::common/guid)
       :gdate (spec/tuple #{:gdate} ::common/date)

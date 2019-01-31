@@ -7,7 +7,7 @@
 
 (spec/def ::guid ::common/guid)
 (spec/def ::name string?)
-(spec/def ::refcount ::numeric/fraction)
+(spec/def ::refcount ::numeric/natural)
 (spec/def ::invisible? ::common/boolean-num)
 (spec/def ::entries
   (spec/coll-of

@@ -20,7 +20,7 @@
 
 (spec/def ::parent ::common/guid)
 (spec/def ::commodity ::common/commodity)
-(spec/def ::unit ::numeric/fraction)
+(spec/def ::unit ::numeric/natural)
 
 (spec/def ::slots ::slot/frame)
 
