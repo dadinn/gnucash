@@ -4,16 +4,13 @@
    [com.besenczy.gnucash.specs.book :as book]
    [clojure.spec.alpha :as spec]))
 
-(spec/def ::counters
-  (spec/map-of string? ::common/integer))
-
 (spec/def ::book
   (spec/keys
     :req-un
     [::book/id
      ::book/slots
      ::book/commodities
-     ::counters
+     ::common/counters
      ::book/prices
      ::book/accounts
      ::book/transactions
@@ -30,4 +27,4 @@
      ::book/budgets]))
 
 (spec/def ::document
-  (spec/keys :req-un [::book ::counters]))
+  (spec/keys :req-un [::book ::common/counters]))

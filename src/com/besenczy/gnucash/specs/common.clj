@@ -110,6 +110,9 @@
       {"y" true "n" false}
       {true "y" false "n"})))
 
+(spec/def ::counters
+  (spec/map-of string? ::integer))
+
 (spec/def ::commodity
   (spec/keys
     :req-un
