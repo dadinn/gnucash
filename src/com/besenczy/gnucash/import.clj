@@ -9,9 +9,9 @@
    [clojure.data.zip.xml :as zx]
    [clojure.data.xml :as x]))
 
-(declare ->frame)
+(declare frame)
 
-(defn ->slotvalue
+(defn slotvalue
   ([loc type kw]
    (case type
      "frame"
@@ -19,7 +19,7 @@
      [:frame
       (zx/xml1-> loc
         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
-        (->frame kw))]
+        (frame kw))]
      "string"
      [:string
       (zx/xml1-> loc
@@ -51,19 +51,19 @@
         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
         zx/text)])))
 
-(defn ->slot [kw]
+(defn slot [kw]
   (fn [loc]
     (let [k (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/key zx/text)
           t (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value (zx/attr :type))]
-      (list [k (->slotvalue loc t kw)]))))
+      (list [k (slotvalue loc t kw)]))))
 
-(defn ->frame
-  ([] (->frame :slot))
+(defn frame
+  ([] (frame :slot))
   ([kw]
    {:pre [(keyword? kw)]}
-   (fn [loc] (into {} (zx/xml-> loc kw (->slot kw))))))
+   (fn [loc] (into {} (zx/xml-> loc kw (slot kw))))))
 
-(defn ->commodity [loc]
+(defn commodity [loc]
   (utils/into-map
     :id
     (zx/xml1-> loc
@@ -98,7 +98,7 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcmdty/fraction
       zx/text)))
 
-(defn ->price [loc]
+(defn price [loc]
   (utils/into-map
     :id
     (zx/xml1-> loc
@@ -108,11 +108,11 @@
     :commodity
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/commodity
-      ->commodity)
+      commodity)
     :currency
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/currency
-      ->commodity)
+      commodity)
     :date
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/time
@@ -130,7 +130,7 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fprice/value
       zx/text)))
 
-(defn ->lot [loc]
+(defn lot [loc]
   (utils/into-map
     :id
     (zx/xml1-> loc
@@ -139,9 +139,9 @@
     :slots
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Flot/slots
-      (->frame))))
+      (frame))))
 
-(defn ->account [loc]
+(defn account [loc]
   (utils/into-map
     :id
     (zx/xml1-> loc
@@ -172,7 +172,7 @@
     :commodity
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/commodity
-      ->commodity)
+      commodity)
     :unit
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/commodity-scu
@@ -181,13 +181,13 @@
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/lots
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/lot
-     ->lot)
+     lot)
     :slots
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/slots
-      (->frame :slot))))
+      (frame :slot))))
 
-(defn ->split [loc]
+(defn split [loc]
   (utils/into-map
     :id
     (zx/xml1-> loc
@@ -230,7 +230,7 @@
       (zx/attr= type "guid")
       zx/text)))
 
-(defn ->transaction [loc]
+(defn transaction [loc]
   (utils/into-map
     :id
     (zx/xml1-> loc
@@ -240,7 +240,7 @@
     :currency
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/currency
-      ->commodity)
+      commodity)
     :date-entered
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/date-entered
@@ -262,12 +262,12 @@
     :slots
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/slots
-      (->frame))
+      (frame))
     :splits
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/splits
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/split
-      ->split)))
+      split)))
 
 (defn countdata-pair [loc]
   "Extract key-value pair from count-data XML element"
@@ -276,7 +276,7 @@
         v (first content)]
     (list [k v])))
 
-(defn ->address [loc]
+(defn address [loc]
   (utils/into-map
     :name
     (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/name zx/text)
@@ -295,7 +295,7 @@
     :email
     (zx/xml1-> loc :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Faddr/email zx/text)))
 
-(defn ->customer [loc]
+(defn customer [loc]
   (utils/into-map
     :guid
     (zx/xml1-> loc
@@ -325,7 +325,7 @@
     :currency
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/currency
-      ->commodity)
+      commodity)
     :terms
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/terms
@@ -340,12 +340,12 @@
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/addr
       (zx/attr= :version "2.0.0")
-      ->address)
+      address)
     :shipping-address
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/shipaddr
       (zx/attr= :version "2.0.0")
-      ->address)
+      address)
     :tax-included
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/taxincluded
@@ -361,9 +361,9 @@
     :slots
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/slots
-      (->frame))))
+      (frame))))
 
-(defn ->vendor [loc]
+(defn vendor [loc]
   (utils/into-map
     :guid
     (zx/xml1-> loc
@@ -385,7 +385,7 @@
     :currency
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/currency
-      ->commodity)
+      commodity)
     :terms
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/terms
@@ -400,7 +400,7 @@
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/addr
       (zx/attr= :version "2.0.0")
-      ->address)
+      address)
     :tax-included
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/taxincluded
@@ -416,9 +416,9 @@
     :slots
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/slots
-      (->frame))))
+      (frame))))
 
-(defn ->employee [loc]
+(defn employee [loc]
   (utils/into-map
     :guid
     (zx/xml1-> loc
@@ -440,7 +440,7 @@
     :currency
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/currency
-      ->commodity)
+      commodity)
     :workday
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/workday
@@ -453,7 +453,7 @@
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/addr
       (zx/attr= :version "2.0.0")
-      ->address)
+      address)
     :language
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/language
@@ -461,9 +461,9 @@
     :slots
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/slots
-      (->frame))))
+      (frame))))
 
-(defn ->owner [loc]
+(defn owner [loc]
   (utils/into-map
     :type
     (zx/xml1-> loc
@@ -475,7 +475,7 @@
       (zx/attr= :type "guid")
       zx/text)))
 
-(defn ->job [loc]
+(defn job [loc]
   (utils/into-map
     :guid
     (zx/xml1-> loc
@@ -498,13 +498,13 @@
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fjob/owner
       (zx/attr= :version "2.0.0")
-      ->owner)
+      owner)
     :active?
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fjob/active
       zx/text)))
 
-(defn ->invoice [loc]
+(defn invoice [loc]
   (utils/into-map
     :guid
     (zx/xml1-> loc
@@ -519,12 +519,12 @@
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/owner
       (zx/attr= :version "2.0.0")
-      ->owner)
+      owner)
     :billto
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/billto
       (zx/attr= :version "2.0.0")
-      ->owner)
+      owner)
     :reference
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/billing_id
@@ -536,7 +536,7 @@
     :currency
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/currency
-      ->commodity)
+      commodity)
     :opened
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/opened
@@ -574,9 +574,9 @@
     :slots
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/slots
-      (->frame))))
+      (frame))))
 
-(defn ->billterm [loc]
+(defn billterm [loc]
   (utils/into-map
     :guid
     (zx/xml1-> loc
@@ -615,7 +615,7 @@
       (zx/attr= :type "guid")
       zx/text)))
 
-(defn ->tt-entry [loc]
+(defn tt-entry [loc]
   (utils/into-map
     :account
     (zx/xml1-> loc
@@ -631,7 +631,7 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftte/type
       zx/text)))
 
-(defn ->taxtable [loc]
+(defn taxtable [loc]
   (utils/into-map
     :guid
     (zx/xml1-> loc
@@ -659,14 +659,14 @@
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/entries
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncTaxTableEntry
-      ->tt-entry)
+      tt-entry)
     :child
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/child
       (zx/attr= :type "guid")
       zx/text)))
 
-(defn ->entry [loc]
+(defn entry [loc]
   (utils/into-map
     :guid
     (zx/xml1-> loc
@@ -765,7 +765,7 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-pay
       zx/text)))
 
-(defn ->recurrance [loc]
+(defn recurrance [loc]
   (utils/into-map
     :start
     (zx/xml1-> loc
@@ -784,7 +784,7 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/weekend_adj
       zx/text)))
 
-(defn ->schedxaction [loc]
+(defn schedxaction [loc]
   (utils/into-map
     :id
     (zx/xml1-> loc
@@ -818,7 +818,7 @@
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/schedule
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/recurrence
-      ->recurrance)
+      recurrance)
     :auto-create?
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/autoCreate
@@ -840,18 +840,18 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/instanceCount
       zx/text)))
 
-(defn ->tempxaction [loc]
+(defn tempxaction [loc]
   (utils/into-map
     :accounts
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/account
-      ->account)
+      account)
     :transactions
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/transaction
-      ->transaction)))
+      transaction)))
 
-(defn ->budget [loc]
+(defn budget [loc]
   (utils/into-map
     :id
     (zx/xml1-> loc
@@ -874,13 +874,13 @@
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbgt/recurrence
       (zx/attr= :version "1.0.0")
-      ->recurrance)
+      recurrance)
     :slots
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbgt/slots
-      (->frame))))
+      (frame))))
 
-(defn ->book [loc]
+(defn book [loc]
   (utils/into-map
     :id
     (zx/xml1-> loc
@@ -890,64 +890,64 @@
     :slots
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/slots
-      (->frame))
+      (frame))
     :commodities
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/commodity
       (zx/attr= :version "2.0.0")
-      ->commodity)
+      commodity)
     :customers
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncCustomer
       (zx/attr= :version "2.0.0")
-      ->customer)
+      customer)
     :vendors
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncVendor
       (zx/attr= :version "2.0.0")
-      ->vendor)
+      vendor)
     :employees
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncEmployee
       (zx/attr= :version "2.0.0")
-      ->employee)
+      employee)
     :jobs
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncJob
       (zx/attr= :version "2.0.0")
-      ->job)
+      job)
     :invoices
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncInvoice
       (zx/attr= :version "2.0.0")
-      ->invoice)
+      invoice)
     :billing-terms
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncBillTerm
       (zx/attr= :version "2.0.0")
-      ->billterm)
+      billterm)
     :tax-tables
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncTaxTable
       (zx/attr= :version "2.0.0")
-     ->taxtable)
+      taxtable)
     :entries
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncEntry
       (zx/attr= :version "2.0.0")
-      ->entry)
+      entry)
     :schedxactions
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/schedxaction
-      ->schedxaction)
+      schedxaction)
     :tempxactions
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/template-transactions
-      ->tempxaction)
+      tempxaction)
     :budgets
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/budget
-      ->budget)
+      budget)
     :counters
     (into {}
       (zx/xml-> loc
@@ -958,26 +958,26 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/pricedb
       (zx/attr= :version "1")
       :price
-      ->price)
+      price)
     :accounts
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/account
       (zx/attr= :version "2.0.0")
-      ->account)
+      account)
     :transactions
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/transaction
       (zx/attr= :version "2.0.0")
-      ->transaction)))
+      transaction)))
 
-(defn ->document [loc]
+(defn document [loc]
   (utils/into-map
     :book
     (zx/xml1-> loc
       :gnc-v2
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book
       (zx/attr= :version "2.0.0")
-      ->book)
+      book)
     :counters
     (into {}
       (zx/xml-> loc

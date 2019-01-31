@@ -10,4 +10,4 @@
   (-> (slurp path)
     (x/parse-str)
     (z/xml-zip)
-    (import/->document)))
+    (import/document)))
