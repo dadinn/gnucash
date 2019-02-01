@@ -28,59 +28,82 @@
     (is= 11/111111 (spec/conform ::numeric/fraction "-11/-111111"))))
 
 (deftest slots
-  (testing "slot entry should conform to spec"
+  (testing "guid slot value should conform to spec"
     (is=
       (spec/conform ::slot/value [:guid "d6e87f32ce9c437ffee9704ad7fc8bf4"])
-      [:guid #uuid "d6e87f32-ce9c-437f-fee9-704ad7fc8bf4"])
+      {:type :guid, :value #uuid "d6e87f32-ce9c-437f-fee9-704ad7fc8bf4"}))
+
+  (testing "integer slot value should conform to spec"
     (is=
       (spec/conform ::slot/value [:integer "11"])
-      [:integer 11])
+      {:type :integer, :value 11}))
+
+  (testing "numeric slot value should conform to spec"
     (is=
       (spec/conform ::slot/value [:numeric "11/11111"])
-      [:numeric 11/11111])
+      {:type :numeric, :value 11/11111}))
+
+  (testing "gdate slot value should conform to spec"
     (is=
       (spec/conform ::slot/value [:gdate "2001-01-01"])
-      [:gdate (jt/local-date "2001-01-01")])
+      {:type :gdate, :value (jt/local-date "2001-01-01")}))
+
+  (testing "timespec slot value should conform to spec"
     (is=
       (spec/conform ::slot/value [:timespec "2001-01-01 10:10:10 +1000"])
-      [:timespec (jt/zoned-date-time "2001-01-01T10:10:10+10:00")])
+      {:type :timespec, :value (jt/zoned-date-time "2001-01-01T10:10:10+10:00")}))
+
+  (testing "string slot values should conform to spec"
+    (is=
+      (spec/conform ::slot/value [:string "11"])
+      {:type :string, :value "11"})
     (is=
       (spec/conform ::slot/value [:string "11/11111"])
-      [:string "11/11111"])
+      {:type :string, :value "11/11111"})
+    (is=
+      (spec/conform ::slot/value [:string "2001-01-01"])
+      {:type :string, :value "2001-01-01"})
+    (is=
+      (spec/conform ::slot/value [:string "2001-01-01 10:10:10 +1000"])
+      {:type :string, :value "2001-01-01 10:10:10 +1000"}))
+  (testing "slot frame entity should conform to spec"
     (is=
       (spec/conform ::slot/value
         [:frame
-         {"baz" [:integer "11/11111"]
+         {"baz" [:integer "11"]
           "bazz" [:gdate "2001-01-01"]
           "bazzz" [:timespec "2001-01-01 10:10:10 +1000"]
           "bazzzz" [:numeric "11/11111"]
           "bax" [:string "Bla Bla Bla"]}])
-      [:frame
-       {"baz" [:integer 11/11111],
-        "bazz" [:gdate (jt/local-date "2001-01-01")],
-        "bazzz" [:timespec (jt/zoned-date-time "2001-01-01T10:10:10+10:00")],
-        "bazzzz" [:numeric 11/11111],
-        "bax" [:string "Bla Bla Bla"]}])
+      {:type :frame
+       :value
+       {"baz" {:type :integer, :value 11},
+        "bazz" {:type :gdate, :value (jt/local-date "2001-01-01")},
+        "bazzz" {:type :timespec, :value (jt/zoned-date-time "2001-01-01T10:10:10+10:00")},
+        "bazzzz" {:type :numeric, :value 11/11111},
+        "bax" {:type :string, :value "Bla Bla Bla"}}}))
+  (testing "nested slot frame entity should conform to spec"
     (is=
       (spec/conform ::slot/frame
         {"foo"
          [:guid "d6e87f32ce9c437ffee9704ad7fc8bf4"]
          "bar"
          [:frame
-          {"baz" [:integer "11/11111"]
+          {"baz" [:integer "11"]
            "bazz" [:gdate "2001-01-01"]
            "bazzz" [:timespec "2001-01-01 10:10:10 +1000"]
            "bazzzz" [:numeric "11/11111"]
-           "bax" [:string "Bla Bla Bla"]}]})
+           "bazzzzz" [:string "Bla Bla Bla"]}]})
       {"foo"
-       [:guid #uuid "d6e87f32-ce9c-437f-fee9-704ad7fc8bf4"]
+       {:type :guid, :value #uuid "d6e87f32-ce9c-437f-fee9-704ad7fc8bf4"}
        "bar"
-       [:frame
-        {"baz" [:integer 11/11111]
-         "bazz" [:gdate (jt/local-date "2001-01-01")]
-         "bazzz" [:timespec (jt/zoned-date-time "2001-01-01T10:10:10+10:00")]
-         "bazzzz" [:numeric 11/11111]
-         "bax" [:string "Bla Bla Bla"]}]})))
+       {:type :frame
+        :value
+        {"baz" {:type :integer, :value 11}
+         "bazz" {:type :gdate, :value (jt/local-date "2001-01-01")}
+         "bazzz" {:type :timespec, :value (jt/zoned-date-time "2001-01-01T10:10:10+10:00")}
+         "bazzzz" {:type :numeric, :value 11/11111}
+         "bazzzzz" {:type :string, :value "Bla Bla Bla"}}}})))
 
 (deftest price
   (testing "price entity should conform to spec"
@@ -146,8 +169,10 @@
        (jt/zoned-date-time "2014-12-16T10:59Z")
        :description "Initial Shares Value"
        :slots
-       {"date-posted" [:gdate (jt/local-date "2014-12-16")]
-        "notes" [:string ""]}
+       {"date-posted"
+        {:type :gdate,
+         :value (jt/local-date "2014-12-16")},
+        "notes" {:type :string, :value ""}}
        :splits
        [{:id #uuid "952f2cc5-f291-b94f-bb0a-ff3e24a53e19"
          :reconciled-state "n"
@@ -228,11 +253,12 @@
        :credit-limit 0
        :slots
        {"last-posted-to-acct"
-        [:guid #uuid "ed0a209c-c78f-680c-45a8-7851ed232236"]
+        {:type :guid, :value #uuid "ed0a209c-c78f-680c-45a8-7851ed232236"}
         "payment"
-        [:frame
+        {:type :frame
+         :value
          {"last_acct"
-          [:guid #uuid "c287231d-815b-d4b8-6fc6-2907cf3eaa46"]}]}
+          {:type :guid, :value #uuid "c287231d-815b-d4b8-6fc6-2907cf3eaa46"}}}}
        :terms #uuid "bb032b5b-31a7-f831-6f38-d097e8db26c8"
        :use-tax-table? true
        :name "Big Bank Co"
@@ -269,11 +295,12 @@
       {:active? true
        :slots
        {"last-posted-to-acct"
-        [:guid #uuid "d6e87f32-ce9c-437f-fee9-704ad7fc8bf4"]
+        {:type :guid :value #uuid "d6e87f32-ce9c-437f-fee9-704ad7fc8bf4"}
         "payment"
-        [:frame
+        {:type :frame
+         :value
          {"last_acct"
-          [:guid #uuid "c287231d-815b-d4b8-6fc6-2907cf3eaa46"]}]}
+          {:type :guid :value #uuid "c287231d-815b-d4b8-6fc6-2907cf3eaa46"}}}}
        :terms #uuid "c8d46fc6-d8af-f395-1364-615b3de94a66"
        :use-tax-table? true
        :name "Sundry"
@@ -305,11 +332,13 @@
        :workday 0
        :slots
        {"last-posted-to-acct"
-        [:guid #uuid "d6e87f32-ce9c-437f-fee9-704ad7fc8bf4"]
+        {:type :guid :value #uuid "d6e87f32-ce9c-437f-fee9-704ad7fc8bf4"}
         "payment"
-        [:frame
+        {:type :frame
+         :value
          {"last_acct"
-          [:guid #uuid "b4f05202-e1e8-5c2f-8628-4cead3737d19"]}]}
+          {:type :guid
+           :value #uuid "b4f05202-e1e8-5c2f-8628-4cead3737d19"}}}}
        :username "dadinn"
        :rate 0
        :currency {:id "GBP", :space "ISO4217"}
@@ -357,7 +386,7 @@
          :owner {:type "gncJob", :id "7ed7f4f40882668a1d78f6efee5ecce9"}
          :guid "006176a8640a67805948b7181d73c240"})
       {:posted (jt/zoned-date-time "2016-09-07T00:00+01:00")
-       :slots {"credit-note" [:integer 0]}
+       :slots {"credit-note" {:type :integer, :value 0}}
        :terms #uuid "f082418d-653a-2000-5859-0c25f5bd726f"
        :opened (jt/zoned-date-time "2016-09-07T00:00+01:00")
        :currency {:id "GBP", :space "ISO4217"}
@@ -499,44 +528,47 @@
         :multiplier 1}
        :slots
        {"3ebc81195e2b0d188260a5b92181ab50"
-        [:frame
-         {"9" [:numeric 6]
-          "3" [:numeric 6]
-          "4" [:numeric 6]
-          "8" [:numeric 6]
-          "7" [:numeric 6]
-          "5" [:numeric 6]
-          "6" [:numeric 6]
-          "1" [:numeric 6]
-          "0" [:numeric 6]
-          "11" [:numeric 6]
-          "2" [:numeric 6]
-          "10" [:numeric 6]}]
+        {:type :frame
+         :value
+         {"9" {:type :numeric, :value 6}
+          "3" {:type :numeric, :value 6}
+          "4" {:type :numeric, :value 6}
+          "8" {:type :numeric, :value 6}
+          "7" {:type :numeric, :value 6}
+          "5" {:type :numeric, :value 6}
+          "6" {:type :numeric, :value 6}
+          "1" {:type :numeric, :value 6}
+          "0" {:type :numeric, :value 6}
+          "11" {:type :numeric, :value 6}
+          "2" {:type :numeric, :value 6}
+          "10" {:type :numeric, :value 6}}}
         "68aa1816af8d8025f873488153196a7b"
-        [:frame
-         {"9" [:numeric -9/100]
-          "3" [:numeric -9/100]
-          "4" [:numeric -9/100]
-          "8" [:numeric -2/1000]
-          "7" [:numeric -9/100]
-          "5" [:numeric -9/100]
-          "6" [:numeric -9/100]
-          "1" [:numeric -9/100]
-          "0" [:numeric -9/100]
-          "11" [:numeric 0]
-          "2" [:numeric -9/100]
-          "10" [:numeric -9/100]}]
+        {:type :frame
+         :value
+         {"9" {:type :numeric, :value -9/100}
+          "3" {:type :numeric, :value -9/100}
+          "4" {:type :numeric, :value -9/100}
+          "8" {:type :numeric, :value -1/500}
+          "7" {:type :numeric, :value -9/100}
+          "5" {:type :numeric, :value -9/100}
+          "6" {:type :numeric, :value -9/100}
+          "1" {:type :numeric, :value -9/100}
+          "0" {:type :numeric, :value -9/100}
+          "11" {:type :numeric, :value 0}
+          "2" {:type :numeric, :value -9/100}
+          "10" {:type :numeric, :value -9/100}}}
         "7402f9d2c881069783237df27928513f"
-        [:frame
-         {"9" [:numeric -1/50]
-          "3" [:numeric -1/50]
-          "4" [:numeric -3/100]
-          "8" [:numeric -1/50]
-          "7" [:numeric -1/50]
-          "5" [:numeric -3/100]
-          "6" [:numeric -1/50]
-          "1" [:numeric -3/100]
-          "0" [:numeric -1/50]
-          "11" [:numeric -1/50]
-          "2" [:numeric -3/100]
-          "10" [:numeric -1/50]}]}})))
+        {:type :frame
+         :value
+         {"9" {:type :numeric, :value -1/50}
+          "3" {:type :numeric, :value -1/50}
+          "4" {:type :numeric, :value -3/100}
+          "8" {:type :numeric, :value -1/50}
+          "7" {:type :numeric, :value -1/50}
+          "5" {:type :numeric, :value -3/100}
+          "6" {:type :numeric, :value -1/50}
+          "1" {:type :numeric, :value -3/100}
+          "0" {:type :numeric, :value -1/50}
+          "11" {:type :numeric, :value -1/50}
+          "2" {:type :numeric, :value -3/100}
+          "10" {:type :numeric, :value -1/50}}}}})))

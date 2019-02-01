@@ -8,15 +8,38 @@
 (spec/def ::value
   (spec/and
     (spec/or
-      :frame (spec/tuple #{:frame} ::frame)
-      :integer (spec/tuple #{:integer} ::numeric/natural)
-      :numeric (spec/tuple #{:numeric} ::numeric/fraction)
-      :guid (spec/tuple #{:guid} ::common/guid)
-      :gdate (spec/tuple #{:gdate} ::common/date)
-      :timespec (spec/tuple #{:timespec} ::common/datetime)
+      :frame
+      (spec/cat
+        :type #{:frame}
+        :value ::frame)
+      :integer
+      (spec/cat
+        :type #{:integer}
+        :value ::numeric/natural)
+      :numeric
+      (spec/cat
+        :type #{:numeric}
+        :value ::numeric/fraction)
+      :guid
+      (spec/cat
+        :type #{:guid}
+        :value ::common/guid)
+      :gdate
+      (spec/cat
+        :type #{:gdate}
+        :value ::common/date)
+      :timespec
+      (spec/cat
+        :type #{:timespec}
+        :value ::common/datetime)
       ;; string case must be the last!
-      :string (spec/tuple #{:string} string?))
-    (spec/conformer second str)))
+      :string
+      (spec/cat
+        :type #{:string}
+        :value string?))
+    (spec/conformer second
+      (fn [{:keys [type value]}]
+        [type (str value)]))))
 
 (spec/def ::frame
   (spec/map-of ::strings/non-empty ::value))
