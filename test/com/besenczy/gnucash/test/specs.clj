@@ -17,8 +17,9 @@
 
 (deftest numeric
   (testing "numeric entry should conform to spec"
-    (is= 42 (spec/conform ::numeric/fraction "42"))
-    (is= -42 (spec/conform ::numeric/fraction "-42"))
+    (is= 42 (spec/conform ::numeric/natural "42"))
+    (is= 42 (spec/conform ::numeric/integer "42"))
+    (is= -42 (spec/conform ::numeric/integer "-42"))
     (is= 1 (spec/conform ::numeric/fraction "111111/111111"))
     (is= -1 (spec/conform ::numeric/fraction "-111111/111111"))
     (is= 11/10000 (spec/conform ::numeric/fraction "11/10000"))
