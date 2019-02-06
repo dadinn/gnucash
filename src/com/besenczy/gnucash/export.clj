@@ -28,12 +28,14 @@
 
 (declare frame-contents)
 
+(def primitive-types #{:string :integer :numeric :guid :gdate :timespec})
+
 (defn slot-value [t v kw]
-  (cond
-    (= t :frame)
-    ["frame" (frame-contents kw v)]
-    (get #{:string :integer :numeric :guid :gdate :timespec} t)
-    [(name t) [v]]))
+  [(name t)
+   (cond
+     (= t :frame) (frame-contents kw v)
+     (primitive-types t) [v]
+     :else (throw (ex-info "Unknown slot type" {:type t :value v})))])
 
 (defn frame-contents
   ([m]
