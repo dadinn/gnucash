@@ -13,43 +13,37 @@
 
 (defn slotvalue
   ([loc type kw]
-   (case type
-     "frame"
-     ;; TODO effectively a hardcoded :slot, therefore breaks the recursion!
-     [:frame
-      (zx/xml1-> loc
-        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
-        (frame kw))]
-     "string"
-     [:string
-      (zx/xml1-> loc
-        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
-        zx/text)]
-     "integer"
-     [:integer
-      (zx/xml1-> loc
-        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
-        zx/text)]
-     "numeric"
-     [:numeric
-      (zx/xml1-> loc
-        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
-        zx/text)]
-     "gdate"
-     [:gdate
-      (zx/xml1-> loc
-        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
-        zx/text)]
-     "guid"
-     [:guid
-      (zx/xml1-> loc
-        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
-        zx/text)]
-     "timespec"
-     [:timespec
-      (zx/xml1-> loc
-        :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
-        zx/text)])))
+   (vector (keyword type)
+     (case type
+       "frame"
+       ;; TODO effectively a hardcoded :slot, therefore breaks the recursion
+       (zx/xml1-> loc
+         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
+         (frame kw))
+       "string"
+       (zx/xml1-> loc
+         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
+         zx/text)
+       "integer"
+       (zx/xml1-> loc
+         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
+         zx/text)
+       "numeric"
+       (zx/xml1-> loc
+         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
+         zx/text)
+       "gdate"
+       (zx/xml1-> loc
+         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
+         zx/text)
+       "guid"
+       (zx/xml1-> loc
+         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
+         zx/text)
+       "timespec"
+       (zx/xml1-> loc
+         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fslot/value
+         zx/text)))))
 
 (defn slot [kw]
   (fn [loc]
