@@ -276,7 +276,7 @@
   (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/lot nil
     (filter-nonempty-contents
       [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Flot/id nil id)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Flot/slots nil
+       (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Flot/slots nil
          (frame-contents slots))])))
 
 (defn account-element [{:keys [id name description code type parent commodity unit lots slots]}]
