@@ -125,7 +125,7 @@
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/id nil id)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/name nil name)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/active nil active?)
-       (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/currency nil currency)
+       (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/currency currency)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/terms
          {:type "guid"} guid)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/taxtable
@@ -145,7 +145,7 @@
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/id nil id)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/username nil username)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/active nil active?)
-       (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/currency nil currency)
+       (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/currency currency)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/workday nil workday)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/rate nil rate)
        (address-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/addr billing-address)
@@ -182,7 +182,7 @@
          {:version "2.0.0"} (owner-contents billto))
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/billing_id nil reference)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/active nil active?)
-       (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/currency nil currency)
+       (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/currency currency)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/opened nil
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date nil opened))
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/posted nil
@@ -291,7 +291,7 @@
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/type nil type)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/parent
          {:type "guid"} parent)
-       (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/commodity nil commodity)
+       (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/commodity commodity)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/commodity-scu nil unit)
        (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fact/lots nil
          (map lot-element lots))
@@ -317,7 +317,7 @@
     {:version "2.0.0"}
     (filter-nonempty-contents
       [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/id {:type "guid"} id)
-       (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/currency nil currency)
+       (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/currency currency)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/date-entered nil
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date nil date-entered))
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/date-posted nil
