@@ -19,4 +19,6 @@
 (spec/def ::instance-count ::numeric/natural)
 
 (spec/def ::schedule
-  (spec/coll-of ::budget/recurrence))
+  (spec/coll-of ::budget/recurrence
+    :min-count 1
+    :into []))

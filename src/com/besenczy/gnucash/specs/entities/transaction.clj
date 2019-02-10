@@ -29,4 +29,6 @@
      ::split/lot]))
 
 (spec/def ::splits
-  (spec/coll-of ::split))
+  (spec/coll-of ::split
+    :min-count 2
+    :into []))

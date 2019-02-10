@@ -126,41 +126,134 @@
 
 (deftest account
   (testing "account entity should conform to spec"
-    (is=
-      (spec/conform ::entities/account
-        {:id "e921b069743f8d36e04e3eb786e12a52"
+    (testing "with lots"
+      (is=
+        (spec/conform ::entities/account
+          {:id "ed0a209cc78f680c45a87851ed232236",
+           :name "XSX",
+           :type "RECEIVABLE",
+           :parent "78ff533d1a66deb75cfb9a6a3e2c7cf8",
+           :commodity {:id "GBP", :space "ISO4217"},
+           :unit "100",
+           :lots
+           [{:id "00000000000000000000000000000000"}
+            {:id "02be4b91bfe90a4a7098fdb3bf53cc7d",
+             :slots
+             {"gncInvoice"
+              [:frame
+               {"invoice-guid" [:guid "6a350cbdc78221e92a8c456e5def308f"]}],
+              "title" [:string "Invoice 000026"]}}
+            {:id "341b2690a35da27d6a21018085941222",
+             :slots
+             {"gncInvoice"
+              [:frame
+               {"invoice-guid" [:guid "ff36e86f090d10ffc56cae9d6cc75af2"]}],
+              "title" [:string "Invoice 000048"]}}
+            {:id "552060fc3f7f13d963da721ea77fc493",
+             :slots
+             {"gncInvoice"
+              [:frame
+               {"invoice-guid" [:guid "69838c1d577c728ab657e79bbf38d5de"]}],
+              "title" [:string "Invoice 000022"]}}
+            {:id "5c2704146ce7d16f96998b7f10732762",
+             :slots
+             {"gncInvoice"
+              [:frame
+               {"invoice-guid" [:guid "006176a8640a67805948b7189d73c240"]}],
+              "title" [:string "Invoice 000043"]}}],
+           :slots {"color" [:string "Not Set"]}})
+        {:id #uuid "ed0a209c-c78f-680c-45a8-7851ed232236",
+         :name "XSX",
+         :type :receivable,
+         :parent #uuid "78ff533d-1a66-deb7-5cfb-9a6a3e2c7cf8",
+         :commodity {:id "GBP", :space "ISO4217"},
+         :unit 100,
+         :lots
+         [{:id #uuid "00000000-0000-0000-0000-000000000000"}
+          {:id #uuid "02be4b91-bfe9-0a4a-7098-fdb3bf53cc7d",
+           :slots
+           {"gncInvoice"
+            {:type :frame,
+             :value
+             {"invoice-guid"
+              {:type :guid,
+               :value #uuid "6a350cbd-c782-21e9-2a8c-456e5def308f"}}},
+            "title" {:type :string, :value "Invoice 000026"}}}
+          {:id #uuid "341b2690-a35d-a27d-6a21-018085941222",
+           :slots
+           {"gncInvoice"
+            {:type :frame,
+             :value
+             {"invoice-guid"
+              {:type :guid,
+               :value #uuid "ff36e86f-090d-10ff-c56c-ae9d6cc75af2"}}},
+            "title" {:type :string, :value "Invoice 000048"}}}
+          {:id #uuid "552060fc-3f7f-13d9-63da-721ea77fc493",
+           :slots
+           {"gncInvoice"
+            {:type :frame,
+             :value
+             {"invoice-guid"
+              {:type :guid,
+               :value #uuid "69838c1d-577c-728a-b657-e79bbf38d5de"}}},
+            "title" {:type :string, :value "Invoice 000022"}}}
+          {:id #uuid "5c270414-6ce7-d16f-9699-8b7f10732762",
+           :slots
+           {"gncInvoice"
+            {:type :frame,
+             :value
+             {"invoice-guid"
+              {:type :guid,
+               :value #uuid "006176a8-640a-6780-5948-b7189d73c240"}}},
+            "title" {:type :string, :value "Invoice 000043"}}}],
+         :slots {"color" {:type :string, :value "Not Set"}}}))
+    (testing "without lots"
+      (is=
+        (spec/conform ::entities/account
+          {:id "e921b069743f8d36e04e3eb786e12a52"
+           :name "Root Account"
+           :type "ROOT"
+           :commodity {:id "GBP", :space "ISO4217"}
+           :unit "100"})
+        {:id #uuid "e921b069-743f-8d36-e04e-3eb786e12a52"
          :name "Root Account"
-         :type "ROOT"
+         :type :root
          :commodity {:id "GBP", :space "ISO4217"}
-         :unit "100"})
-      {:id #uuid "e921b069-743f-8d36-e04e-3eb786e12a52"
-       :name "Root Account"
-       :type :root
-       :commodity {:id "GBP", :space "ISO4217"}
-       :unit 100})))
+         :unit 100}))
+    (testing "with empty lots"
+      (is= ::spec/invalid
+        ;; :lots should be non-empty or non-existent
+        (spec/conform ::entities/account
+          {:id "e921b069743f8d36e04e3eb786e12a52"
+           :name "Root Account"
+           :type "ROOT"
+           :lots []
+           :commodity {:id "GBP", :space "ISO4217"}
+           :unit "100"})
+        ))))
 
 (deftest transaction
   (testing "transaction entity should conform to spec"
     (is=
       (spec/conform ::entities/transaction
-        '{:id "9e4e370632f9454112276bf8f1eed7c3"
-          :currency {:id "GBP", :space "ISO4217"}
-          :date-entered "2015-04-15 09:27:17 +0100"
-          :date-posted "2014-12-16 10:59:00 +0000"
-          :description "Initial Shares Value"
-          :slots
-          {"date-posted" [:gdate " 2014-12-16 "], "notes" [:string ""]}
-          :splits
-          ({:id "952f2cc5f291b94fbb0aff3e24a53e19"
-            :reconciled-state "n"
-            :value "10000/100"
-            :quantity "10000/100"
-            :account "7e5c347630c6da87a289d7630efe4124"}
-           {:id "f778d66368075f897b68230bdca2e18d"
-            :reconciled-state "n"
-            :value "-10000/100"
-            :quantity "-10000/100"
-            :account "066fd7527cdf2a072baa16baa62ebfae"})})
+        {:id "9e4e370632f9454112276bf8f1eed7c3"
+         :currency {:id "GBP", :space "ISO4217"}
+         :date-entered "2015-04-15 09:27:17 +0100"
+         :date-posted "2014-12-16 10:59:00 +0000"
+         :description "Initial Shares Value"
+         :slots
+         {"date-posted" [:gdate " 2014-12-16 "], "notes" [:string ""]}
+         :splits
+         [{:id "952f2cc5f291b94fbb0aff3e24a53e19"
+           :reconciled-state "n"
+           :value "10000/100"
+           :quantity "10000/100"
+           :account "7e5c347630c6da87a289d7630efe4124"}
+          {:id "f778d66368075f897b68230bdca2e18d"
+           :reconciled-state "n"
+           :value "-10000/100"
+           :quantity "-10000/100"
+           :account "066fd7527cdf2a072baa16baa62ebfae"}]})
       {:id #uuid "9e4e3706-32f9-4541-1227-6bf8f1eed7c3"
        :currency {:id "GBP", :space "ISO4217"}
        :date-entered
@@ -183,7 +276,28 @@
          :reconciled-state "n"
          :value -100
          :quantity -100
-         :account #uuid "066fd752-7cdf-2a07-2baa-16baa62ebfae"}]})))
+         :account #uuid "066fd752-7cdf-2a07-2baa-16baa62ebfae"}]})
+    (testing "without splits"
+      (is= ::spec/invalid
+        (spec/conform ::entities/transaction
+          {:id "9e4e370632f9454112276bf8f1eed7c3"
+           :currency {:id "GBP", :space "ISO4217"}
+           :date-entered "2015-04-15 09:27:17 +0100"
+           :date-posted "2014-12-16 10:59:00 +0000"
+           :description "Initial Shares Value"
+           :slots
+           {"date-posted" [:gdate " 2014-12-16 "], "notes" [:string ""]}})))
+    (testing "with empty splits"
+      (is= ::spec/invalid
+        (spec/conform ::entities/transaction
+          {:id "9e4e370632f9454112276bf8f1eed7c3"
+           :currency {:id "GBP", :space "ISO4217"}
+           :date-entered "2015-04-15 09:27:17 +0100"
+           :date-posted "2014-12-16 10:59:00 +0000"
+           :description "Initial Shares Value"
+           :slots
+           {"date-posted" [:gdate " 2014-12-16 "], "notes" [:string ""]}
+           :splits []})))))
 
 (deftest billterm
   (testing "billing-terms entity should conform to spec"
@@ -223,7 +337,25 @@
        :entries
        [{:account #uuid "a11a9c48-ae2a-ddb8-8b83-4ecfacc20c22"
          :amount 20
-         :type :percent}]})))
+         :type :percent}]})
+    (testing "with empty and missing entries"
+      (is= ::spec/invalid
+        ;; entries must exist
+        (spec/conform ::entities/taxtable
+          {:guid "4abe1dea253f747e97bdeb5c87c6b72d"
+           :name "VAT Reclaim"
+           :refcount "0"
+           :invisible? "1"
+           :parent "722f16a0318e9de14cf53ddfddfdeb4f"}))
+      (is= ::spec/invalid
+        ;; entries cannot be empty
+        (spec/conform ::entities/taxtable
+          {:guid "4abe1dea253f747e97bdeb5c87c6b72d"
+           :name "VAT Reclaim"
+           :refcount "0"
+           :invisible? "1"
+           :parent "722f16a0318e9de14cf53ddfddfdeb4f"
+           :entries []})))))
 
 (deftest customer
   (testing "customer entity should conform to spec"
@@ -465,7 +597,23 @@
        :id #uuid "04259661-51a0-c18f-a580-65d41fdfed24"
        :auto-create? false
        :last (jt/local-date "2018-12-03")
-       :auto-create-notify? false})))
+       :auto-create-notify? false})
+    (testing "with empty schedule"
+      (is= ::spec/invalid
+        ;; :schedule should be non-empty or non-existent
+        (spec/conform ::entities/schedxaction
+          {:schedule []
+           :advance-remind-days "1"
+           :advance-create-days "0"
+           :name "Monthly Fees"
+           :start "2018-01-01"
+           :enabled? "y"
+           :account "9e4139d88a5e7a57a380089bf41a6711"
+           :instance-count "24"
+           :id "0425966151a0c18fa58065d41fdfed24"
+           :auto-create? "n"
+           :last "2018-12-03"
+           :auto-create-notify? "n"})))))
 
 (deftest budget
   (testing "budget entity should conform to spec"

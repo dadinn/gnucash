@@ -16,6 +16,8 @@
       :req-un
       [::entry/account
        ::entry/amount
-       ::entry/type])))
+       ::entry/type])
+    :min-count 1
+    :into []))
 (spec/def ::parent ::common/guid)
 (spec/def ::child ::common/guid)

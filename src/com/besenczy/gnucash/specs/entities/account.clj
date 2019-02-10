@@ -31,4 +31,6 @@
       :req-un
       [::lot/id]
       :opt-un
-      [::lot/slots])))
+      [::lot/slots])
+    :min-count 1
+    :into []))
