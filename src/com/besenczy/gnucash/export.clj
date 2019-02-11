@@ -121,13 +121,14 @@
   (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncVendor
     {:version "2.0.0"}
     (filter-nonempty-contents
-      [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/guid {:type "guid"} guid)
+      [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/guid
+         {:type "guid"} guid)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/id nil id)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/name nil name)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/active nil active?)
        (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/currency currency)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/terms
-         {:type "guid"} guid)
+         {:type "guid"} terms)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/taxtable
          {:type "guid"} tax-table)
        (address-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fvendor/addr billing-address)
