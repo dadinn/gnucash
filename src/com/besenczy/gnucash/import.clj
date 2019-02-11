@@ -221,7 +221,7 @@
     :lot
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/lot
-      (zx/attr= type "guid")
+      (zx/attr= :type "guid")
       zx/text)))
 
 (defn transaction [loc]
