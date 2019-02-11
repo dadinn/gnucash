@@ -150,7 +150,7 @@
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/workday nil workday)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/rate nil rate)
        (address-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/addr billing-address)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/language language)
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/language nil language)
        (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/slots
          nil (frame-contents slots))])))
 
