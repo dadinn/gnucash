@@ -107,9 +107,11 @@
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/active nil active?)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/discount nil discount)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/credit nil credit-limit)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/currency nil currency)
+       (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/currency nil currency)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/terms
          {:type "guid"} terms)
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/taxtable
+         {:type "guid"} tax-table)
        (address-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/addr billing-address)
        (address-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/shipaddr shipping-address)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcust/taxincluded nil tax-included)
