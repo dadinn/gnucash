@@ -154,9 +154,13 @@
        (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Femployee/slots
          nil (frame-contents slots))])))
 
-(defn owner-contents [{:keys [type id]}]
-  [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fowner/type nil type)
-   (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fowner/id {:type "guid"} id)])
+(defn owner-element
+  ([tag record]
+   (owner-element tag {:version "2.0.0"} record))
+  ([tag attr {:keys [type id]}]
+   (x/element tag attr
+     (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fowner/type nil type)
+     (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fowner/id {:type "guid"} id))))
 
 (defn job-element [{:keys [guid id name reference owner active?]}]
   (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncJob
@@ -167,8 +171,7 @@
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fjob/id nil id)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fjob/name nil name)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fjob/reference nil reference)
-       (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fjob/owner
-         {:version "2.0.0"} (owner-contents owner))
+       (owner-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fjob/owner owner)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fjob/active nil active?)])))
 
 (defn invoice-element [{:keys [guid id owner billto reference active? currency opened posted postlot posttxn postacc terms notes slots]}]
@@ -177,10 +180,8 @@
     (filter-nonempty-contents
       [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/guid {:type "guid"} guid)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/id nil id)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/owner
-         {:version "2.0.0"} (owner-contents owner))
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/billto
-         {:version "2.0.0"} (owner-contents billto))
+       (owner-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/owner owner)
+       (owner-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/billto billto)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/billing_id nil reference)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/active nil active?)
        (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Finvoice/currency currency)
