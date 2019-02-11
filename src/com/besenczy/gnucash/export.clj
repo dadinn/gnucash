@@ -83,7 +83,7 @@
 
 (defn address-element
   ([tag content]
-   (address-element {:version "2.0.0"} content))
+   (address-element tag {:version "2.0.0"} content))
   ([tag attr {:keys [name line1 line2 line3 line4 phone fax email]}]
    (xml-element tag attr
      (filter-nonempty-contents
