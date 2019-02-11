@@ -304,7 +304,7 @@
       [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/id {:type "guid"} id)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/reconciled-state nil reconciled-state)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/reconcile-date nil
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date reconciled-date))
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date nil reconciled-date))
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/value nil value)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/quantity nil quantity)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/account {:type "guid"} account)
