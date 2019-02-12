@@ -680,12 +680,12 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/bill
       (zx/attr= :type "guid")
       zx/text)
-    :date-recorded
+    :date
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/date
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
       zx/text)
-    :date-entered
+    :entered
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/entered
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date

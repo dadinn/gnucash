@@ -537,13 +537,13 @@
     (is=
       (spec/conform ::entities/entry
         {:description "Week Ending 2018-12-05"
-         :date-entered "2019-02-04 11:28:30 +0000"
+         :entered "2019-02-04 11:28:30 +0000"
          :discount-type "PERCENT"
          :tax-included? "0"
          :taxable? "1"
          :account "c54f4792499e2e8d64edfd58f5a97abd"
          :invoice "843a93ee7dafad81d2c9d7d2fde1ab50"
-         :date-recorded "2018-12-05 12:00:00 +0000"
+         :date "2018-12-05 12:00:00 +0000"
          :quantity "2500000/1000000"
          :tax-table "75c1fd112acb3ac94f96086cc4b7131c"
          :price "650000000/1000000"
@@ -551,14 +551,14 @@
          :guid "05204b4bbaa083c0afe2a4b40f9211b3"})
       [:invoice-entry
        {:description "Week Ending 2018-12-05"
-        :date-entered
+        :entered
         (jt/zoned-date-time "2019-02-04T11:28:30Z")
         :discount-type :percent
         :tax-included? false
         :taxable? true
         :account #uuid "c54f4792-499e-2e8d-64ed-fd58f5a97abd"
         :invoice #uuid "843a93ee-7daf-ad81-d2c9-d7d2fde1ab50"
-        :date-recorded
+        :date
         (jt/zoned-date-time "2018-12-05T12:00Z")
         :quantity 5/2
         :tax-table #uuid "75c1fd11-2acb-3ac9-4f96-086cc4b7131c"

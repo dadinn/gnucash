@@ -169,8 +169,8 @@
       :req-un
       [::entry/guid
        ::entry/invoice
-       ::entry/date-recorded
-       ::entry/date-entered
+       ::entry/date
+       ::entry/entered
        ::entry/quantity
        ::entry/price
        ::entry/account
@@ -188,8 +188,8 @@
       :req-un
       [::entry/guid
        ::entry/bill
-       ::entry/date-recorded
-       ::entry/date-entered
+       ::entry/date
+       ::entry/entered
        ::entry/quantity
        ::entry/price
        ::entry/account

@@ -242,15 +242,15 @@
          (map ttentry-element entries))
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/child nil)])))
 
-(defn entry-element [{:keys [guid billable? invoice bill date-recorded date-entered description action quantity account price taxable? tax-table tax-included? discount-type discount-how discount payment]}]
+(defn entry-element [{:keys [guid billable? invoice bill date entered description action quantity account price taxable? tax-table tax-included? discount-type discount-how discount payment]}]
   (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncEntry
     {:version "2.0.0"}
     (filter-nonempty-contents
       [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/guid nil guid)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/date nil
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date nil date-recorded))
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date nil date))
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/entered nil
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date nil date-entered))
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date nil entered))
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/description nil description)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/action nil action)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/billable nil billable?)
