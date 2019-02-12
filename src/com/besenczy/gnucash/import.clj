@@ -665,6 +665,7 @@
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/guid
+      (zx/attr= :type "guid")
       zx/text)
     :billable?
     (zx/xml1-> loc
@@ -705,10 +706,12 @@
     :account
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-acct
+      (zx/attr= :type "guid")
       zx/text)
     :account
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-acct
+      (zx/attr= :type "guid")
       zx/text)
     :price
     (zx/xml1-> loc
@@ -729,10 +732,12 @@
     :tax-table
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-taxtable
+      (zx/attr= :type "guid")
       zx/text)
     :tax-table
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-taxtable
+      (zx/attr= :type "guid")
       zx/text)
     :tax-included?
     (zx/xml1-> loc

@@ -240,13 +240,15 @@
          {:type "guid"} parent)
        (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/entries nil
          (map ttentry-element entries))
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/child nil)])))
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/child
+         {:type "guid"} child)])))
 
 (defn entry-element [{:keys [guid billable? invoice bill date entered description action quantity account price taxable? tax-table tax-included? discount-type discount-how discount payment]}]
   (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/GncEntry
     {:version "2.0.0"}
     (filter-nonempty-contents
-      [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/guid nil guid)
+      [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/guid
+         {:type "guid"} guid)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/date nil
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date nil date))
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/entered nil
@@ -258,10 +260,12 @@
       (if invoice
         [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/invoice
            {:type "guid"} invoice)
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-acct account)
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-acct
+           {:type "guid"} account)
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-price price)
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-taxable taxable?)
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-taxtable tax-table)
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-taxtable
+           {:type "guid"} tax-table)
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-taxincluded tax-included?)
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-disc-type discount-type)
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-disc-how discount-how)
@@ -269,10 +273,12 @@
       (if bill
         [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/bill
            {:type "guid"} bill)
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-acct account)
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-acct
+           {:type "guid"} account)
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-price price)
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-taxable taxable?)
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-taxtable tax-table)
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-taxtable
+           {:type "guid"} tax-table)
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-taxincluded tax-included?)
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-pay payment)]))))
 
