@@ -49,10 +49,10 @@
      ::trn/date-entered
      ::trn/date-posted
      ::trn/description
-     ::trn/slots
      ::trn/splits]
     :opt-un
-    [::trn/num]))
+    [::trn/num
+     ::trn/slots]))
 
 (spec/def ::billterm
   (spec/keys
@@ -93,11 +93,11 @@
      ::ctpy/credit-limit
      ::ctpy/discount
      ::ctpy/tax-included
-     ::ctpy/billing-address
-     ::ctpy/slots]
+     ::ctpy/billing-address]
     :opt-un
     [::ctpy/shipping-address
-     ::ctpy/notes]))
+     ::ctpy/notes
+     ::ctpy/slots]))
 
 (spec/def ::vendor
   (spec/keys
@@ -111,10 +111,10 @@
      ::ctpy/use-tax-table?
      ::ctpy/currency
      ::ctpy/tax-included
-     ::ctpy/billing-address
-     ::ctpy/slots]
+     ::ctpy/billing-address]
     :opt-un
-    [::ctpy/notes]))
+    [::ctpy/notes
+     ::ctpy/slots]))
 
 (spec/def ::employee
   (spec/keys
@@ -126,10 +126,10 @@
      ::ctpy/billing-address
      ::empl/workday
      ::empl/rate
-     ::ctpy/currency
-     ::ctpy/slots]
+     ::ctpy/currency]
     :opt-un
-    [::empl/language]))
+    [::empl/language
+     ::ctpy/slots]))
 
 (spec/def ::job
   (spec/keys
@@ -150,8 +150,7 @@
      ::invc/owner
      ::invc/currency
      ::invc/opened
-     ::invc/active?
-     ::invc/slots]
+     ::invc/active?]
     :opt-un
     [::invc/billto
      ::invc/reference
@@ -160,7 +159,8 @@
      ::invc/postacc
      ::invc/postlot
      ::invc/posttxn
-     ::invc/notes]))
+     ::invc/notes
+     ::invc/slots]))
 
 (spec/def ::entry
   (spec/or
@@ -226,5 +226,6 @@
     [::bgt/id
      ::bgt/name
      ::bgt/recurrence
-     ::bgt/num-periods
-     ::bgt/slots]))
+     ::bgt/num-periods]
+    :opt-un
+    [::bgt/slots]))

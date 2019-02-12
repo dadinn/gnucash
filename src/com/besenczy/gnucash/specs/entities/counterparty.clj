@@ -34,4 +34,4 @@
 
 (spec/def ::shipping-address ::billing-address)
 (spec/def ::notes ::strings/non-empty)
-(spec/def ::slots ::slot/frame)
+(spec/def ::slots (spec/and ::slot/frame (complement empty?)))

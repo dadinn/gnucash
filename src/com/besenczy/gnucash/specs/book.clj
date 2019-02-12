@@ -6,7 +6,7 @@
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::id ::common/guid)
-(spec/def ::slots ::slot/frame)
+(spec/def ::slots (spec/and ::slot/frame (complement empty?)))
 
 (spec/def ::commodities
   (spec/coll-of ::common/commodity))

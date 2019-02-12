@@ -20,4 +20,4 @@
 (spec/def ::terms ::common/guid)
 (spec/def ::notes ::strings/non-empty)
 (spec/def ::active? ::common/boolean-num)
-(spec/def ::slots ::slot/frame)
+(spec/def ::slots (spec/and ::slot/frame (complement empty?)))

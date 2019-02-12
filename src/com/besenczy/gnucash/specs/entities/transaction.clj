@@ -11,7 +11,7 @@
 (spec/def ::date-entered ::common/datetime)
 (spec/def ::date-posted ::common/datetime)
 (spec/def ::description ::strings/non-empty)
-(spec/def ::slots ::slot/frame)
+(spec/def ::slots (spec/and ::slot/frame (complement empty?)))
 (spec/def ::num #{"Invoice" "Bill" "Credit Note" "Expense" "Payment"})
 
 (spec/def ::split

@@ -23,7 +23,7 @@
 (spec/def ::commodity ::common/commodity)
 (spec/def ::unit ::numeric/natural)
 
-(spec/def ::slots ::slot/frame)
+(spec/def ::slots (spec/and ::slot/frame (complement empty?)))
 
 (spec/def ::lots
   (spec/coll-of

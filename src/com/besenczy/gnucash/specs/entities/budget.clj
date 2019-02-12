@@ -21,4 +21,4 @@
     :opt-un
     [::recur/weekend-adjustment]))
 
-(spec/def ::slots ::slot/frame)
+(spec/def ::slots (spec/and ::slot/frame (complement empty?)))
