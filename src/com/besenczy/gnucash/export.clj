@@ -238,7 +238,7 @@
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/invisible nil invisible?)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/parent
          {:type "guid"} parent)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/entries nil
+       (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/entries nil
          (map ttentry-element entries))
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftaxtable/child nil)])))
 
