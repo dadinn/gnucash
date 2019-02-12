@@ -788,6 +788,7 @@
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/id
+      (zx/attr= :type "guid")
       zx/text)
     :name
     (zx/xml1-> loc
@@ -796,6 +797,7 @@
     :account
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/templ-acct
+      (zx/attr= :type "guid")
       zx/text)
     :enabled?
     (zx/xml1-> loc
@@ -817,6 +819,7 @@
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/schedule
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/recurrence
+      (zx/attr= :version "1.0.0")
       recurrance)
     :auto-create?
     (zx/xml1-> loc
@@ -938,6 +941,7 @@
     :schedxactions
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/schedxaction
+      (zx/attr= :version "2.0.0")
       schedxaction)
     :tempxactions
     (zx/xml-> loc
