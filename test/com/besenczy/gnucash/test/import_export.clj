@@ -134,3 +134,11 @@
         (let [exported (export/entry-element record)
               imported (import/entry (z/xml-zip exported))]
           (is= record imported))))))
+
+(deftest-recursive ^{:limit 3} schedxaction
+  (testing "check schedxaction records get reimported correctly"
+    (testing "when generated via specs"
+      (doseq [record (gen/sample (spec/gen ::entity-specs/schedxaction))]
+        (let [exported (export/schedxaction-element record)
+              imported (import/schedxaction (z/xml-zip exported))]
+          (is= record imported))))))
