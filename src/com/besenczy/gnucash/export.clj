@@ -256,31 +256,34 @@
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/description nil description)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/action nil action)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/billable nil billable?)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/qty nil quantity)]
-      (if invoice
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/qty nil quantity)])
+    (cond
+      invoice
+      (filter-nonempty-contents
         [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/invoice
            {:type "guid"} invoice)
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-acct
            {:type "guid"} account)
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-price price)
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-taxable taxable?)
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-price nil price)
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-taxable nil taxable?)
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-taxtable
            {:type "guid"} tax-table)
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-taxincluded tax-included?)
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-disc-type discount-type)
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-disc-how discount-how)
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-discount discount)])
-      (if bill
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-taxincluded nil tax-included?)
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-disc-type nil discount-type)
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-disc-how nil discount-how)
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-discount nil discount)])
+      bill
+      (filter-nonempty-contents
         [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/bill
            {:type "guid"} bill)
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-acct
            {:type "guid"} account)
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-price price)
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-taxable taxable?)
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-price nil price)
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-taxable nil taxable?)
          (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-taxtable
            {:type "guid"} tax-table)
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-taxincluded tax-included?)
-         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-pay payment)]))))
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-taxincluded nil tax-included?)
+         (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-pay nil payment)]))))
 
 (defn lot-element [{:keys [id slots]}]
   (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/lot nil
