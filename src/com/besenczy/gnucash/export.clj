@@ -342,8 +342,44 @@
        (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/splits
          nil (map split-element splits))])))
 
-(defn schedxaction-element [{:keys []}])
-(defn template-element [{:keys []}])
+
+(defn recurrance-element
+  [{:keys [start period-type multiplier weekend-adjustment]}]
+  (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/recurrence
+    {:version "1.0.0"}
+    (filter-nonempty-contents
+      [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/start nil
+         (x/element :gdate nil start))
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/period_type nil period-type)
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/mult nil multiplier)
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/weekend_adj nil weekend-adjustment)])))
+
+(defn schedxaction-element
+  [{:keys [id name account enabled? start schedule auto-create? auto-create-notify? advance-create-days advance-remind-days end last instance-count]}]
+  (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/schedxaction
+    {:version "2.0.0"}
+    (filter-nonempty-contents
+      [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/id
+         {:type "guid"} id)
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/name nil name)
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/templ-acct
+         {:type "guid"} account)
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/enabled nil enabled?)
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/start nil
+         (x/element :gdate nil start))
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/end nil
+         (x/element :gdate nil end))
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/last nil
+         (x/element :gdate nil last))
+       (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/schedule nil
+         (map recurrance-element schedule))
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/autoCreate nil auto-create?)
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/autoCreateNotify nil auto-create-notify?)
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/advanceCreateDays nil advance-create-days)
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/advanceRemindDays nil advance-remind-days)
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/instanceCount nil instance-count)])))
+
+(defn tempxaction-element [{:keys []}])
 (defn budget-element [{:keys []}])
 
 (defn countdata-element [[k v]]
