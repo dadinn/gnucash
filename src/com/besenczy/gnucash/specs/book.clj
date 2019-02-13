@@ -20,16 +20,6 @@
 (spec/def ::transactions
   (spec/coll-of ::entities/transaction))
 
-(spec/def ::tempxactions
-  (spec/coll-of
-    (spec/keys
-      :req-un
-      [::accounts
-       ::transactions])))
-
-(spec/def ::schedxactions
-  (spec/coll-of ::entities/schedxaction))
-
 (spec/def ::customers
   (spec/coll-of ::entities/customer))
 (spec/def ::vendors
@@ -50,6 +40,12 @@
 (spec/def ::budgets
   (spec/coll-of ::entities/budget))
 
+(spec/def ::schedxactions
+  (spec/coll-of ::entities/schedxaction))
 
-
-
+(spec/def ::tempxactions
+  (spec/coll-of
+    (spec/keys
+      :req-un
+      [::accounts
+       ::transactions])))
