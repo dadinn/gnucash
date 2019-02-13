@@ -31,12 +31,12 @@
     :req-un
     [::act/id
      ::act/name
-     ::act/type
-     ::act/commodity
-     ::act/unit]
+     ::act/type]
     :opt-un
     [::act/description
      ::act/code
+     ::act/commodity
+     ::act/unit
      ::act/parent
      ::act/slots
      ::act/lots]))
