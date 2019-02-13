@@ -159,3 +159,11 @@
         (let [exported (export/tempxaction-element record)
               imported (import/tempxaction (z/xml-zip exported))]
           (is= record imported))))))
+
+(deftest-recursive ^{:limit 3} document
+  (testing "check document records get reimported correctly"
+    (testing "when generated via specs"
+      (doseq [record (gen/sample (spec/gen ::specs/document))]
+        (let [exported (export/document-element record)
+              imported (import/document (z/xml-zip exported))]
+          (is= record imported))))))
