@@ -410,32 +410,27 @@
     {:xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fcd/type k} v))
 
 (defn book-element [{:keys [id slots commodities customers vendors employees jobs invoices billing-terms tax-tables entries schedxactions tempxactions budgets counters prices accounts transactions]}]
-  (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book {:version "2.0.0"}
-    ;[(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/id {:type "guid"} id)]
-    ;[(xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/slots nil (frame-contents slots))]
-    ;[(pricedb-element prices)]
-    ;(map commodity-element commodities)
-    ;(map customer-element customers)
-    ;(map vendor-element vendors)
-    ;(map employee-element employees)
-    ;(map job-element jobs)
-    ;(map invoice-element invoices)
-    ;(map billterm-element billing-terms)
-    ;(map taxtable-element tax-tables)
-    ;(map entry-element entries)
-    ;(map countdata-element counters)
+  (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book
+    {:version "2.0.0"}
+    [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/id {:type "guid"} id)
+     (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/slots nil (frame-contents slots))
+     (pricedb-element prices)]
+    (map
+      (fn [content]
+        (commodity-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/commodity
+          {:version "2.0.0"} content))
+      commodities)
+    (map customer-element customers)
+    (map vendor-element vendors)
+    (map employee-element employees)
+    (map job-element jobs)
+    (map invoice-element invoices)
+    (map billterm-element billing-terms)
+    (map taxtable-element tax-tables)
+    (map entry-element entries)
     (map account-element accounts)
-    ;(map transaction-element transactions)
-    )
-  #_
-  (apply x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/book {:version "2.0.0"}
-    (apply list
-      (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/id {:type "guid"} id)
-      (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbook/slots nil (->frame slots))
-      (->pricedb prices)
-      (->count-data counters))))
-
-(apply x/element :test {:foo "bar"} [4 5 6])
+    (map transaction-element transactions)
+    (map countdata-element counters)))
 
 (defn document-element [{:keys [book counters]}]
   (xml-element :gnc-v2 nil
