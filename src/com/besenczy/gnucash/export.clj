@@ -379,7 +379,13 @@
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/advanceRemindDays nil advance-remind-days)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/instanceCount nil instance-count)])))
 
-(defn tempxaction-element [{:keys []}])
+(defn tempxaction-element [{:keys [accounts transactions]}]
+  (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/template-transactions nil
+    (filter-nonempty-contents
+      (map account-element accounts))
+    (filter-nonempty-contents
+      (map transaction-element transactions))))
+
 (defn budget-element [{:keys []}])
 
 (defn countdata-element [[k v]]
