@@ -1,10 +1,10 @@
 (ns com.besenczy.gnucash.specs.entities.account
   (:require
+   [com.besenczy.gnucash.specs.entities.lot :as lot]
    [com.besenczy.gnucash.specs.numeric :as numeric]
    [com.besenczy.gnucash.specs.strings :as strings]
    [com.besenczy.gnucash.specs.common :as common]
    [com.besenczy.gnucash.specs.slot :as slot]
-   [com.besenczy.gnucash.specs.lot :as lot]
    [clojure.string :as string]
    [clojure.spec.alpha :as spec]))
 
