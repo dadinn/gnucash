@@ -8,11 +8,10 @@
   (spec/keys
     :req-un
     [::book/id
-     ::book/slots
-     ::book/commodities
-     ::common/counters
-     ::book/prices
      ::book/accounts
+     ::common/counters]
+    :opt-un
+    [::book/prices
      ::book/transactions
      ::book/billing-terms
      ::book/tax-tables
@@ -24,7 +23,9 @@
      ::book/entries
      ::book/schedxactions
      ::book/tempxactions
-     ::book/budgets]))
+     ::book/budgets
+     ::book/commodities
+     ::book/slots]))
 
 (spec/def ::document
   (spec/keys :req-un [::book ::common/counters]))
