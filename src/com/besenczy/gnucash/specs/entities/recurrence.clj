@@ -1,4 +1,4 @@
-(ns com.besenczy.gnucash.specs.recurrence
+(ns com.besenczy.gnucash.specs.entities.recurrence
   (:require
    [com.besenczy.gnucash.specs.numeric :as numeric]
    [com.besenczy.gnucash.specs.common :as common]

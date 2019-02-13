@@ -1,6 +1,6 @@
 (ns com.besenczy.gnucash.specs.entities.budget
   (:require
-   [com.besenczy.gnucash.specs.recurrence :as recur]
+   [com.besenczy.gnucash.specs.entities.recurrence :as recur]
    [com.besenczy.gnucash.specs.numeric :as numeric]
    [com.besenczy.gnucash.specs.strings :as strings]
    [com.besenczy.gnucash.specs.common :as common]
