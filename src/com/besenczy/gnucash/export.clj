@@ -343,15 +343,21 @@
          nil (map split-element splits))])))
 
 (defn recurrence-element
-  [{:keys [start period-type multiplier weekend-adjustment]}]
-  (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/recurrence
-    {:version "1.0.0"}
-    (filter-nonempty-contents
-      [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/start nil
-         (x/element :gdate nil start))
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/period_type nil period-type)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/mult nil multiplier)
-       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/weekend_adj nil weekend-adjustment)])))
+  ([content]
+   (recurrence-element
+     :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/recurrence
+     {:version "1.0.0"}
+     content))
+  ([tag content]
+   (recurrence-element tag {:version "1.0.0"} content))
+  ([tag attr {:keys [start period-type multiplier weekend-adjustment]}]
+   (xml-element tag attr
+     (filter-nonempty-contents
+       [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/start nil
+          (x/element :gdate nil start))
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/period_type nil period-type)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/mult nil multiplier)
+        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Frecurrence/weekend_adj nil weekend-adjustment)]))))
 
 (defn schedxaction-element
   [{:keys [id name account enabled? start schedule auto-create? auto-create-notify? advance-create-days advance-remind-days end last instance-count]}]
@@ -385,7 +391,19 @@
     (filter-nonempty-contents
       (map transaction-element transactions))))
 
-(defn budget-element [{:keys []}])
+(defn budget-element [{:keys [id name description num-periods recurrence slots]}]
+  (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/budget
+    {:version "2.0.0"}
+    (filter-nonempty-contents
+      [(x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbgt/id
+         {:type "guid"} id)
+       (x/element
+         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbgt/name nil name)
+       (x/element
+         :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbgt/description nil description)
+       (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbgt/num-periods nil num-periods)
+       (recurrence-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbgt/recurrence recurrence)
+       (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fbgt/slots nil (frame-contents slots))])))
 
 (defn countdata-element [[k v]]
   (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/count-data
