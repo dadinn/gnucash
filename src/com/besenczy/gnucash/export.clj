@@ -342,8 +342,7 @@
        (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Ftrn/splits
          nil (map split-element splits))])))
 
-
-(defn recurrance-element
+(defn recurrence-element
   [{:keys [start period-type multiplier weekend-adjustment]}]
   (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/recurrence
     {:version "1.0.0"}
@@ -372,7 +371,7 @@
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/last nil
          (x/element :gdate nil last))
        (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/schedule nil
-         (map recurrance-element schedule))
+         (map recurrence-element schedule))
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/autoCreate nil auto-create?)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/autoCreateNotify nil auto-create-notify?)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/advanceCreateDays nil advance-create-days)
