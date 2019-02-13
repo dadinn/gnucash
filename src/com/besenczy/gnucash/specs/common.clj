@@ -89,7 +89,9 @@
       {true "y" false "n"})))
 
 (spec/def ::counters
-  (spec/map-of ::strings/non-empty ::numeric/natural))
+  (spec/and
+    (spec/map-of ::strings/non-empty ::numeric/natural)
+    (complement empty?)))
 
 (spec/def ::commodity
   (spec/keys
