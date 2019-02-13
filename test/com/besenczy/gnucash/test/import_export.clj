@@ -5,6 +5,7 @@
    [com.besenczy.gnucash.specs.common :as common-specs]
    [com.besenczy.gnucash.specs.entities :as entity-specs]
    [com.besenczy.gnucash.specs.slot :as slot-specs]
+   [com.besenczy.gnucash.specs.book :as book]
    [com.besenczy.gnucash.specs :as specs]
    [com.besenczy.gnucash.test.common :refer [is=]]
    [clojure.spec.alpha :as spec]
@@ -141,4 +142,12 @@
       (doseq [record (gen/sample (spec/gen ::entity-specs/schedxaction))]
         (let [exported (export/schedxaction-element record)
               imported (import/schedxaction (z/xml-zip exported))]
+          (is= record imported))))))
+
+(deftest-recursive ^{:limit 3} tempxaction
+  (testing "check tempxaction records get reimported correctly"
+    (testing "when generated via specs"
+      (doseq [record (first (gen/sample (spec/gen ::book/tempxactions)))]
+        (let [exported (export/tempxaction-element record)
+              imported (import/tempxaction (z/xml-zip exported))]
           (is= record imported))))))
