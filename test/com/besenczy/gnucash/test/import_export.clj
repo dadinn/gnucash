@@ -136,6 +136,14 @@
               imported (import/entry (z/xml-zip exported))]
           (is= record imported))))))
 
+(deftest-recursive ^{:limit 3} budget
+  (testing "check budget records get reimported correctly"
+    (testing "when generated via specs"
+      (doseq [record (gen/sample (spec/gen ::entity-specs/budget))]
+        (let [exported (export/budget-element record)
+              imported (import/budget (z/xml-zip exported))]
+          (is= record imported))))))
+
 (deftest-recursive ^{:limit 3} schedxaction
   (testing "check schedxaction records get reimported correctly"
     (testing "when generated via specs"
