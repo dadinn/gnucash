@@ -430,6 +430,9 @@
     (map entry-element entries)
     (map account-element accounts)
     (map transaction-element transactions)
+    (map schedxaction-element schedxactions)
+    (map tempxaction-element tempxactions)
+    (map budget-element budgets)
     (map countdata-element counters)))
 
 (defn document-element [{:keys [book counters]}]
