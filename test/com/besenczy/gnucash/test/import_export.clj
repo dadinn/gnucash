@@ -16,7 +16,7 @@
    [clojure.test :refer :all]))
 
 (defmacro deftest-recursive [sym & body]
-  (let [limit (-> sym meta :limit)]
+  (let [limit (or (-> sym meta :limit) 3)]
     `(deftest ~sym
        (binding [spec/*recursion-limit* ~limit]
          ~@body))))
@@ -56,7 +56,7 @@
               imported (import/price (z/xml-zip exported))]
           (is= record imported))))))
 
-(deftest-recursive ^{:limit 3} account
+(deftest-recursive account
   (testing "check account records get reimported correctly"
     (testing "when generated via specs"
       (doseq [record (gen/sample (spec/gen ::entity-specs/account))]
@@ -64,7 +64,7 @@
               imported (import/account (z/xml-zip exported))]
           (is= record imported))))))
 
-(deftest-recursive ^{:limit 3} transaction
+(deftest-recursive transaction
   (testing "check transaction records get reimported correctly"
     (testing "when generated via specs"
       (doseq [record (gen/sample (spec/gen ::entity-specs/transaction))]
@@ -72,7 +72,7 @@
               imported (import/transaction (z/xml-zip exported))]
           (is= record imported))))))
 
-(deftest-recursive ^{:limit 3} customer
+(deftest-recursive customer
   (testing "check customer records get reimported correctly"
     (testing "when generated via specs"
       (doseq [record (gen/sample (spec/gen ::entity-specs/customer))]
@@ -80,7 +80,7 @@
               imported (import/customer (z/xml-zip exported))]
           (is= record imported))))))
 
-(deftest-recursive ^{:limit 3} vendor
+(deftest-recursive vendor
   (testing "check vendor records get reimported correctly"
     (testing "when generated via specs"
       (doseq [record (gen/sample (spec/gen ::entity-specs/vendor))]
@@ -88,7 +88,7 @@
               imported (import/vendor (z/xml-zip exported))]
           (is= record imported))))))
 
-(deftest-recursive ^{:limit 3} employee
+(deftest-recursive employee
   (testing "check employee records get reimported correctly"
     (testing "when generated via specs"
       (doseq [record (gen/sample (spec/gen ::entity-specs/employee))]
@@ -96,7 +96,7 @@
               imported (import/employee (z/xml-zip exported))]
           (is= record imported))))))
 
-(deftest-recursive ^{:limit 3} job
+(deftest-recursive job
   (testing "check job records get reimported correctly"
     (testing "when generated via specs"
       (doseq [record (gen/sample (spec/gen ::entity-specs/job))]
@@ -104,7 +104,7 @@
               imported (import/job (z/xml-zip exported))]
           (is= record imported))))))
 
-(deftest-recursive ^{:limit 3} invoice
+(deftest-recursive invoice
   (testing "check invoice records get reimported correctly"
     (testing "when generated via specs"
       (doseq [record (gen/sample (spec/gen ::entity-specs/invoice))]
@@ -112,7 +112,7 @@
               imported (import/invoice (z/xml-zip exported))]
           (is= record imported))))))
 
-(deftest-recursive ^{:limit 3} billterm
+(deftest-recursive billterm
   (testing "check billterm records get reimported correctly"
     (testing "when generated via specs"
       (doseq [record (gen/sample (spec/gen ::entity-specs/invoice))]
@@ -120,7 +120,7 @@
               imported (import/invoice (z/xml-zip exported))]
           (is= record imported))))))
 
-(deftest-recursive ^{:limit 3} taxtable
+(deftest-recursive taxtable
   (testing "check taxtable records get reimported correctly"
     (testing "when generated via specs"
       (doseq [record (gen/sample (spec/gen ::entity-specs/taxtable))]
@@ -128,7 +128,7 @@
               imported (import/taxtable (z/xml-zip exported))]
           (is= record imported))))))
 
-(deftest-recursive ^{:limit 3} entry
+(deftest-recursive entry
   (testing "check entry records get reimported correctly"
     (testing "when generated via specs"
       (doseq [record (gen/sample (spec/gen ::entity-specs/entry))]
@@ -136,7 +136,7 @@
               imported (import/entry (z/xml-zip exported))]
           (is= record imported))))))
 
-(deftest-recursive ^{:limit 3} budget
+(deftest-recursive budget
   (testing "check budget records get reimported correctly"
     (testing "when generated via specs"
       (doseq [record (gen/sample (spec/gen ::entity-specs/budget))]
@@ -144,7 +144,7 @@
               imported (import/budget (z/xml-zip exported))]
           (is= record imported))))))
 
-(deftest-recursive ^{:limit 3} schedxaction
+(deftest-recursive schedxaction
   (testing "check schedxaction records get reimported correctly"
     (testing "when generated via specs"
       (doseq [record (gen/sample (spec/gen ::entity-specs/schedxaction))]
@@ -152,7 +152,7 @@
               imported (import/schedxaction (z/xml-zip exported))]
           (is= record imported))))))
 
-(deftest-recursive ^{:limit 3} tempxaction
+(deftest-recursive tempxaction
   (testing "check tempxaction records get reimported correctly"
     (testing "when generated via specs"
       (doseq [record (first (gen/sample (spec/gen ::book/tempxactions)))]
@@ -160,7 +160,7 @@
               imported (import/tempxaction (z/xml-zip exported))]
           (is= record imported))))))
 
-(deftest-recursive ^{:limit 3} document
+(deftest-recursive document
   (testing "check document records get reimported correctly"
     (testing "when generated via specs"
       (doseq [record (gen/sample (spec/gen ::specs/document))]
