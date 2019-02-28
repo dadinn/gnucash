@@ -33,9 +33,12 @@
       (partial re-matches #"-?[0-9]+/-?[0-9]+")
       (spec/conformer
         (fn [s]
-          (let [[x & xs] (map edn/read-string (string/split s #"/"))]
-            (if (seq xs) (apply / (cons x xs)) x)))
-        (fn [s] (pr-str s))))
+          (let [[x y] (string/split s #"/")]
+            {:num (edn/read-string x)
+             :den (edn/read-string y)}))
+        (fn [{:keys [num den]}]
+          {:pre [(int? num) (int? den)]}
+          (string/join "/" [num den]))))
     #(gen/fmap
        (fn [[x y]] (if (zero? y) (pr-str x) (pr-str (/ x y))))
        (spec/gen (spec/tuple int? int?)))))
