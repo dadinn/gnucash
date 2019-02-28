@@ -56,10 +56,10 @@
 
 (deftest slots
   (testing "guid slot value should conform to spec"
-    (is=
-      (spec/conform ::slot/value [:guid "d6e87f32ce9c437ffee9704ad7fc8bf4"])
-      {:type :guid, :value #uuid "d6e87f32-ce9c-437f-fee9-704ad7fc8bf4"}))
-
+    (let [value [:guid "d6e87f32ce9c437ffee9704ad7fc8bf4"]
+          conformed (spec/conform ::slot/value [:guid "d6e87f32ce9c437ffee9704ad7fc8bf4"])]
+      (is= conformed {:type :guid, :value #uuid "d6e87f32-ce9c-437f-fee9-704ad7fc8bf4"})
+      (is= value (spec/unform ::slot/value conformed))))
   (testing "integer slot value should conform to spec"
     (is=
       (spec/conform ::slot/value [:integer "11"])
