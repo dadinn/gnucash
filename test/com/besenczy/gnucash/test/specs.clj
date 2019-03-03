@@ -561,39 +561,68 @@
 
 (deftest entry
   (testing "entry entity should conform to spec"
-    (is=
-      (spec/conform ::entities/entry
-        {:description "Week Ending 2018-12-05"
-         :entered "2019-02-04 11:28:30 +0000"
-         :discount-type "PERCENT"
-         :tax-included? "0"
-         :taxable? "1"
-         :account "c54f4792499e2e8d64edfd58f5a97abd"
-         :invoice "843a93ee7dafad81d2c9d7d2fde1ab50"
-         :date "2018-12-05 12:00:00 +0000"
-         :quantity "2500000/1000000"
-         :tax-table "75c1fd112acb3ac94f96086cc4b7131c"
-         :price "650000000/1000000"
-         :discount-how "PRETAX"
-         :discount "1500000/1000000"
-         :guid "05204b4bbaa083c0afe2a4b40f9211b3"})
-      [:invoice-entry
-       {:description "Week Ending 2018-12-05"
-        :entered
-        (jt/zoned-date-time "2019-02-04T11:28:30Z")
-        :discount-type :percent
-        :tax-included? false
-        :taxable? true
-        :account #uuid "c54f4792-499e-2e8d-64ed-fd58f5a97abd"
-        :invoice #uuid "843a93ee-7daf-ad81-d2c9-d7d2fde1ab50"
-        :date
-        (jt/zoned-date-time "2018-12-05T12:00Z")
-        :quantity {:num 2500000 :den 1000000}
-        :tax-table #uuid "75c1fd11-2acb-3ac9-4f96-086cc4b7131c"
-        :price {:num 650000000 :den 1000000}
-        :discount-how :pretax
-        :discount {:num 1500000 :den 1000000}
-        :guid #uuid "05204b4b-baa0-83c0-afe2-a4b40f9211b3"}])))
+    (testing "when it is an invoice-entry"
+      (is=
+        (spec/conform ::entities/entry
+          {:description "Week Ending 2018-12-05"
+           :entered "2019-02-04 11:28:30 +0000"
+           :discount-type "PERCENT"
+           :tax-included? "0"
+           :taxable? "1"
+           :account "c54f4792499e2e8d64edfd58f5a97abd"
+           :invoice "843a93ee7dafad81d2c9d7d2fde1ab50"
+           :date "2018-12-05 12:00:00 +0000"
+           :quantity "2500000/1000000"
+           :tax-table "75c1fd112acb3ac94f96086cc4b7131c"
+           :price "650000000/1000000"
+           :discount-how "PRETAX"
+           :discount "1500000/1000000"
+           :guid "05204b4bbaa083c0afe2a4b40f9211b3"})
+        {:type :invoice-entry
+         :description "Week Ending 2018-12-05"
+         :entered (jt/zoned-date-time "2019-02-04T11:28:30Z")
+         :discount-type :percent
+         :tax-included? false
+         :taxable? true
+         :account #uuid "c54f4792-499e-2e8d-64ed-fd58f5a97abd"
+         :invoice #uuid "843a93ee-7daf-ad81-d2c9-d7d2fde1ab50"
+         :date (jt/zoned-date-time "2018-12-05T12:00Z")
+         :quantity {:num 2500000 :den 1000000}
+         :tax-table #uuid "75c1fd11-2acb-3ac9-4f96-086cc4b7131c"
+         :price {:num 650000000 :den 1000000}
+         :discount-how :pretax
+         :discount {:num 1500000 :den 1000000}
+         :guid #uuid "05204b4b-baa0-83c0-afe2-a4b40f9211b3"}))
+    (testing "when it is a bill-entry"
+      (is=
+        (spec/conform ::entities/entry
+          {:description "7",
+           :bill "cf896ae8b9c64398b2e55bd5ff1e09c5",
+           :date "2019-03-03 03:41:56 -1700",
+           :payment "CASH",
+           :tax-included? "1",
+           :entered "2019-03-04 13:41:56 +1700",
+           :taxable? "0",
+           :account "a97ecfd65a584800bc61dbbead4e1af1",
+           :action "Project",
+           :quantity "-4/3",
+           :tax-table "5b2eb26ceeae4b0f8dcb31d64936bfe1",
+           :price "2/3",
+           :guid "2d286e97e3894638aacaaa2a3f0efe56"})
+        {:description "7",
+ :bill #uuid "cf896ae8-b9c6-4398-b2e5-5bd5ff1e09c5",
+         :date (jt/zoned-date-time "2019-03-03T03:41:56-17:00")
+         :payment :cash,
+         :tax-included? true,
+         :entered (jt/zoned-date-time "2019-03-04T13:41:56+17:00")
+         :taxable? false,
+         :type :bill-entry,
+         :account #uuid "a97ecfd6-5a58-4800-bc61-dbbead4e1af1",
+         :action :project,
+         :quantity {:num -4, :den 3},
+         :tax-table #uuid "5b2eb26c-eeae-4b0f-8dcb-31d64936bfe1",
+         :price {:num 2, :den 3},
+         :guid #uuid "2d286e97-e389-4638-aaca-aa2a3f0efe56"}))))
 
 (deftest shedxaction
   (testing "schedxaction entity should conform to spec"
