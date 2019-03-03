@@ -4,7 +4,7 @@
    [com.besenczy.gnucash.specs.common :as common]
    [com.besenczy.gnucash.specs.slot :as slot]
    [com.besenczy.gnucash.specs.entities :as entities]
-   [com.besenczy.gnucash.test.common :refer [is=]]
+   [com.besenczy.gnucash.test.common :refer [is= isnot]]
    [java-time :as jt]
    [clojure.spec.gen.alpha :as gen]
    [clojure.spec.alpha :as spec]
