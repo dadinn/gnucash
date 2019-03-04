@@ -1,15 +1,37 @@
 (ns com.besenczy.gnucash.specs.common
+  (:refer-clojure :exclude [keys])
   (:require
    [com.besenczy.gnucash.specs.commodity :as cmdty]
    [com.besenczy.gnucash.specs.numeric :as numeric]
    [com.besenczy.gnucash.specs.strings :as strings]
    [clojure.edn :as edn]
+   [clojure.set :as set]
+   [clojure.core :as core]
    [clojure.string :as string]
    [java-time :as jt]
    [clojure.spec.gen.alpha :as gen]
    [clojure.spec.alpha :as spec])
   (:import
    [java.util UUID]))
+
+(defmacro keys
+  "Same as `clojure.spec/keys`, but accepts additional boolean option :additional-keys. Unless :additional-keys is set true, only the declared keys are allowed, and any additional keys will be invalid."
+  [& {:keys [additional-keys] :as args}]
+  (let [args (dissoc args :additional-keys)]
+    (if additional-keys
+      `(spec/keys ~@(apply concat args))
+      (let [allowed-keys #{}
+            allowed-keys
+            (reduce
+              (fn [acc k] (into acc (k args)))
+              allowed-keys [:req :opt])
+            allowed-keys
+            (reduce
+              (fn [acc k] (into acc (map (comp keyword name) (k args))))
+              allowed-keys [:req-un :opt-un])]
+        `(spec/and
+           (spec/keys ~@(mapcat identity args))
+           (fn [m#] (set/subset? (core/keys m#) ~allowed-keys)))))))
 
 (defn parse-guid [s]
   (->> (list 8 4 4 4 12)

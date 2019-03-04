@@ -15,6 +15,30 @@
     (is= #uuid "c8d46fc6-d8af-f395-1364-615b3de94a66"
       (spec/conform ::common/guid "c8d46fc6d8aff3951364615b3de94a66"))))
 
+(deftest keys-spec
+  (testing "upgraded keys spec works as expected"
+    (testing "required keys are allowed"
+      (is
+        (spec/valid?
+          (common/keys :req [::common/guid] :req-un [::common/guid])
+          {::common/guid "c8d46fc6d8aff3951364615b3de94a66"
+           :guid "c8d46fc6d8aff3951364615b3de94a66"})))
+    (testing "optional keys are allowed"
+      (is
+        (spec/valid?
+          (common/keys :opt [::common/guid] :opt-un [::common/guid])
+          {::common/guid "c8d46fc6d8aff3951364615b3de94a66"
+           :guid "c8d46fc6d8aff3951364615b3de94a66"})))
+    (testing "additional keys have to be explicitly allowed"
+      (isnot
+        (spec/valid?
+          (common/keys :opt [::common/guid])
+          {:unspecified/key 13}))
+      (is
+        (spec/valid?
+          (common/keys :opt [::common/guid] :additional-keys true)
+          {:unspecified/key 13})))))
+
 (deftest numeric
   (testing "numeric entry should conform to spec"
     (let [data "42"
