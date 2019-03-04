@@ -27,7 +27,7 @@
 
 (spec/def ::lots
   (spec/coll-of
-    (spec/keys
+    (common/keys
       :req-un
       [::lot/id]
       :opt-un

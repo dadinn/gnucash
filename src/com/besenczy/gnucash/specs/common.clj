@@ -115,7 +115,7 @@
     (complement empty?)))
 
 (spec/def ::commodity
-  (spec/keys
+  (keys
     :req-un
     [::cmdty/id
      ::cmdty/space]

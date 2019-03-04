@@ -13,7 +13,7 @@
 (spec/def ::num-periods ::numeric/natural)
 
 (spec/def ::recurrence
-  (spec/keys
+  (common/keys
     :req-un
     [::recur/start
      ::recur/period-type

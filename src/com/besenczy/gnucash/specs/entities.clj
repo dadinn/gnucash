@@ -12,10 +12,11 @@
    [com.besenczy.gnucash.specs.entities.entry :as entry]
    [com.besenczy.gnucash.specs.entities.schedxaction :as sx]
    [com.besenczy.gnucash.specs.entities.budget :as bgt]
+   [com.besenczy.gnucash.specs.common :as common]
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::price
-  (spec/keys
+  (common/keys
     :req-un
     [::price/id
      ::price/commodity
@@ -27,7 +28,7 @@
     [::price/type]))
 
 (spec/def ::account
-  (spec/keys
+  (common/keys
     :req-un
     [::act/id
      ::act/name
@@ -42,7 +43,7 @@
      ::act/lots]))
 
 (spec/def ::transaction
-  (spec/keys
+  (common/keys
     :req-un
     [::trn/id
      ::trn/currency
@@ -55,7 +56,7 @@
      ::trn/slots]))
 
 (spec/def ::billterm
-  (spec/keys
+  (common/keys
     :req-un
     [::bt/guid
      ::bt/name
@@ -68,7 +69,7 @@
      ::bt/child]))
 
 (spec/def ::taxtable
-  (spec/keys
+  (common/keys
     :req-un
     [::tt/guid
      ::tt/name
@@ -80,7 +81,7 @@
      ::tt/child]))
 
 (spec/def ::customer
-  (spec/keys
+  (common/keys
     :req-un
     [::ctpy/guid
      ::ctpy/id
@@ -100,7 +101,7 @@
      ::ctpy/slots]))
 
 (spec/def ::vendor
-  (spec/keys
+  (common/keys
     :req-un
     [::ctpy/guid
      ::ctpy/id
@@ -117,7 +118,7 @@
      ::ctpy/slots]))
 
 (spec/def ::employee
-  (spec/keys
+  (common/keys
     :req-un
     [::ctpy/guid
      ::ctpy/id
@@ -132,7 +133,7 @@
      ::ctpy/slots]))
 
 (spec/def ::job
-  (spec/keys
+  (common/keys
     :req-un
     [::job/guid
      ::job/id
@@ -143,7 +144,7 @@
     [::job/reference]))
 
 (spec/def ::invoice
-  (spec/keys
+  (common/keys
     :req-un
     [::invc/guid
      ::invc/id
@@ -166,7 +167,7 @@
   (spec/and
     (spec/or
       :invoice-entry
-      (spec/keys
+      (common/keys
         :req-un
         [::entry/guid
          ::entry/date
@@ -185,7 +186,7 @@
          ::entry/discount-how
          ::entry/discount])
       :bill-entry
-      (spec/keys
+      (common/keys
         :req-un
         [::entry/guid
          ::entry/date
@@ -207,7 +208,7 @@
       (fn [{:keys [type] :as value}] [type (dissoc value :type)]))))
 
 (spec/def ::schedxaction
-  (spec/keys
+  (common/keys
     :req-un
     [::sx/id
      ::sx/name
@@ -225,7 +226,7 @@
      ::sx/instance-count]))
 
 (spec/def ::budget
-  (spec/keys
+  (common/keys
     :req-un
     [::bgt/id
      ::bgt/name

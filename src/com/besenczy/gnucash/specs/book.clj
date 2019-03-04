@@ -59,7 +59,7 @@
 
 (spec/def ::tempxactions
   (spec/coll-of
-    (spec/keys
+    (common/keys
       :req-un
       [::accounts
        ::transactions])

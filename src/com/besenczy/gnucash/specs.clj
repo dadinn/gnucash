@@ -5,7 +5,7 @@
    [clojure.spec.alpha :as spec]))
 
 (spec/def ::book
-  (spec/keys
+  (common/keys
     :req-un
     [::book/id
      ::book/accounts
@@ -28,4 +28,4 @@
      ::book/slots]))
 
 (spec/def ::document
-  (spec/keys :req-un [::book ::common/counters]))
+  (common/keys :req-un [::book ::common/counters]))
