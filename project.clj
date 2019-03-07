@@ -1,8 +1,9 @@
 (defproject com.besenczy/gnucash "0.2.0"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
-  :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
+  :description "Clojure library to parse/emit GnuCash XML format"
+  :url "https://www.gnucash.org"
+  :license
+  {:name "LGPL"
+   :url "https://www.gnu.org/copyleft/lesser.html"}
   :dependencies
   [[org.clojure/clojure "1.10.0"]
    [org.clojure/data.xml "0.2.0-alpha6"]
