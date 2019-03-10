@@ -8,14 +8,16 @@
 (spec/def ::multiplier ::numeric/natural)
 
 (spec/def ::period-type
-  (spec/and #{"day" "week" "month"}
+  (spec/and #{"day" "week" "month" "end of month"}
     (spec/conformer
       {"day" :day
        "week" :week
-       "month" :month}
+       "month" :month
+       "end of month" :end-of-month}
       {:day "day"
        :week "week"
-       :month "month"})))
+       :month "month"
+       :end-of-month "end of month"})))
 
 (spec/def ::weekend-adjustment
   (spec/and #{"forward" "back"}
