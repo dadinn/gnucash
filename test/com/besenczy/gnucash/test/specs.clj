@@ -348,7 +348,23 @@
            :description "Initial Shares Value"
            :slots
            {"date-posted" [:gdate " 2014-12-16 "], "notes" [:string ""]}
-           :splits []})))))
+           :splits []})))
+    (testing "single split"
+      (is= ::spec/invalid
+        (spec/conform ::entities/transaction
+          {:id "9e4e370632f9454112276bf8f1eed7c3"
+           :currency {:id "GBP", :space "ISO4217"}
+           :date-entered "2015-04-15 09:27:17 +0100"
+           :date-posted "2014-12-16 10:59:00 +0000"
+           :description "Big payment of nothing"
+           :slots
+           {"date-posted" [:gdate " 2014-12-16 "], "notes" [:string ""]}
+           :splits
+           [{:id #uuid "f778d663-6807-5f89-7b68-230bdca2e18d"
+             :reconciled-state "n"
+             :value {:num 0 :den 100}
+             :quantity {:num 0 :den 100}
+             :account #uuid "066fd752-7cdf-2a07-2baa-16baa62ebfae"}]})))))
 
 (deftest billterm
   (testing "billing-terms entity should conform to spec"

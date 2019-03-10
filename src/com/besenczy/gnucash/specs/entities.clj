@@ -49,10 +49,10 @@
      ::trn/currency
      ::trn/date-entered
      ::trn/date-posted
-     ::trn/description
      ::trn/splits]
     :opt-un
     [::trn/num
+     ::trn/description
      ::trn/slots]))
 
 (spec/def ::billterm
