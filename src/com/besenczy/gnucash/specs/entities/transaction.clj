@@ -30,5 +30,5 @@
 
 (spec/def ::splits
   (spec/coll-of ::split
-    :min-count 2
+    :min-count 1
     :into []))
