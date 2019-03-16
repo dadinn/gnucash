@@ -14,7 +14,7 @@
 (spec/def ::code ::strings/non-empty)
 
 (spec/def ::type
-  (spec/and #{"ASSET" "LIABILITY" "EQUITY" "INCOME" "EXPENSE" "RECEIVABLE" "PAYABLE" "CASH" "BANK" "CREDIT" "ROOT"}
+  (spec/and #{"ASSET" "LIABILITY" "EQUITY" "INCOME" "EXPENSE" "RECEIVABLE" "PAYABLE" "CASH" "BANK" "CREDIT" "TRADING" "ROOT"}
     (spec/conformer
       (comp keyword string/lower-case)
       (comp string/upper-case name))))
