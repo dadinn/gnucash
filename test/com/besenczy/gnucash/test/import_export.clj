@@ -115,9 +115,9 @@
 (deftest-recursive billterm
   (testing "check billterm records get reimported correctly"
     (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::entity-specs/invoice))]
-        (let [exported (export/invoice-element record)
-              imported (import/invoice (z/xml-zip exported))]
+      (doseq [record (gen/sample (spec/gen ::entity-specs/billterm))]
+        (let [exported (export/billterm-element record)
+              imported (import/billterm (z/xml-zip exported))]
           (is= record imported))))))
 
 (deftest-recursive taxtable
