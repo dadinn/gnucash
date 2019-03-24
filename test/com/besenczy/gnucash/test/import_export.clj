@@ -86,7 +86,7 @@
   export/schedxaction-element (comp import/schedxaction z/xml-zip))
 
 (defspec tempxaction ::book/tempxactions
-  export/tempxaction-element (comp import/tempxaction z/xml-zip)
+  export/tempxactions-element (comp import/tempxactions z/xml-zip)
   :times 10 :max-size 10)
 
 (defspec document ::specs/document
