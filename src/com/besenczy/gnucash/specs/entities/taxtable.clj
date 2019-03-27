@@ -14,9 +14,10 @@
   (spec/coll-of
     (common/keys
       :req-un
-      [::entry/account
-       ::entry/amount
-       ::entry/type])
+      [::entry/amount
+       ::entry/type]
+      :opt-un
+      [::entry/account])
     :min-count 1
     :into []))
 (spec/def ::parent ::common/guid)
