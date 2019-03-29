@@ -12,7 +12,7 @@
 (spec/def ::invisible? ::common/boolean-num)
 (spec/def ::entries
   (spec/coll-of
-    (spec/keys
+    (common/keys
       :req-un
       [::entry/account
        ::entry/amount

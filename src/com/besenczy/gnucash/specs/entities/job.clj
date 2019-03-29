@@ -12,7 +12,7 @@
 (spec/def ::reference ::strings/non-empty)
 
 (spec/def ::owner
-  (spec/keys
+  (common/keys
     :req-un
     [::owner/id
      ::owner/type]))

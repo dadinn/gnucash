@@ -15,7 +15,7 @@
 (spec/def ::num #{"Invoice" "Bill" "Credit Note" "Expense" "Payment"})
 
 (spec/def ::split
-  (spec/keys
+  (common/keys
     :req-un
     [::split/id
      ::split/reconciled-state

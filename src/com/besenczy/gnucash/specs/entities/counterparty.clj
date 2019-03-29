@@ -20,7 +20,7 @@
 (spec/def ::credit-limit ::numeric/fraction)
 
 (spec/def ::billing-address
-  (spec/keys
+  (common/keys
     :req-un
     [::addr/line1]
     :opt-un
