@@ -17,22 +17,49 @@
 
 (deftest numeric
   (testing "numeric entry should conform to spec"
-    (is= 42 (spec/conform ::numeric/natural "42"))
-    (is= 42 (spec/conform ::numeric/integer "42"))
-    (is= -42 (spec/conform ::numeric/integer "-42"))
-    (is= 1 (spec/conform ::numeric/fraction "111111/111111"))
-    (is= -1 (spec/conform ::numeric/fraction "-111111/111111"))
-    (is= 11/10000 (spec/conform ::numeric/fraction "11/10000"))
-    (is= -11/10000 (spec/conform ::numeric/fraction "-11/10000"))
-    (is= -11/111111 (spec/conform ::numeric/fraction "11/-111111"))
-    (is= 11/111111 (spec/conform ::numeric/fraction "-11/-111111"))))
+    (let [data "42"
+          conformed (spec/conform ::numeric/natural data)]
+      (is= conformed 42)
+      (is= data (spec/unform ::numeric/natural conformed)))
+    (let [data "42"
+          conformed (spec/conform ::numeric/integer data)]
+      (is= conformed 42)
+      (is= data (spec/unform ::numeric/integer conformed)))
+    (let [data "-42"
+          conformed (spec/conform ::numeric/integer data)]
+      (is= conformed -42)
+      (is= data (spec/unform ::numeric/integer conformed)))
+    (let [data "111111/111111"
+          conformed (spec/conform ::numeric/fraction data)]
+      (is= conformed {:num 111111 :den 111111})
+      (is= data (spec/unform ::numeric/fraction conformed)))
+    (let [data "-111111/111111"
+          conformed (spec/conform ::numeric/fraction data)]
+      (is= conformed {:num -111111 :den 111111})
+      (is= data (spec/unform ::numeric/fraction conformed)))
+    (let [data "11/10000"
+          conformed (spec/conform ::numeric/fraction data)]
+      (is= conformed {:num 11 :den 10000})
+      (is= data (spec/unform ::numeric/fraction conformed)))
+    (let [data "-11/10000"
+          conformed (spec/conform ::numeric/fraction data)]
+      (is= conformed {:num -11 :den 10000})
+      (is= data (spec/unform ::numeric/fraction conformed)))
+    (let [data "11/-111111"
+          conformed (spec/conform ::numeric/fraction data)]
+      (is= conformed {:num 11 :den -111111})
+      (is= data (spec/unform ::numeric/fraction conformed)))
+    (let [data "-11/-111111"
+          conformed (spec/conform ::numeric/fraction data)]
+      (is= conformed {:num -11 :den -111111})
+      (is= data (spec/unform ::numeric/fraction conformed)))))
 
 (deftest slots
   (testing "guid slot value should conform to spec"
-    (is=
-      (spec/conform ::slot/value [:guid "d6e87f32ce9c437ffee9704ad7fc8bf4"])
-      {:type :guid, :value #uuid "d6e87f32-ce9c-437f-fee9-704ad7fc8bf4"}))
-
+    (let [value [:guid "d6e87f32ce9c437ffee9704ad7fc8bf4"]
+          conformed (spec/conform ::slot/value [:guid "d6e87f32ce9c437ffee9704ad7fc8bf4"])]
+      (is= conformed {:type :guid, :value #uuid "d6e87f32-ce9c-437f-fee9-704ad7fc8bf4"})
+      (is= value (spec/unform ::slot/value conformed))))
   (testing "integer slot value should conform to spec"
     (is=
       (spec/conform ::slot/value [:integer "11"])
@@ -41,7 +68,7 @@
   (testing "numeric slot value should conform to spec"
     (is=
       (spec/conform ::slot/value [:numeric "11/11111"])
-      {:type :numeric, :value 11/11111}))
+      {:type :numeric, :value {:num 11 :den 11111}}))
 
   (testing "gdate slot value should conform to spec"
     (is=
@@ -80,7 +107,7 @@
        {"baz" {:type :integer, :value 11},
         "bazz" {:type :gdate, :value (jt/local-date "2001-01-01")},
         "bazzz" {:type :timespec, :value (jt/zoned-date-time "2001-01-01T10:10:10+10:00")},
-        "bazzzz" {:type :numeric, :value 11/11111},
+        "bazzzz" {:type :numeric, :value {:num 11 :den 11111}},
         "bax" {:type :string, :value "Bla Bla Bla"}}}))
   (testing "nested slot frame entity should conform to spec"
     (is=
@@ -102,7 +129,7 @@
         {"baz" {:type :integer, :value 11}
          "bazz" {:type :gdate, :value (jt/local-date "2001-01-01")}
          "bazzz" {:type :timespec, :value (jt/zoned-date-time "2001-01-01T10:10:10+10:00")}
-         "bazzzz" {:type :numeric, :value 11/11111}
+         "bazzzz" {:type :numeric, :value {:num 11 :den 11111}}
          "bazzzzz" {:type :string, :value "Bla Bla Bla"}}}})))
 
 (deftest price
@@ -122,7 +149,7 @@
        (spec/conform ::common/datetime
          "2015-03-29 00:00:00 +0000")
        :source "user:xfer-dialog"
-       :value 73/100})))
+       :value {:num 73 :den 100}})))
 
 (deftest account
   (testing "account entity should conform to spec"
@@ -269,13 +296,13 @@
        :splits
        [{:id #uuid "952f2cc5-f291-b94f-bb0a-ff3e24a53e19"
          :reconciled-state "n"
-         :value 100
-         :quantity 100
+         :value {:num 10000 :den 100}
+         :quantity {:num 10000 :den 100}
          :account #uuid "7e5c3476-30c6-da87-a289-d7630efe4124"}
         {:id #uuid "f778d663-6807-5f89-7b68-230bdca2e18d"
          :reconciled-state "n"
-         :value -100
-         :quantity -100
+         :value {:num -10000 :den 100}
+         :quantity {:num -10000 :den 100}
          :account #uuid "066fd752-7cdf-2a07-2baa-16baa62ebfae"}]})
     (testing "without splits"
       (is= ::spec/invalid
@@ -336,7 +363,7 @@
        :parent #uuid "722f16a0-318e-9de1-4cf5-3ddfddfdeb4f"
        :entries
        [{:account #uuid "a11a9c48-ae2a-ddb8-8b83-4ecfacc20c22"
-         :amount 20
+         :amount {:num 2000000 :den 100000}
          :type :percent}]})
     (testing "with empty and missing entries"
       (is= ::spec/invalid
@@ -382,7 +409,7 @@
           :tax-table "8506a23ee160adbf9c550addd27500f9"
          :guid "303123f619a89243a4b5e6281c1d591c"})
       {:active? true
-       :credit-limit 0
+       :credit-limit {:num 0 :den 1}
        :slots
        {"last-posted-to-acct"
         {:type :guid, :value #uuid "ed0a209c-c78f-680c-45a8-7851ed232236"}
@@ -403,7 +430,7 @@
         :line3 "London"
         :line4 "E15 1NG"}
        :tax-included "NO"
-       :discount 0
+       :discount {:num 0 :den 1}
        :tax-table #uuid "8506a23e-e160-adbf-9c55-0addd27500f9"
        :guid #uuid "303123f6-19a8-9243-a4b5-e6281c1d591c"})))
 
@@ -461,7 +488,7 @@
          :billing-address {:name "Daniel Dinnyes", :line1 "Bla"}
          :guid "03a20cda38a4e4c0873cab3d104d85a2"})
       {:active? true
-       :workday 0
+       :workday {:num 0 :den 1}
        :slots
        {"last-posted-to-acct"
         {:type :guid :value #uuid "d6e87f32-ce9c-437f-fee9-704ad7fc8bf4"}
@@ -472,7 +499,7 @@
           {:type :guid
            :value #uuid "b4f05202-e1e8-5c2f-8628-4cead3737d19"}}}}
        :username "dadinn"
-       :rate 0
+       :rate {:num 0 :den 1}
        :currency {:id "GBP", :space "ISO4217"}
        :language "German"
        :id "000001"
@@ -534,37 +561,68 @@
 
 (deftest entry
   (testing "entry entity should conform to spec"
-    (is=
-      (spec/conform ::entities/entry
-        {:description "Week Ending 2018-12-05"
-         :entered "2019-02-04 11:28:30 +0000"
-         :discount-type "PERCENT"
-         :tax-included? "0"
-         :taxable? "1"
-         :account "c54f4792499e2e8d64edfd58f5a97abd"
-         :invoice "843a93ee7dafad81d2c9d7d2fde1ab50"
-         :date "2018-12-05 12:00:00 +0000"
-         :quantity "2500000/1000000"
-         :tax-table "75c1fd112acb3ac94f96086cc4b7131c"
-         :price "650000000/1000000"
-         :discount-how "PRETAX"
-         :guid "05204b4bbaa083c0afe2a4b40f9211b3"})
-      [:invoice-entry
-       {:description "Week Ending 2018-12-05"
-        :entered
-        (jt/zoned-date-time "2019-02-04T11:28:30Z")
-        :discount-type :percent
-        :tax-included? false
-        :taxable? true
-        :account #uuid "c54f4792-499e-2e8d-64ed-fd58f5a97abd"
-        :invoice #uuid "843a93ee-7daf-ad81-d2c9-d7d2fde1ab50"
-        :date
-        (jt/zoned-date-time "2018-12-05T12:00Z")
-        :quantity 5/2
-        :tax-table #uuid "75c1fd11-2acb-3ac9-4f96-086cc4b7131c"
-        :price 650
-        :discount-how :pretax
-        :guid #uuid "05204b4b-baa0-83c0-afe2-a4b40f9211b3"}])))
+    (testing "when it is an invoice-entry"
+      (is=
+        (spec/conform ::entities/entry
+          {:description "Week Ending 2018-12-05"
+           :entered "2019-02-04 11:28:30 +0000"
+           :discount-type "PERCENT"
+           :tax-included? "0"
+           :taxable? "1"
+           :account "c54f4792499e2e8d64edfd58f5a97abd"
+           :invoice "843a93ee7dafad81d2c9d7d2fde1ab50"
+           :date "2018-12-05 12:00:00 +0000"
+           :quantity "2500000/1000000"
+           :tax-table "75c1fd112acb3ac94f96086cc4b7131c"
+           :price "650000000/1000000"
+           :discount-how "PRETAX"
+           :discount "1500000/1000000"
+           :guid "05204b4bbaa083c0afe2a4b40f9211b3"})
+        {:type :invoice-entry
+         :description "Week Ending 2018-12-05"
+         :entered (jt/zoned-date-time "2019-02-04T11:28:30Z")
+         :discount-type :percent
+         :tax-included? false
+         :taxable? true
+         :account #uuid "c54f4792-499e-2e8d-64ed-fd58f5a97abd"
+         :invoice #uuid "843a93ee-7daf-ad81-d2c9-d7d2fde1ab50"
+         :date (jt/zoned-date-time "2018-12-05T12:00Z")
+         :quantity {:num 2500000 :den 1000000}
+         :tax-table #uuid "75c1fd11-2acb-3ac9-4f96-086cc4b7131c"
+         :price {:num 650000000 :den 1000000}
+         :discount-how :pretax
+         :discount {:num 1500000 :den 1000000}
+         :guid #uuid "05204b4b-baa0-83c0-afe2-a4b40f9211b3"}))
+    (testing "when it is a bill-entry"
+      (is=
+        (spec/conform ::entities/entry
+          {:description "7",
+           :bill "cf896ae8b9c64398b2e55bd5ff1e09c5",
+           :date "2019-03-03 03:41:56 -1700",
+           :payment "CASH",
+           :tax-included? "1",
+           :entered "2019-03-04 13:41:56 +1700",
+           :taxable? "0",
+           :account "a97ecfd65a584800bc61dbbead4e1af1",
+           :action "Project",
+           :quantity "-4/3",
+           :tax-table "5b2eb26ceeae4b0f8dcb31d64936bfe1",
+           :price "2/3",
+           :guid "2d286e97e3894638aacaaa2a3f0efe56"})
+        {:description "7",
+ :bill #uuid "cf896ae8-b9c6-4398-b2e5-5bd5ff1e09c5",
+         :date (jt/zoned-date-time "2019-03-03T03:41:56-17:00")
+         :payment :cash,
+         :tax-included? true,
+         :entered (jt/zoned-date-time "2019-03-04T13:41:56+17:00")
+         :taxable? false,
+         :type :bill-entry,
+         :account #uuid "a97ecfd6-5a58-4800-bc61-dbbead4e1af1",
+         :action :project,
+         :quantity {:num -4, :den 3},
+         :tax-table #uuid "5b2eb26c-eeae-4b0f-8dcb-31d64936bfe1",
+         :price {:num 2, :den 3},
+         :guid #uuid "2d286e97-e389-4638-aaca-aa2a3f0efe56"}))))
 
 (deftest shedxaction
   (testing "schedxaction entity should conform to spec"
@@ -678,45 +736,45 @@
        {"3ebc81195e2b0d188260a5b92181ab50"
         {:type :frame
          :value
-         {"9" {:type :numeric, :value 6}
-          "3" {:type :numeric, :value 6}
-          "4" {:type :numeric, :value 6}
-          "8" {:type :numeric, :value 6}
-          "7" {:type :numeric, :value 6}
-          "5" {:type :numeric, :value 6}
-          "6" {:type :numeric, :value 6}
-          "1" {:type :numeric, :value 6}
-          "0" {:type :numeric, :value 6}
-          "11" {:type :numeric, :value 6}
-          "2" {:type :numeric, :value 6}
-          "10" {:type :numeric, :value 6}}}
+         {"9" {:type :numeric, :value {:num 6 :den 1}}
+          "3" {:type :numeric, :value {:num 6 :den 1}}
+          "4" {:type :numeric, :value {:num 6 :den 1}}
+          "8" {:type :numeric, :value {:num 6 :den 1}}
+          "7" {:type :numeric, :value {:num 6 :den 1}}
+          "5" {:type :numeric, :value {:num 6 :den 1}}
+          "6" {:type :numeric, :value {:num 6 :den 1}}
+          "1" {:type :numeric, :value {:num 6 :den 1}}
+          "0" {:type :numeric, :value {:num 6 :den 1}}
+          "11" {:type :numeric, :value {:num 6 :den 1}}
+          "2" {:type :numeric, :value {:num 6 :den 1}}
+          "10" {:type :numeric, :value {:num 6 :den 1}}}}
         "68aa1816af8d8025f873488153196a7b"
         {:type :frame
          :value
-         {"9" {:type :numeric, :value -9/100}
-          "3" {:type :numeric, :value -9/100}
-          "4" {:type :numeric, :value -9/100}
-          "8" {:type :numeric, :value -1/500}
-          "7" {:type :numeric, :value -9/100}
-          "5" {:type :numeric, :value -9/100}
-          "6" {:type :numeric, :value -9/100}
-          "1" {:type :numeric, :value -9/100}
-          "0" {:type :numeric, :value -9/100}
-          "11" {:type :numeric, :value 0}
-          "2" {:type :numeric, :value -9/100}
-          "10" {:type :numeric, :value -9/100}}}
+         {"9" {:type :numeric, :value {:num 9, :den -100}},
+          "3" {:type :numeric, :value {:num 9, :den -100}},
+          "4" {:type :numeric, :value {:num 9, :den -100}},
+          "8" {:type :numeric, :value {:num 2, :den -1000}},
+          "7" {:type :numeric, :value {:num 9, :den -100}},
+          "5" {:type :numeric, :value {:num 9, :den -100}},
+          "6" {:type :numeric, :value {:num 9, :den -100}},
+          "1" {:type :numeric, :value {:num 9, :den -100}},
+          "0" {:type :numeric, :value {:num 9, :den -100}},
+          "11" {:type :numeric, :value {:num 0, :den 10}},
+          "2" {:type :numeric, :value {:num 9, :den -100}},
+          "10" {:type :numeric, :value {:num 9, :den -100}}}}
         "7402f9d2c881069783237df27928513f"
         {:type :frame
          :value
-         {"9" {:type :numeric, :value -1/50}
-          "3" {:type :numeric, :value -1/50}
-          "4" {:type :numeric, :value -3/100}
-          "8" {:type :numeric, :value -1/50}
-          "7" {:type :numeric, :value -1/50}
-          "5" {:type :numeric, :value -3/100}
-          "6" {:type :numeric, :value -1/50}
-          "1" {:type :numeric, :value -3/100}
-          "0" {:type :numeric, :value -1/50}
-          "11" {:type :numeric, :value -1/50}
-          "2" {:type :numeric, :value -3/100}
-          "10" {:type :numeric, :value -1/50}}}}})))
+         {"9" {:type :numeric, :value {:num 2, :den -100}},
+          "3" {:type :numeric, :value {:num 2, :den -100}},
+          "4" {:type :numeric, :value {:num 3, :den -100}},
+          "8" {:type :numeric, :value {:num 2, :den -100}},
+          "7" {:type :numeric, :value {:num 2, :den -100}},
+          "5" {:type :numeric, :value {:num 3, :den -100}},
+          "6" {:type :numeric, :value {:num 2, :den -100}},
+          "1" {:type :numeric, :value {:num 3, :den -100}},
+          "0" {:type :numeric, :value {:num 2, :den -100}},
+          "11" {:type :numeric, :value {:num 2, :den -100}},
+          "2" {:type :numeric, :value {:num 3, :den -100}},
+          "10" {:type :numeric, :value {:num 2, :den -100}}}}}})))

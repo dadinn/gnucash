@@ -24,16 +24,15 @@
     (string/join "-")
     (UUID/fromString)))
 
+(defn emit-guid [id]
+  (.replace (str id) "-" ""))
+
 (spec/def ::guid
   (spec/with-gen
     (spec/and string?
       (partial re-matches #"[0-9a-f]{32}")
-      (spec/conformer
-        parse-guid
-        (fn [id] (.replace (str id) "-" ""))))
-    #(gen/fmap
-       (fn [uuid] (-> uuid str (.replace "-" "")))
-       (gen/uuid))))
+      (spec/conformer parse-guid emit-guid))
+    #(gen/fmap emit-guid (gen/uuid))))
 
 (def date-fmt (jt/formatter "yyyy-MM-dd"))
 (def datetime-fmt (jt/formatter "yyyy-MM-dd HH:mm:ss ZZZ"))

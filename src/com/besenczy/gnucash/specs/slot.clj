@@ -38,8 +38,8 @@
         :type #{:string}
         :value string?))
     (spec/conformer second
-      (fn [{:keys [type value]}]
-        [type (str value)]))))
+      (fn [{:keys [type] :as value}]
+        [type value]))))
 
 (spec/def ::frame
   (spec/map-of ::strings/non-empty ::value))
