@@ -221,7 +221,7 @@
     :lot
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsplit/lot
-      (zx/attr= type "guid")
+      (zx/attr= :type "guid")
       zx/text)))
 
 (defn transaction [loc]
@@ -665,6 +665,7 @@
     :guid
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/guid
+      (zx/attr= :type "guid")
       zx/text)
     :billable?
     (zx/xml1-> loc
@@ -680,12 +681,12 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/bill
       (zx/attr= :type "guid")
       zx/text)
-    :date-recorded
+    :date
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/date
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
       zx/text)
-    :date-entered
+    :entered
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/entered
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fts/date
@@ -705,10 +706,12 @@
     :account
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-acct
+      (zx/attr= :type "guid")
       zx/text)
     :account
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-acct
+      (zx/attr= :type "guid")
       zx/text)
     :price
     (zx/xml1-> loc
@@ -729,10 +732,12 @@
     :tax-table
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/i-taxtable
+      (zx/attr= :type "guid")
       zx/text)
     :tax-table
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fentry/b-taxtable
+      (zx/attr= :type "guid")
       zx/text)
     :tax-included?
     (zx/xml1-> loc
@@ -783,6 +788,7 @@
     :id
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/id
+      (zx/attr= :type "guid")
       zx/text)
     :name
     (zx/xml1-> loc
@@ -791,6 +797,7 @@
     :account
     (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/templ-acct
+      (zx/attr= :type "guid")
       zx/text)
     :enabled?
     (zx/xml1-> loc
@@ -812,6 +819,7 @@
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/schedule
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/recurrence
+      (zx/attr= :version "1.0.0")
       recurrance)
     :auto-create?
     (zx/xml1-> loc
@@ -933,6 +941,7 @@
     :schedxactions
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/schedxaction
+      (zx/attr= :version "2.0.0")
       schedxaction)
     :tempxactions
     (zx/xml-> loc
@@ -941,6 +950,7 @@
     :budgets
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/budget
+      (zx/attr= :version "2.0.0")
       budget)
     :counters
     (into {}

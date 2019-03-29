@@ -11,8 +11,8 @@
 (spec/def ::bill ::common/guid)
 (spec/def ::invoice ::common/guid)
 
-(spec/def ::date-recorded ::common/datetime)
-(spec/def ::date-entered ::common/datetime)
+(spec/def ::date ::common/datetime)
+(spec/def ::entered ::common/datetime)
 
 (spec/def ::description ::strings/non-empty)
 

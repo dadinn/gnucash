@@ -168,31 +168,31 @@
     (spec/keys
       :req-un
       [::entry/guid
-       ::entry/invoice
-       ::entry/date-recorded
-       ::entry/date-entered
+       ::entry/date
+       ::entry/entered
        ::entry/quantity
-       ::entry/price
+       ::entry/invoice
        ::entry/account
+       ::entry/price
        ::entry/taxable?
        ::entry/tax-included?]
       :opt-un
       [::entry/description
        ::entry/action
+       ::entry/tax-table
        ::entry/discount-type
        ::entry/discount-how
-       ::entry/discount
-       ::entry/tax-table])
+       ::entry/discount])
     :bill-entry
     (spec/keys
       :req-un
       [::entry/guid
-       ::entry/bill
-       ::entry/date-recorded
-       ::entry/date-entered
+       ::entry/date
+       ::entry/entered
        ::entry/quantity
-       ::entry/price
+       ::entry/bill
        ::entry/account
+       ::entry/price
        ::entry/taxable?
        ::entry/tax-included?
        ::entry/payment]
