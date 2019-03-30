@@ -422,7 +422,26 @@
            :refcount "0"
            :invisible? "1"
            :parent "722f16a0318e9de14cf53ddfddfdeb4f"
-           :entries []})))))
+           :entries []})))
+    (testing "without optional account"
+      (is=
+        (spec/conform ::entities/taxtable
+          {:guid "4abe1dea253f747e97bdeb5c87c6b72d"
+           :name "VAT Reclaim"
+           :refcount "0"
+           :invisible? "1"
+           :parent "722f16a0318e9de14cf53ddfddfdeb4f"
+           :entries
+           [{:amount "2000000/100000"
+             :type "PERCENT"}]})
+        {:guid #uuid "4abe1dea-253f-747e-97bd-eb5c87c6b72d"
+         :name "VAT Reclaim"
+         :refcount 0
+         :invisible? true
+         :parent #uuid "722f16a0-318e-9de1-4cf5-3ddfddfdeb4f"
+         :entries
+         [{:amount {:num 2000000 :den 100000}
+           :type :percent}]}))))
 
 (deftest customer
   (testing "customer entity should conform to spec"
