@@ -16,7 +16,7 @@
    (remove empty-content? contents))
   ([contents & more-contents]
    (filter-nonempty-contents
-     (concat (cons contents more-contents)))))
+     (apply concat (cons contents more-contents)))))
 
 (defn xml-element [tag attr & contents]
   (apply x/element tag attr
