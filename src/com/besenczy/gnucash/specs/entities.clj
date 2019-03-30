@@ -1,6 +1,6 @@
 (ns com.besenczy.gnucash.specs.entities
   (:require
-   [com.besenczy.gnucash.specs.entities.price :as price]
+   [com.besenczy.gnucash.utils :refer [alias-subns]]
    [com.besenczy.gnucash.specs.entities.account :as act]
    [com.besenczy.gnucash.specs.entities.transaction :as trn]
    [com.besenczy.gnucash.specs.entities.counterparty :as ctpy]
@@ -12,8 +12,20 @@
    [com.besenczy.gnucash.specs.entities.entry :as entry]
    [com.besenczy.gnucash.specs.entities.schedxaction :as sx]
    [com.besenczy.gnucash.specs.entities.budget :as bgt]
+   [com.besenczy.gnucash.specs.numeric :as numeric]
+   [com.besenczy.gnucash.specs.strings :as strings]
    [com.besenczy.gnucash.specs.common :as common]
    [clojure.spec.alpha :as spec]))
+
+(alias-subns price)
+
+(spec/def ::price/id ::common/guid)
+(spec/def ::price/commodity ::common/commodity)
+(spec/def ::price/currency ::common/commodity)
+(spec/def ::price/date ::common/datetime)
+(spec/def ::price/source ::strings/non-empty)
+(spec/def ::price/type ::strings/non-empty)
+(spec/def ::price/value ::numeric/fraction)
 
 (spec/def ::price
   (common/keys
