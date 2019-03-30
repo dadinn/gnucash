@@ -1,7 +1,6 @@
 (ns com.besenczy.gnucash.specs.entities
   (:require
    [com.besenczy.gnucash.utils :refer [alias-subns]]
-   [com.besenczy.gnucash.specs.entities.account :as act]
    [com.besenczy.gnucash.specs.entities.transaction :as trn]
    [com.besenczy.gnucash.specs.entities.counterparty :as ctpy]
    [com.besenczy.gnucash.specs.entities.employee :as empl]
@@ -15,6 +14,8 @@
    [com.besenczy.gnucash.specs.numeric :as numeric]
    [com.besenczy.gnucash.specs.strings :as strings]
    [com.besenczy.gnucash.specs.common :as common]
+   [com.besenczy.gnucash.specs.slot :as slot]
+   [clojure.string :as string]
    [clojure.spec.alpha :as spec]))
 
 (alias-subns price)
@@ -38,6 +39,40 @@
      ::price/source]
     :opt-un
     [::price/type]))
+
+(alias-subns lot account lot)
+
+(spec/def ::lot/id ::common/guid)
+(spec/def ::lot/slots (spec/and ::slot/frame (complement empty?)))
+
+(alias-subns act account)
+
+(spec/def ::act/id ::common/guid)
+(spec/def ::act/name ::strings/non-empty)
+(spec/def ::act/description ::strings/non-empty)
+(spec/def ::act/code ::strings/non-empty)
+
+(spec/def ::act/type
+  (spec/and #{"ASSET" "LIABILITY" "EQUITY" "INCOME" "EXPENSE" "RECEIVABLE" "PAYABLE" "CASH" "BANK" "CREDIT" "TRADING" "ROOT"}
+    (spec/conformer
+      (comp keyword string/lower-case)
+      (comp string/upper-case name))))
+
+(spec/def ::act/parent ::common/guid)
+(spec/def ::act/commodity ::common/commodity)
+(spec/def ::act/unit ::numeric/natural)
+
+(spec/def ::act/slots (spec/and ::slot/frame (complement empty?)))
+
+(spec/def ::act/lots
+  (spec/coll-of
+    (common/keys
+      :req-un
+      [::lot/id]
+      :opt-un
+      [::lot/slots])
+    :min-count 1
+    :into []))
 
 (spec/def ::account
   (common/keys
