@@ -1,7 +1,6 @@
 (ns com.besenczy.gnucash.specs.entities
   (:require
    [com.besenczy.gnucash.utils :refer [alias-subns]]
-   [com.besenczy.gnucash.specs.entities.entry :as entry]
    [com.besenczy.gnucash.specs.entities.schedxaction :as sx]
    [com.besenczy.gnucash.specs.entities.budget :as bgt]
    [com.besenczy.gnucash.specs.numeric :as numeric]
@@ -390,6 +389,68 @@
      ::invc/posttxn
      ::invc/notes
      ::invc/slots]))
+
+(alias-subns entry)
+
+(spec/def ::entry/guid ::common/guid)
+(spec/def ::entry/billable? ::common/boolean-num)
+
+(spec/def ::entry/bill ::common/guid)
+(spec/def ::entry/invoice ::common/guid)
+
+(spec/def ::entry/date ::common/datetime)
+(spec/def ::entry/entered ::common/datetime)
+
+(spec/def ::entry/description ::strings/non-empty)
+
+(spec/def ::entry/action
+  (spec/and
+    #{"Project" "Material" "Hours"}
+    (spec/conformer
+      {"Project" :project
+       "Material" :material
+       "Hours" :hours}
+      {:project "Project"
+       :material "Material"
+       :hours "Hours"})))
+
+(spec/def ::entry/price ::numeric/fraction)
+(spec/def ::entry/quantity ::numeric/fraction)
+
+(spec/def ::entry/account ::common/guid)
+
+(spec/def ::entry/taxable? ::common/boolean-num)
+(spec/def ::entry/tax-table ::common/guid)
+(spec/def ::entry/tax-included? ::common/boolean-num)
+
+(spec/def ::entry/discount-type
+  (spec/and
+    #{"PERCENT" "VALUE"}
+    (spec/conformer
+      {"PERCENT" :percent
+       "VALUE" :value}
+      {:percent "PERCENT"
+       :value "VALUE"})))
+
+(spec/def ::entry/discount-how
+  (spec/and
+    #{"PRETAX" "POSTTAX" "SAMETIME"}
+    (spec/conformer
+      {"PRETAX" :pretax
+       "POSTTAX" :posttax
+       "SAMETIME" :sametime}
+      {:pretax "PRETAX"
+       :posttax "POSTTAX"
+       :sametime "SAMETIME"})))
+
+(spec/def ::entry/discount ::numeric/fraction)
+
+(spec/def ::entry/payment
+  (spec/and
+    #{"CASH"}
+    (spec/conformer
+      {"CASH" :cash}
+      {:cash "CASH"})))
 
 (spec/def ::entry
   (spec/and
