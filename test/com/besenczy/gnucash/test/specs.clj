@@ -472,7 +472,51 @@
        :tax-included "NO"
        :discount {:num 0 :den 1}
        :tax-table #uuid "8506a23e-e160-adbf-9c55-0addd27500f9"
-       :guid #uuid "303123f6-19a8-9243-a4b5-e6281c1d591c"})))
+       :guid #uuid "303123f6-19a8-9243-a4b5-e6281c1d591c"})
+    (testing "with missing tax-table and billing terms"
+      (is=
+        (spec/conform ::entities/customer
+          {:active? "1"
+           :credit-limit "0/1"
+           :slots
+           {"last-posted-to-acct" [:guid "ed0a209cc78f680c45a87851ed232236"]
+            "payment" [:frame {"last_acct" [:guid "c287231d815bd4b86fc62907cf3eaa46"]}]}
+           :use-tax-table? "1"
+           :name "Big Bank Co"
+           :currency {:id "GBP", :space "ISO4217"}
+           :id "1"
+           :billing-address
+           {:name "AAAAA"
+            :line1 "FOOO road"
+            :line2 "BAAR House"
+            :line3 "London"
+            :line4 "E15 1NG"}
+           :tax-included "NO"
+           :discount "0/1"
+           :guid "303123f619a89243a4b5e6281c1d591c"})
+        {:active? true
+         :credit-limit {:num 0 :den 1}
+         :slots
+         {"last-posted-to-acct"
+          {:type :guid, :value #uuid "ed0a209c-c78f-680c-45a8-7851ed232236"}
+          "payment"
+          {:type :frame
+           :value
+           {"last_acct"
+            {:type :guid, :value #uuid "c287231d-815b-d4b8-6fc6-2907cf3eaa46"}}}}
+         :use-tax-table? true
+         :name "Big Bank Co"
+         :currency {:id "GBP", :space "ISO4217"}
+         :id "1"
+         :billing-address
+         {:name "AAAAA"
+          :line1 "FOOO road"
+          :line2 "BAAR House"
+          :line3 "London"
+          :line4 "E15 1NG"}
+         :tax-included "NO"
+         :discount {:num 0 :den 1}
+         :guid #uuid "303123f6-19a8-9243-a4b5-e6281c1d591c"}))))
 
 (deftest vendor
   (testing "vendor entity should conform to spec"
@@ -508,7 +552,37 @@
        :billing-address {:name "Daniel Dinnyes", :line1 "at home"}
        :tax-included "YES"
        :tax-table #uuid "722f16a0-318e-9de1-4cf5-3ddfddfdeb4f"
-       :guid #uuid "98950c25-fa39-5af6-8bf1-397ab522d1ad"})))
+       :guid #uuid "98950c25-fa39-5af6-8bf1-397ab522d1ad"})
+    (testing "with missing tax-table and billing terms"
+      (is=
+        (spec/conform ::entities/vendor
+          {:active? "1"
+           :slots
+           {"last-posted-to-acct" [:guid "d6e87f32ce9c437ffee9704ad7fc8bf4"]
+            "payment" [:frame {"last_acct" [:guid "c287231d815bd4b86fc62907cf3eaa46"]}]}
+           :use-tax-table? "1"
+           :name "Sundry"
+           :currency {:id "GBP", :space "ISO4217"}
+           :id "000001"
+           :billing-address {:name "Daniel Dinnyes", :line1 "at home"}
+           :tax-included "YES"
+           :guid "98950c25fa395af68bf1397ab522d1ad"})
+        {:active? true
+         :slots
+         {"last-posted-to-acct"
+          {:type :guid :value #uuid "d6e87f32-ce9c-437f-fee9-704ad7fc8bf4"}
+          "payment"
+          {:type :frame
+           :value
+           {"last_acct"
+            {:type :guid :value #uuid "c287231d-815b-d4b8-6fc6-2907cf3eaa46"}}}}
+         :use-tax-table? true
+         :name "Sundry"
+         :currency {:id "GBP", :space "ISO4217"}
+         :id "000001"
+         :billing-address {:name "Daniel Dinnyes", :line1 "at home"}
+         :tax-included "YES"
+         :guid #uuid "98950c25-fa39-5af6-8bf1-397ab522d1ad"}))))
 
 (deftest employee
   (testing "employee entity should conform to spec"
