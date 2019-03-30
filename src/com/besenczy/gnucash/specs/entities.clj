@@ -1,8 +1,6 @@
 (ns com.besenczy.gnucash.specs.entities
   (:require
    [com.besenczy.gnucash.utils :refer [alias-subns]]
-   [com.besenczy.gnucash.specs.entities.job :as job]
-   [com.besenczy.gnucash.specs.entities.invoice :as invc]
    [com.besenczy.gnucash.specs.entities.entry :as entry]
    [com.besenczy.gnucash.specs.entities.schedxaction :as sx]
    [com.besenczy.gnucash.specs.entities.budget :as bgt]
@@ -314,6 +312,36 @@
     [::empl/language
      ::ctpy/slots]))
 
+(alias-subns owner)
+
+(spec/def ::owner/id ::common/guid)
+(spec/def ::owner/type
+  (spec/and
+    #{"gncCustomer" "gncVendor" "gncEmployee" "gncJob"}
+    (spec/conformer
+      {"gncCustomer" :customer
+       "gncVendor" :vendor
+       "gncEmployee" :employee
+       "gncJob" :job}
+      {:customer "gncCustomer"
+       :vendor "gncVendor"
+       :employee "gncEmployee"
+       :job "gncJob"})))
+
+(alias-subns job)
+
+(spec/def ::job/guid ::common/guid)
+(spec/def ::job/active? ::common/boolean-num)
+(spec/def ::job/id ::strings/non-empty)
+(spec/def ::job/name ::strings/non-empty)
+(spec/def ::job/reference ::strings/non-empty)
+
+(spec/def ::job/owner
+  (common/keys
+    :req-un
+    [::owner/id
+     ::owner/type]))
+
 (spec/def ::job
   (common/keys
     :req-un
@@ -324,6 +352,24 @@
      ::job/active?]
     :opt-un
     [::job/reference]))
+
+(alias-subns invc invoice)
+
+(spec/def ::invc/guid ::common/guid)
+(spec/def ::invc/id ::strings/non-empty)
+(spec/def ::invc/owner ::job/owner)
+(spec/def ::invc/billto ::job/owner)
+(spec/def ::invc/reference ::strings/non-empty)
+(spec/def ::invc/currency ::common/commodity)
+(spec/def ::invc/opened ::common/datetime)
+(spec/def ::invc/posted ::common/datetime)
+(spec/def ::invc/postacc ::common/guid)
+(spec/def ::invc/postlot ::common/guid)
+(spec/def ::invc/posttxn ::common/guid)
+(spec/def ::invc/terms ::common/guid)
+(spec/def ::invc/notes ::strings/non-empty)
+(spec/def ::invc/active? ::common/boolean-num)
+(spec/def ::invc/slots (spec/and ::slot/frame (complement empty?)))
 
 (spec/def ::invoice
   (common/keys
