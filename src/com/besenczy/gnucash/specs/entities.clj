@@ -1,7 +1,6 @@
 (ns com.besenczy.gnucash.specs.entities
   (:require
    [com.besenczy.gnucash.utils :refer [alias-subns]]
-   [com.besenczy.gnucash.specs.entities.schedxaction :as sx]
    [com.besenczy.gnucash.specs.entities.budget :as bgt]
    [com.besenczy.gnucash.specs.numeric :as numeric]
    [com.besenczy.gnucash.specs.strings :as strings]
@@ -495,6 +494,26 @@
     (spec/conformer
       (fn [[type value]] (assoc value :type type))
       (fn [{:keys [type] :as value}] [type (dissoc value :type)]))))
+
+(alias-subns sx schedxaction)
+
+(spec/def ::sx/id ::common/guid)
+(spec/def ::sx/name ::strings/non-empty)
+(spec/def ::sx/enabled? ::common/boolean-char)
+(spec/def ::sx/start ::common/date)
+(spec/def ::sx/end ::common/date)
+(spec/def ::sx/last ::common/date)
+(spec/def ::sx/account ::common/guid)
+(spec/def ::sx/auto-create? ::common/boolean-char)
+(spec/def ::sx/auto-create-notify? ::common/boolean-char)
+(spec/def ::sx/advance-create-days ::numeric/natural)
+(spec/def ::sx/advance-remind-days ::numeric/natural)
+(spec/def ::sx/instance-count ::numeric/natural)
+
+(spec/def ::sx/schedule
+  (spec/coll-of ::budget/recurrence
+    :min-count 1
+    :into []))
 
 (spec/def ::schedxaction
   (common/keys
