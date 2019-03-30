@@ -1,7 +1,6 @@
 (ns com.besenczy.gnucash.specs.entities
   (:require
    [com.besenczy.gnucash.utils :refer [alias-subns]]
-   [com.besenczy.gnucash.specs.entities.budget :as bgt]
    [com.besenczy.gnucash.specs.numeric :as numeric]
    [com.besenczy.gnucash.specs.strings :as strings]
    [com.besenczy.gnucash.specs.common :as common]
@@ -495,6 +494,59 @@
       (fn [[type value]] (assoc value :type type))
       (fn [{:keys [type] :as value}] [type (dissoc value :type)]))))
 
+(alias-subns recur recurrance)
+
+(spec/def ::recur/start ::common/date)
+(spec/def ::recur/multiplier ::numeric/natural)
+
+(spec/def ::recur/period-type
+  (spec/and #{"day" "week" "month" "end of month"}
+    (spec/conformer
+      {"day" :day
+       "week" :week
+       "month" :month
+       "end of month" :end-of-month}
+      {:day "day"
+       :week "week"
+       :month "month"
+       :end-of-month "end of month"})))
+
+(spec/def ::recur/weekend-adjustment
+  (spec/and #{"forward" "back"}
+    (spec/conformer
+      {"forward" :forward
+       "back" :backward}
+      {:forward "forward"
+       :backward "back"})))
+
+(alias-subns bgt budget)
+
+(spec/def ::bgt/id ::common/guid)
+(spec/def ::bgt/name ::strings/non-empty)
+(spec/def ::bgt/description ::strings/non-empty)
+(spec/def ::bgt/num-periods ::numeric/natural)
+
+(spec/def ::bgt/recurrence
+  (common/keys
+    :req-un
+    [::recur/start
+     ::recur/period-type
+     ::recur/multiplier]
+    :opt-un
+    [::recur/weekend-adjustment]))
+
+(spec/def ::bgt/slots (spec/and ::slot/frame (complement empty?)))
+
+(spec/def ::budget
+  (common/keys
+    :req-un
+    [::bgt/id
+     ::bgt/name
+     ::bgt/recurrence
+     ::bgt/num-periods]
+    :opt-un
+    [::bgt/slots]))
+
 (alias-subns sx schedxaction)
 
 (spec/def ::sx/id ::common/guid)
@@ -511,7 +563,7 @@
 (spec/def ::sx/instance-count ::numeric/natural)
 
 (spec/def ::sx/schedule
-  (spec/coll-of ::budget/recurrence
+  (spec/coll-of ::bgt/recurrence
     :min-count 1
     :into []))
 
@@ -533,12 +585,3 @@
      ::sx/last
      ::sx/instance-count]))
 
-(spec/def ::budget
-  (common/keys
-    :req-un
-    [::bgt/id
-     ::bgt/name
-     ::bgt/recurrence
-     ::bgt/num-periods]
-    :opt-un
-    [::bgt/slots]))
