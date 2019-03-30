@@ -5,7 +5,6 @@
    [com.besenczy.gnucash.specs.entities.employee :as empl]
    [com.besenczy.gnucash.specs.entities.job :as job]
    [com.besenczy.gnucash.specs.entities.invoice :as invc]
-   [com.besenczy.gnucash.specs.entities.billterm :as bt]
    [com.besenczy.gnucash.specs.entities.taxtable :as tt]
    [com.besenczy.gnucash.specs.entities.entry :as entry]
    [com.besenczy.gnucash.specs.entities.schedxaction :as sx]
@@ -148,6 +147,17 @@
       (fn [{:keys [splits] :as data}]
         (update data :splits
           (partial map (fn [split] (dissoc split :parent))))))))
+
+(alias-subns bt billterm)
+
+(spec/def ::bt/guid ::common/guid)
+(spec/def ::bt/name ::strings/non-empty)
+(spec/def ::bt/description ::strings/non-empty)
+(spec/def ::bt/refcount ::numeric/natural)
+(spec/def ::bt/invisible? ::common/boolean-num)
+(spec/def ::bt/due-days ::numeric/natural)
+(spec/def ::bt/parent ::common/guid)
+(spec/def ::bt/child ::common/guid)
 
 (spec/def ::billterm
   (common/keys
