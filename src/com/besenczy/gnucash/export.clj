@@ -16,7 +16,7 @@
    (remove empty-content? contents))
   ([contents & more-contents]
    (filter-nonempty-contents
-     (concat (cons contents more-contents)))))
+     (apply concat (cons contents more-contents)))))
 
 (defn xml-element [tag attr & contents]
   (apply x/element tag attr
@@ -384,11 +384,10 @@
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/advanceRemindDays nil advance-remind-days)
        (x/element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/instanceCount nil instance-count)])))
 
-(defn tempxaction-element [{:keys [accounts transactions]}]
+(defn tempxactions-element [{:keys [accounts transactions]}]
   (xml-element :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/template-transactions nil
     (filter-nonempty-contents
-      (map account-element accounts))
-    (filter-nonempty-contents
+      (map account-element accounts)
       (map transaction-element transactions))))
 
 (defn budget-element [{:keys [id name description num-periods recurrence slots]}]
@@ -431,7 +430,7 @@
     (map account-element accounts)
     (map transaction-element transactions)
     (map schedxaction-element schedxactions)
-    (map tempxaction-element tempxactions)
+    [(tempxactions-element tempxactions)]
     (map budget-element budgets)
     (map countdata-element counters)))
 

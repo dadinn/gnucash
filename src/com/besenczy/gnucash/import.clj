@@ -842,7 +842,7 @@
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fsx/instanceCount
       zx/text)))
 
-(defn tempxaction [loc]
+(defn tempxactions [loc]
   (utils/into-map
     :accounts
     (zx/xml-> loc
@@ -944,9 +944,9 @@
       (zx/attr= :version "2.0.0")
       schedxaction)
     :tempxactions
-    (zx/xml-> loc
+    (zx/xml1-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/template-transactions
-      tempxaction)
+      tempxactions)
     :budgets
     (zx/xml-> loc
       :xmlns.http%3A%2F%2Fwww.gnucash.org%2FXML%2Fgnc/budget

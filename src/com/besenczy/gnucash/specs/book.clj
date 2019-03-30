@@ -58,9 +58,7 @@
     :min-count 1 :into []))
 
 (spec/def ::tempxactions
-  (spec/coll-of
-    (common/keys
-      :req-un
-      [::accounts
-       ::transactions])
-    :min-count 1 :into []))
+  (common/keys
+    :req-un
+    [::accounts
+     ::transactions]))

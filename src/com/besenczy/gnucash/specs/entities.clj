@@ -87,8 +87,6 @@
      ::ctpy/id
      ::ctpy/name
      ::ctpy/active?
-     ::ctpy/terms
-     ::ctpy/tax-table
      ::ctpy/use-tax-table?
      ::ctpy/currency
      ::ctpy/credit-limit
@@ -97,6 +95,8 @@
      ::ctpy/billing-address]
     :opt-un
     [::ctpy/shipping-address
+     ::ctpy/tax-table
+     ::ctpy/terms
      ::ctpy/notes
      ::ctpy/slots]))
 
@@ -107,14 +107,15 @@
      ::ctpy/id
      ::ctpy/name
      ::ctpy/active?
-     ::ctpy/terms
-     ::ctpy/tax-table
+
      ::ctpy/use-tax-table?
      ::ctpy/currency
      ::ctpy/tax-included
      ::ctpy/billing-address]
     :opt-un
-    [::ctpy/notes
+    [::ctpy/tax-table
+     ::ctpy/terms
+     ::ctpy/notes
      ::ctpy/slots]))
 
 (spec/def ::employee

@@ -7,163 +7,88 @@
    [com.besenczy.gnucash.specs.slot :as slot-specs]
    [com.besenczy.gnucash.specs.book :as book]
    [com.besenczy.gnucash.specs :as specs]
-   [com.besenczy.gnucash.test.common :refer [is=]]
-   [clojure.spec.alpha :as spec]
-   [clojure.spec.gen.alpha :as gen]
-   [clojure.spec.test.alpha :as spectest]
    [clojure.zip :as z]
    [clojure.data.xml :as x]
-   [clojure.test :refer :all]))
+   [clojure.spec.alpha :as spec]
+   [clojure.test.check.generators :as gen]
+   [clojure.test.check.properties :as prop]
+   [clojure.test.check.clojure-test :as test]))
 
-(defmacro deftest-recursive [sym & body]
-  (let [limit (or (-> sym meta :limit) 3)]
-    `(deftest ~sym
-       (binding [spec/*recursion-limit* ~limit]
-         ~@body))))
+(defn export-reimport-prop
+  [spec export-fn import-fn]
+  (prop/for-all [original (spec/gen spec)]
+    (let [exported (export-fn original)
+          imported (import-fn exported)]
+      (= original imported))))
 
-(deftest-recursive ^{:limit 10} slot-frame
-  (testing "check that slots frame records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::slot-specs/frame))]
-        (let [exported (export/frame-contents record)
-              exported (apply x/element :testing nil exported)
-              imported ((import/frame) (z/xml-zip exported))]
-          (is= record imported))))))
+(defmacro defspec
+  [name spec export-fn import-fn
+   & {:keys [times max-size]
+      :or {times 100 max-size 500}
+      :as options}]
+  `(test/defspec ~name
+     ~(assoc options :num-tests times :max-size max-size)
+     (export-reimport-prop ~spec ~export-fn ~import-fn)))
 
-(deftest counters
-  (testing "check that countdata records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::common-specs/counters))]
-        (let [exported (map export/countdata-element record)
-              imported (map (comp import/countdata-pair z/xml-zip) exported)
-              imported (apply concat imported)
-              imported (into {} imported)]
-          (is= record imported))))))
+(defspec slot-frame ::slot-specs/frame
+  #(apply x/element :testing nil (export/frame-contents %))
+  #((import/frame) (z/xml-zip %)))
 
-(deftest commodity
-  (testing "check commodity records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::common-specs/commodity))]
-        (let [exported (export/commodity-element :test/commodity record)
-              imported (import/commodity (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec counters ::common-specs/counters
+  (partial map export/countdata-element)
+  (fn [exported]
+    (->> exported
+      (map (comp import/countdata-pair z/xml-zip))
+      (apply concat)
+      (into {}))))
 
-(deftest price
-  (testing "check price records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::entity-specs/price))]
-        (let [exported (export/price-element record)
-              imported (import/price (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec commodity ::common-specs/commodity
+  (partial export/commodity-element :test/commodity)
+  (comp import/commodity z/xml-zip))
 
-(deftest-recursive account
-  (testing "check account records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::entity-specs/account))]
-        (let [exported (export/account-element record)
-              imported (import/account (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec price ::entity-specs/price
+  export/price-element (comp import/price z/xml-zip))
 
-(deftest-recursive transaction
-  (testing "check transaction records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::entity-specs/transaction))]
-        (let [exported (export/transaction-element record)
-              imported (import/transaction (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec account ::entity-specs/account
+  export/account-element (comp import/account z/xml-zip))
 
-(deftest-recursive customer
-  (testing "check customer records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::entity-specs/customer))]
-        (let [exported (export/customer-element record)
-              imported (import/customer (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec transaction ::entity-specs/transaction
+  export/transaction-element (comp import/transaction z/xml-zip))
 
-(deftest-recursive vendor
-  (testing "check vendor records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::entity-specs/vendor))]
-        (let [exported (export/vendor-element record)
-              imported (import/vendor (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec customer ::entity-specs/customer
+  export/customer-element (comp import/customer z/xml-zip))
 
-(deftest-recursive employee
-  (testing "check employee records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::entity-specs/employee))]
-        (let [exported (export/employee-element record)
-              imported (import/employee (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec vendor ::entity-specs/vendor
+  export/vendor-element (comp import/vendor z/xml-zip))
 
-(deftest-recursive job
-  (testing "check job records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::entity-specs/job))]
-        (let [exported (export/job-element record)
-              imported (import/job (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec employee ::entity-specs/employee
+  export/employee-element (comp import/employee z/xml-zip))
 
-(deftest-recursive invoice
-  (testing "check invoice records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::entity-specs/invoice))]
-        (let [exported (export/invoice-element record)
-              imported (import/invoice (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec job ::entity-specs/job
+  export/job-element (comp import/job z/xml-zip))
 
-(deftest-recursive billterm
-  (testing "check billterm records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::entity-specs/billterm))]
-        (let [exported (export/billterm-element record)
-              imported (import/billterm (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec invoice ::entity-specs/invoice
+  export/invoice-element (comp import/invoice z/xml-zip))
 
-(deftest-recursive taxtable
-  (testing "check taxtable records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::entity-specs/taxtable))]
-        (let [exported (export/taxtable-element record)
-              imported (import/taxtable (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec billterm ::entity-specs/billterm
+  export/billterm-element (comp import/billterm z/xml-zip))
 
-(deftest-recursive entry
-  (testing "check entry records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::entity-specs/entry))]
-        (let [exported (export/entry-element record)
-              imported (import/entry (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec taxtable ::entity-specs/taxtable
+  export/taxtable-element (comp import/taxtable z/xml-zip))
 
-(deftest-recursive budget
-  (testing "check budget records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::entity-specs/budget))]
-        (let [exported (export/budget-element record)
-              imported (import/budget (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec entry ::entity-specs/entry
+  export/entry-element (comp import/entry z/xml-zip))
 
-(deftest-recursive schedxaction
-  (testing "check schedxaction records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::entity-specs/schedxaction))]
-        (let [exported (export/schedxaction-element record)
-              imported (import/schedxaction (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec budget ::entity-specs/budget
+  export/budget-element (comp import/budget z/xml-zip))
 
-(deftest-recursive tempxaction
-  (testing "check tempxaction records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (first (gen/sample (spec/gen ::book/tempxactions)))]
-        (let [exported (export/tempxaction-element record)
-              imported (import/tempxaction (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec schedxaction ::entity-specs/schedxaction
+  export/schedxaction-element (comp import/schedxaction z/xml-zip))
 
-(deftest-recursive document
-  (testing "check document records get reimported correctly"
-    (testing "when generated via specs"
-      (doseq [record (gen/sample (spec/gen ::specs/document))]
-        (let [exported (export/document-element record)
-              imported (import/document (z/xml-zip exported))]
-          (is= record imported))))))
+(defspec tempxaction ::book/tempxactions
+  export/tempxactions-element (comp import/tempxactions z/xml-zip)
+  :times 10 :max-size 10)
+
+(defspec document ::specs/document
+  export/document-element (comp import/document z/xml-zip)
+  :times 10 :max-size 10)
