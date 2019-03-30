@@ -1,8 +1,6 @@
 (ns com.besenczy.gnucash.specs.entities
   (:require
    [com.besenczy.gnucash.utils :refer [alias-subns]]
-   [com.besenczy.gnucash.specs.entities.counterparty :as ctpy]
-   [com.besenczy.gnucash.specs.entities.employee :as empl]
    [com.besenczy.gnucash.specs.entities.job :as job]
    [com.besenczy.gnucash.specs.entities.invoice :as invc]
    [com.besenczy.gnucash.specs.entities.entry :as entry]
@@ -212,6 +210,50 @@
     [::tt/parent
      ::tt/child]))
 
+(alias-subns addr counterparty addr)
+
+(spec/def ::addr/name ::strings/non-empty)
+
+(spec/def ::addr/line1 ::strings/non-empty)
+(spec/def ::addr/line2 ::strings/non-empty)
+(spec/def ::addr/line3 ::strings/non-empty)
+(spec/def ::addr/line4 ::strings/non-empty)
+
+(spec/def ::addr/phone ::strings/non-empty)
+(spec/def ::addr/fax ::strings/non-empty)
+(spec/def ::addr/email ::strings/non-empty)
+
+(alias-subns ctpy counterparty)
+
+(spec/def ::ctpy/guid ::common/guid)
+(spec/def ::ctpy/active? ::common/boolean-num)
+(spec/def ::ctpy/id ::strings/non-empty)
+(spec/def ::ctpy/name ::strings/non-empty)
+(spec/def ::ctpy/currency ::common/commodity)
+(spec/def ::ctpy/terms ::common/guid)
+(spec/def ::ctpy/tax-table ::common/guid)
+(spec/def ::ctpy/tax-included #{"NO" "YES" "USEGLOBAL"})
+(spec/def ::ctpy/use-tax-table? ::common/boolean-num)
+(spec/def ::ctpy/discount ::numeric/fraction)
+(spec/def ::ctpy/credit-limit ::numeric/fraction)
+
+(spec/def ::ctpy/billing-address
+  (common/keys
+    :req-un
+    [::addr/line1]
+    :opt-un
+    [::addr/name
+     ::addr/line2
+     ::addr/line3
+     ::addr/line4
+     ::addr/phone
+     ::addr/fax
+     ::addr/email]))
+
+(spec/def ::ctpy/shipping-address ::ctpy/billing-address)
+(spec/def ::ctpy/notes ::strings/non-empty)
+(spec/def ::ctpy/slots (spec/and ::slot/frame (complement empty?)))
+
 (spec/def ::customer
   (common/keys
     :req-un
@@ -249,6 +291,13 @@
      ::ctpy/terms
      ::ctpy/notes
      ::ctpy/slots]))
+
+(alias-subns empl employee)
+
+(spec/def ::empl/username ::strings/non-empty)
+(spec/def ::empl/rate ::numeric/fraction)
+(spec/def ::empl/workday ::numeric/fraction)
+(spec/def ::empl/language ::strings/non-empty)
 
 (spec/def ::employee
   (common/keys
