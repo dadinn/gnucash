@@ -5,7 +5,6 @@
    [com.besenczy.gnucash.specs.entities.employee :as empl]
    [com.besenczy.gnucash.specs.entities.job :as job]
    [com.besenczy.gnucash.specs.entities.invoice :as invc]
-   [com.besenczy.gnucash.specs.entities.taxtable :as tt]
    [com.besenczy.gnucash.specs.entities.entry :as entry]
    [com.besenczy.gnucash.specs.entities.schedxaction :as sx]
    [com.besenczy.gnucash.specs.entities.budget :as bgt]
@@ -171,6 +170,35 @@
      ::bt/due-days
      ::bt/parent
      ::bt/child]))
+
+(alias-subns tte taxtable entry)
+
+(spec/def ::tte/account ::common/guid)
+(spec/def ::tte/amount ::numeric/fraction)
+(spec/def ::tte/type
+  (spec/and #{"PERCENT" "VALUE"}
+    (spec/conformer
+      {"PERCENT" :percent "VALUE" :value}
+      {:percent "PERCENT" :value "VALUE"})))
+
+(alias-subns tt taxtable)
+
+(spec/def ::tt/guid ::common/guid)
+(spec/def ::tt/name ::strings/non-empty)
+(spec/def ::tt/refcount ::numeric/natural)
+(spec/def ::tt/invisible? ::common/boolean-num)
+(spec/def ::tt/parent ::common/guid)
+(spec/def ::tt/child ::common/guid)
+(spec/def ::tt/entries
+  (spec/coll-of
+    (common/keys
+      :req-un
+      [::tte/amount
+       ::tte/type]
+      :opt-un
+      [::tte/account])
+    :min-count 1
+    :into []))
 
 (spec/def ::taxtable
   (common/keys
