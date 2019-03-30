@@ -1,7 +1,6 @@
 (ns com.besenczy.gnucash.specs.entities
   (:require
    [com.besenczy.gnucash.utils :refer [alias-subns]]
-   [com.besenczy.gnucash.specs.entities.transaction :as trn]
    [com.besenczy.gnucash.specs.entities.counterparty :as ctpy]
    [com.besenczy.gnucash.specs.entities.employee :as empl]
    [com.besenczy.gnucash.specs.entities.job :as job]
@@ -88,6 +87,46 @@
      ::act/parent
      ::act/slots
      ::act/lots]))
+
+(alias-subns split transaction split)
+
+(spec/def ::split/id ::common/guid)
+(spec/def ::split/reconciled-state #{"y" "n" "c"})
+(spec/def ::split/reconciled-date ::common/datetime)
+(spec/def ::split/value ::numeric/fraction)
+(spec/def ::split/quantity ::numeric/fraction)
+(spec/def ::split/account ::common/guid)
+(spec/def ::split/memo ::strings/non-empty)
+(spec/def ::split/action ::strings/non-empty)
+(spec/def ::split/lot ::common/guid)
+
+(spec/def ::split
+  (common/keys
+    :req-un
+    [::split/id
+     ::split/reconciled-state
+     ::split/value
+     ::split/quantity
+     ::split/account]
+    :opt-un
+    [::split/reconciled-date
+     ::split/memo
+     ::split/action
+     ::split/lot]))
+
+(alias-subns trn transaction)
+
+(spec/def ::trn/id ::common/guid)
+(spec/def ::trn/currency ::common/commodity)
+(spec/def ::trn/date-entered ::common/datetime)
+(spec/def ::trn/date-posted ::common/datetime)
+(spec/def ::trn/description ::strings/non-empty)
+(spec/def ::trn/slots (spec/and ::slot/frame (complement empty?)))
+(spec/def ::trn/num #{"Invoice" "Bill" "Credit Note" "Expense" "Payment"})
+(spec/def ::trn/splits
+  (spec/coll-of ::split
+    :min-count 1
+    :into []))
 
 (spec/def ::transaction
   (spec/and
