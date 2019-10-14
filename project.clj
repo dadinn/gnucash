@@ -1,4 +1,4 @@
-(defproject com.besenczy/gnucash "0.2.0"
+(defproject com.besenczy/gnucash "0.2.1"
   :description "Clojure library to parse/emit GnuCash XML format"
   :url "https://www.gnucash.org"
   :license
