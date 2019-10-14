@@ -7,7 +7,7 @@ This library is to help with parsing and emitting XML documents of the [Gnucash 
 Add to your [leiningen](https://leiningen.org/) or [Boot](https://boot-clj.com/) dependencies:
 
 ```
-[com.besenczy/gnucash "0.2.0"]
+[com.besenczy/gnucash "0.2.1"]
 ```
 
 Importing and exporting documents can be done the following way:
