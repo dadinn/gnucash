@@ -43,17 +43,25 @@
      ::act/lots]))
 
 (spec/def ::transaction
-  (common/keys
-    :req-un
-    [::trn/id
-     ::trn/currency
-     ::trn/date-entered
-     ::trn/date-posted
-     ::trn/splits]
-    :opt-un
-    [::trn/num
-     ::trn/description
-     ::trn/slots]))
+  (spec/and
+    (common/keys
+      :req-un
+      [::trn/id
+       ::trn/currency
+       ::trn/date-entered
+       ::trn/date-posted
+       ::trn/splits]
+      :opt-un
+      [::trn/num
+       ::trn/description
+       ::trn/slots])
+    (spec/conformer
+      (fn [{:keys [id] :as data}]
+        (update data :splits
+          (partial map (fn [split] (assoc split :parent id)))))
+      (fn [{:keys [splits] :as data}]
+        (update data :splits
+          (partial map (fn [split] (dissoc split :parent))))))))
 
 (spec/def ::billterm
   (common/keys
